@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Bloque 1 · Fisiología Neuronal y Señalización</title>
+<style>
+  :root{
+    --bg:#0d1024;--card:#1a1f3c;--accent:#ff5c8a;--accent2:#4fd1c5;
+    --text:#f5f7ff;--muted:#b8c0e0;--ok:#4ade80;--warn:#fbbf24;--bad:#f87171;
+    --notas:#ffd166;--cuina:#b07cff;
+  }
+  body.claro{
+    --bg:#f7f8fc;--card:#ffffff;--text:#1a1f3c;--muted:#5a6488;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;transition:background .3s,color .3s;}
+  header{background:var(--card);padding:12px 26px;border-bottom:2px solid var(--accent2);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:relative;z-index:50;}
+  header h1{font-size:1.15rem;color:var(--accent);}
+  header .sub{color:var(--muted);font-size:.82rem;margin-top:2px;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .controls button{background:#252b52;color:var(--accent2);border:1px solid #3a4170;padding:6px 11px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.82rem;transition:.15s;}
+  body.claro .controls button{background:#e8ebf5;color:#1a1f3c;border-color:#c5cbe0;}
+  .controls button:hover{background:var(--accent2);color:#0f1226;}
+  .btn-volver{background:#252b52;color:var(--accent2);border:1px solid #3a4170;padding:6px 11px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.82rem;}
+  body.claro .btn-volver{background:#e8ebf5;color:#1a1f3c;border-color:#c5cbe0;}
+  .btn-volver:hover{background:var(--accent2);color:#0f1226;}
+  .lang-switch{display:flex;gap:4px;background:var(--card);padding:3px;border-radius:8px;border:1px solid #3a4170;}
+  body.claro .lang-switch{border-color:#c5cbe0;}
+  .lang-switch button{background:transparent;color:var(--muted);border:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-weight:800;font-size:.78rem;transition:.15s;}
+  .lang-switch button:hover{background:#252b52;}
+  body.claro .lang-switch button:hover{background:#e0e5f0;}
+  .lang-switch button.active{background:var(--accent2);color:#0f1226;}
+
+  main{
+    max-width:1100px;
+    margin:0 auto;
+    padding:14px 20px 60px;
+    height:calc(100vh - 62px);
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .slide{
+    display:none;
+    width:100%;
+    max-height:100%;
+    overflow-y:auto;
+    padding:26px 34px;
+    border-radius:14px;
+  }
+  .slide.active{display:block;animation:fade .35s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  .slide::-webkit-scrollbar{width:6px;}
+  .slide::-webkit-scrollbar-track{background:transparent;}
+  .slide::-webkit-scrollbar-thumb{background:#3a4170;border-radius:3px;}
+  body.claro .slide::-webkit-scrollbar-thumb{background:#c5cbe0;}
+
+  .slide.portada{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;}
+  .slide.portada.active{display:flex;}
+  .slide.portada h2{font-size:2rem;color:var(--accent);border:none;margin-bottom:14px;}
+  .slide.portada .sub{font-size:1.05rem;color:var(--muted);}
+  .slide.portada .meta{font-size:.9rem;color:var(--muted);margin-top:14px;}
+
+  .slide.idea-fuerza{padding:40px 46px;}
+  .idea-fuerza .etiqueta{display:inline-block;background:var(--accent2);color:#0f1226;padding:3px 12px;border-radius:20px;font-size:.72rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
+  .idea-fuerza h2{font-size:1.8rem;color:var(--accent);border:none;margin-bottom:16px;line-height:1.25;}
+  .idea-fuerza .cuerpo{font-size:1.08rem;line-height:1.6;color:var(--text);}
+  .idea-fuerza .cuerpo b{color:var(--accent2);}
+
+  .slide.desarrollo h2{color:var(--accent2);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--accent2);padding-bottom:7px;}
+  .slide.desarrollo h3{color:var(--accent);font-size:1.05rem;margin:10px 0 5px;}
+  .slide.desarrollo p,.slide.desarrollo li{font-size:.96rem;line-height:1.55;margin-bottom:5px;}
+  .slide.desarrollo ul,.slide.desarrollo ol{margin-left:20px;margin-bottom:8px;}
+
+  .slide.tabla h2{color:var(--accent2);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--accent2);padding-bottom:7px;}
+  table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.9rem;}
+  th,td{border:1px solid #3a4170;padding:8px 11px;text-align:left;line-height:1.35;}
+  body.claro th,body.claro td{border-color:#c5cbe0;}
+  th{background:#252b52;color:var(--accent2);font-weight:800;}
+  body.claro th{background:#e8ebf5;color:#1a1f3c;}
+
+  .slide.esquema h2{color:var(--accent2);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--accent2);padding-bottom:7px;}
+  .illus{background:var(--card);border-radius:12px;padding:12px;display:flex;justify-content:center;align-items:center;border:1px solid #3a4170;max-height:40vh;}
+  body.claro .illus{border-color:#c5cbe0;}
+  .illus svg{max-width:100%;height:auto;max-height:36vh;}
+
+  .slide.cuina h2{color:var(--cuina);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--cuina);padding-bottom:7px;}
+  .slide.cuina .cuerpo{font-size:1rem;line-height:1.55;}
+
+  .slide.sintesis{padding:40px 46px;}
+  .slide.sintesis h2{color:var(--warn);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--warn);padding-bottom:7px;}
+  .slide.sintesis .caja{background:var(--card);border-left:5px solid var(--warn);border-radius:12px;padding:18px 22px;font-size:.98rem;line-height:1.65;}
+
+  .cuina-tematica{display:flex;gap:11px;align-items:flex-start;border-radius:10px;padding:11px 15px;margin:11px 0;font-size:.92rem;line-height:1.45;}
+  .cuina-tematica .icono{font-size:1.4rem;flex-shrink:0;line-height:1;}
+  .cuina-tematica .texto{flex:1;}
+  .cuina-tematica .texto b{display:block;margin-bottom:3px;font-size:.95rem;}
+
+  .cuina-danza{background:#2a1f3d;border-left:5px solid var(--accent);}
+  .cuina-danza .texto b{color:var(--accent);}
+  .cuina-nutricion{background:#1a2a1a;border-left:5px solid var(--ok);}
+  .cuina-nutricion .texto b{color:var(--ok);}
+  .cuina-calentamiento{background:#3a1a1a;border-left:5px solid var(--warn);}
+  .cuina-calentamiento .texto b{color:var(--warn);}
+  .cuina-descanso{background:#1a2540;border-left:5px solid var(--accent2);}
+  .cuina-descanso .texto b{color:var(--accent2);}
+  .cuina-salud{background:#3a2f10;border-left:5px solid var(--notas);}
+  .cuina-salud .texto b{color:var(--notas);}
+  body.claro .cuina-danza{background:#f4e8f0;}
+  body.claro .cuina-nutricion{background:#e8f5e8;}
+  body.claro .cuina-calentamiento{background:#fdeaea;}
+  body.claro .cuina-descanso{background:#e8eefc;}
+  body.claro .cuina-salud{background:#fef8e0;}
+
+  .actividad-sugerida{background:linear-gradient(135deg,#ff9f43,#ff7a3d);color:#fff;border-radius:10px;padding:12px 16px;margin:14px 0;display:flex;gap:11px;align-items:flex-start;}
+  .actividad-sugerida .icono{font-size:1.4rem;flex-shrink:0;line-height:1;}
+  .actividad-sugerida .texto{flex:1;}
+  .actividad-sugerida .texto b{display:block;font-size:.95rem;margin-bottom:4px;}
+  .actividad-sugerida .texto .tipo{display:inline-block;background:rgba(255,255,255,.25);padding:2px 9px;border-radius:20px;font-size:.7rem;font-weight:800;text-transform:uppercase;margin-bottom:4px;}
+
+  .nav{position:fixed;bottom:12px;right:18px;display:flex;gap:6px;z-index:50;}
+  .nav button{background:var(--accent);color:#0f1226;border:none;padding:8px 15px;border-radius:9px;font-weight:800;cursor:pointer;font-size:.85rem;box-shadow:0 3px 10px rgba(0,0,0,.25);}
+  .nav button:hover{background:var(--accent2);}
+  .counter{position:fixed;bottom:16px;left:18px;color:var(--muted);font-size:.78rem;z-index:50;background:var(--card);padding:4px 11px;border-radius:18px;border:1px solid #3a4170;}
+  body.claro .counter{border-color:#c5cbe0;}
+  .progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);transition:width .3s;z-index:100;}
+
+  @media(max-width:800px){
+    main{padding:10px 12px 55px;height:calc(100vh - 56px);}
+    .slide{padding:18px 16px;max-height:100%;}
+    .slide.idea-fuerza{padding:24px 20px;}
+    .idea-fuerza h2{font-size:1.4rem;}
+    .idea-fuerza .cuerpo{font-size:.98rem;}
+    .slide.desarrollo h2,.slide.tabla h2,.slide.esquema h2,.slide.cuina h2,.slide.sintesis h2{font-size:1.2rem;}
+    .slide.desarrollo p,.slide.desarrollo li{font-size:.88rem;}
+    .slide.portada h2{font-size:1.4rem;}
+    table{font-size:.82rem;}
+    th,td{padding:6px 8px;}
+    header h1{font-size:.95rem;}
+    header{padding:10px 14px;}
+  }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<header>
+  <div>
+    <h1 id="headerTitulo">Bloque 1 · Fisiología Neuronal y Señalización</h1>
+    <div class="sub" id="headerSub">Fisiología · 1º Danza · Curso 2026-2027 · Cèlia Painous</div>
+  </div>
+  <div class="controls">
+    <button class="btn-volver" id="btnVolver" onclick="volverIndice()">← Índice</button>
+    <div class="lang-switch">
+      <button data-lang="es" class="active">ES</button>
+      <button data-lang="ca">CA</button>
+      <button data-lang="en">EN</button>
+    </div>
+    <button onclick="toggleModo()" id="btnModo">☀️ Modo claro</button>
+  </div>
+</header>
+
+<main>
+
+
+<!-- 2 · IDEA-FUERZA -->
+<section class="slide idea-fuerza active">
+  <span class="etiqueta" data-i18n="d2.etq">Idea-fuerza</span>
+  <h2 data-i18n="d2.titulo">¿Qué es una neurona?</h2>
+  <div class="cuerpo" data-i18n="d2.cuerpo">Una neurona es una <b>célula especializada en recibir, procesar e integrar información</b> mediante señales eléctricas y químicas. Es la unidad básica del sistema nervioso.</div>
+  <div class="actividad-sugerida">
+    <div class="icono">🤔</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.reflexiona">Reflexiona</span>
+      <b data-i18n="d2.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d2.act.texto">¿Qué crees que pasa en tu cerebro cuando aprendes un paso nuevo? Comparte tu idea con la persona de al lado.</span>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · DESARROLLO -->
+<section class="slide desarrollo">
+  <h2 data-i18n="d3.titulo">La neurona por dentro</h2>
+  <div class="illus">
+    <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="70" cy="110" r="30" fill="#4fd1c5"/><circle cx="70" cy="110" r="11" fill="#ff5c8a"/>
+      <line x1="100" y1="110" x2="230" y2="110" stroke="#4fd1c5" stroke-width="5"/>
+      <line x1="230" y1="110" x2="270" y2="90" stroke="#4fd1c5" stroke-width="3"/>
+      <line x1="230" y1="110" x2="270" y2="110" stroke="#4fd1c5" stroke-width="3"/>
+      <line x1="230" y1="110" x2="270" y2="130" stroke="#4fd1c5" stroke-width="3"/>
+      <circle cx="272" cy="90" r="5" fill="#ff5c8a"/>
+      <circle cx="272" cy="110" r="5" fill="#ff5c8a"/>
+      <circle cx="272" cy="130" r="5" fill="#ff5c8a"/>
+      <text x="70" y="170" fill="#b8c0e0" font-size="12" text-anchor="middle">Soma</text>
+      <text x="165" y="170" fill="#b8c0e0" font-size="12" text-anchor="middle">Axón</text>
+      <text x="280" y="170" fill="#b8c0e0" font-size="12" text-anchor="middle">Terminales</text>
+    </svg>
+  </div>
+  <ul>
+    <li data-i18n="d3.l1"><b>Soma</b>: contiene el núcleo y los orgánulos. Integra las señales recibidas.</li>
+    <li data-i18n="d3.l2"><b>Dendritas</b>: reciben señales de otras neuronas o de receptores sensoriales.</li>
+    <li data-i18n="d3.l3"><b>Axón</b>: conduce el potencial de acción desde el soma hacia otras células.</li>
+  </ul>
+</section>
+
+<!-- 4 · DESARROLLO -->
+<section class="slide desarrollo">
+  <h2 data-i18n="d4.titulo">La mielina y las terminales</h2>
+  <div class="illus">
+    <svg viewBox="0 0 400 140" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="70" x2="380" y2="70" stroke="#4fd1c5" stroke-width="8"/>
+      <rect x="60" y="55" width="30" height="30" rx="6" fill="#b8c0e0"/>
+      <rect x="110" y="55" width="30" height="30" rx="6" fill="#b8c0e0"/>
+      <rect x="160" y="55" width="30" height="30" rx="6" fill="#b8c0e0"/>
+      <rect x="210" y="55" width="30" height="30" rx="6" fill="#b8c0e0"/>
+      <rect x="260" y="55" width="30" height="30" rx="6" fill="#b8c0e0"/>
+      <text x="200" y="120" fill="#b8c0e0" font-size="12" text-anchor="middle">Vainas de mielina</text>
+    </svg>
+  </div>
+  <ul>
+    <li data-i18n="d4.l1"><b>Vaina de mielina</b>: recubre el axón y aumenta la velocidad de conducción.</li>
+    <li data-i18n="d4.l2"><b>Terminales axónicas</b>: transmiten la información mediante la sinapsis.</li>
+  </ul>
+  <div class="cuina-tematica cuina-nutricion">
+    <div class="icono">🥗</div>
+    <div class="texto">
+      <b data-i18n="c.nutricion">Nutrición</b>
+      <span data-i18n="d4.cuina">La mielina está formada por lípidos. Una dieta rica en grasas saludables (frutos secos, pescado azul, aceite de oliva) ayuda a mantenerla en buen estado.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.prueba">Prueba en clase</span>
+      <b data-i18n="d4.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d4.act.texto">Con los ojos cerrados, toca tu antebrazo con un dedo y nota la información que llega. ¿Cómo sabes dónde estás tocando?</span>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · CUÑA DANZA -->
+<section class="slide cuina">
+  <h2 data-i18n="d5.titulo">Cómo aprende un paso tu neurona</h2>
+  <div class="cuerpo" data-i18n="d5.cuerpo">Cuando aprendes un paso nuevo, ocurre esta secuencia en milisegundos:</div>
+  <ol style="margin:14px 0 0 20px;font-size:1rem;line-height:1.75;">
+    <li data-i18n="d5.l1">Las <b>dendritas</b> reciben la información (lo que ves, oyes y sientes).</li>
+    <li data-i18n="d5.l2">El <b>soma</b> integra todas esas señales y decide si hay que disparar.</li>
+    <li data-i18n="d5.l3">El <b>axón</b> envía la orden al músculo a través de la médula.</li>
+    <li data-i18n="d5.l4">El <b>músculo</b> responde con el movimiento.</li>
+  </ol>
+  <div class="cuina-tematica cuina-danza" style="margin-top:16px;">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d5.cuina">La primera vez que haces un paso, el cerebro va "a tientas". Con la repetición, las sinapsis se refuerzan y el paso se automatiza. Por eso la práctica distribuida (poco cada día) funciona mejor que la masiva (todo de golpe).</span>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · SÍNTESIS -->
+<section class="slide sintesis">
+  <h2 data-i18n="d6.titulo">Síntesis · La neurona</h2>
+  <div class="caja" data-i18n="d6.caja">
+    La neurona es la unidad funcional del sistema nervioso. Recibe información por las dendritas, la integra en el soma y envía la orden por el axón. La mielina acelera la conducción y las terminales transmiten la señal a la siguiente célula.
+  </div>
+</section>
+
+<!-- 7 · IDEA-FUERZA -->
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d7.etq">Idea-fuerza</span>
+  <h2 data-i18n="d7.titulo">Las neuronas no trabajan solas</h2>
+  <div class="cuerpo" data-i18n="d7.cuerpo">Están rodeadas y sostenidas por las <b>células gliales</b>, que cumplen funciones de soporte, nutrición, defensa y aislamiento. Sin ellas, las neuronas no podrían funcionar.</div>
+</section>
+
+<!-- 8 · TABLA -->
+<section class="slide tabla">
+  <h2 data-i18n="d8.titulo">Los 4 tipos de células gliales</h2>
+  <table>
+    <tr>
+      <th data-i18n="d8.th1">Célula</th>
+      <th data-i18n="d8.th2">Función principal</th>
+      <th data-i18n="d8.th3">Localización</th>
+    </tr>
+    <tr><td data-i18n="d8.r1a">Astrocitos</td><td data-i18n="d8.r1b">Nutrición y equilibrio químico</td><td data-i18n="d8.r1c">SNC</td></tr>
+    <tr><td data-i18n="d8.r2a">Microglía</td><td data-i18n="d8.r2b">Defensa inmunitaria</td><td data-i18n="d8.r2c">SNC</td></tr>
+    <tr><td data-i18n="d8.r3a">Oligodendrocitos</td><td data-i18n="d8.r3b">Formación de mielina</td><td data-i18n="d8.r3c">SNC</td></tr>
+    <tr><td data-i18n="d8.r4a">Células de Schwann</td><td data-i18n="d8.r4b">Formación de mielina</td><td data-i18n="d8.r4c">SNP</td></tr>
+  </table>
+  <div class="actividad-sugerida">
+    <div class="icono">👥</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.parejas">En parejas</span>
+      <b data-i18n="d8.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d8.act.texto">Explicad uno al otro qué hace cada célula glial con vuestras propias palabras, sin leer la tabla.</span>
+    </div>
+  </div>
+</section>
+
+<!-- 9 · CUÑA DANZA -->
+<section class="slide cuina">
+  <h2 data-i18n="d9.titulo">Por qué la glía importa al bailarín</h2>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d9.cuina">Cuando entrenas, los astrocitos ajustan el entorno químico de las neuronas para que las sinapsis funcionen mejor. La microglía elimina desechos después de esfuerzos intensos. Y los oligodendrocitos forman más mielina en las vías que más usas: por eso tu movimiento se vuelve más preciso con la práctica.</span>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · IDEA-FUERZA -->
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d10.etq">Idea-fuerza</span>
+  <h2 data-i18n="d10.titulo">La mielina acelera el movimiento</h2>
+  <div class="cuerpo" data-i18n="d10.cuerpo">La mielina es una <b>capa aislante rica en lípidos</b> que envuelve segmentos del axón. Su función es acelerar la transmisión del impulso nervioso y ahorrar energía.</div>
+</section>
+
+<!-- 11 · TABLA COMPARATIVA -->
+<section class="slide tabla">
+  <h2 data-i18n="d11.titulo">Con mielina vs. sin mielina</h2>
+  <table>
+    <tr>
+      <th data-i18n="d11.th1"></th>
+      <th data-i18n="d11.th2">Sin mielina (conducción continua)</th>
+      <th data-i18n="d11.th3">Con mielina (conducción saltatoria)</th>
+    </tr>
+    <tr>
+      <td data-i18n="d11.r1a"><b>Velocidad</b></td>
+      <td data-i18n="d11.r1b">0,5 – 2 m/s</td>
+      <td data-i18n="d11.r1c">70 – 120 m/s</td>
+    </tr>
+    <tr>
+      <td data-i18n="d11.r2a"><b>Gasto energético</b></td>
+      <td data-i18n="d11.r2b">Alto</td>
+      <td data-i18n="d11.r2c">Bajo</td>
+    </tr>
+    <tr>
+      <td data-i18n="d11.r3a"><b>Conducción</b></td>
+      <td data-i18n="d11.r3b">Punto por punto</td>
+      <td data-i18n="d11.r3c">Salta de nodo a nodo</td>
+    </tr>
+  </table>
+</section>
+
+<!-- 12 · ESQUEMA -->
+<section class="slide esquema">
+  <h2 data-i18n="d12.titulo">Conducción continua vs. saltatoria</h2>
+  <div class="illus">
+    <svg viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg">
+      <text x="120" y="25" fill="#ff5c8a" font-size="14" text-anchor="middle" font-weight="700">Sin mielina</text>
+      <line x1="30" y1="70" x2="210" y2="70" stroke="#b8c0e0" stroke-width="6"/>
+      <circle cx="50" cy="70" r="4" fill="#ff5c8a"/>
+      <circle cx="80" cy="70" r="4" fill="#ff5c8a"/>
+      <circle cx="110" cy="70" r="4" fill="#ff5c8a"/>
+      <circle cx="140" cy="70" r="4" fill="#ff5c8a"/>
+      <circle cx="170" cy="70" r="4" fill="#ff5c8a"/>
+      <text x="120" y="105" fill="#b8c0e0" font-size="11" text-anchor="middle">Despolarización punto por punto</text>
+      <text x="380" y="25" fill="#4fd1c5" font-size="14" text-anchor="middle" font-weight="700">Con mielina</text>
+      <line x1="290" y1="70" x2="470" y2="70" stroke="#4fd1c5" stroke-width="6"/>
+      <rect x="310" y="55" width="35" height="30" rx="6" fill="#b8c0e0"/>
+      <rect x="360" y="55" width="35" height="30" rx="6" fill="#b8c0e0"/>
+      <rect x="410" y="55" width="35" height="30" rx="6" fill="#b8c0e0"/>
+      <path d="M 300 120 Q 320 90 345 120 Q 370 90 395 120 Q 420 90 445 120" stroke="#ff5c8a" stroke-width="3" fill="none"/>
+      <text x="380" y="105" fill="#b8c0e0" font-size="11" text-anchor="middle">Salta de nodo a nodo</text>
+      <text x="250" y="200" fill="#f5f7ff" font-size="13" text-anchor="middle" font-weight="700">La mielina hace el impulso 60 veces más rápido</text>
+    </svg>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">🎭</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.prueba">Prueba en clase</span>
+      <b data-i18n="d12.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d12.act.texto">En parejas: uno hace un movimiento muy lento (elevación de brazo) y el otro uno muy rápido (salto). Comentad qué sensaciones notáis en cada caso.</span>
+    </div>
+  </div>
+</section>
+
+<!-- 13 · CUÑA DANZA -->
+<section class="slide cuina">
+  <h2 data-i18n="d13.titulo">La mielina y el grand jeté</h2>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d13.cuina">Un grand jeté requiere que la orden motora llegue al músculo en milisegundos. Sin mielina, el movimiento sería lento e impreciso. La práctica constante refuerza la mielinización de las vías que usas: por eso los bailarines experimentados se mueven con tanta velocidad y precisión.</span>
+    </div>
+  </div>
+</section>
+
+<!-- 14 · IDEA-FUERZA -->
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d14.etq">Idea-fuerza</span>
+  <h2 data-i18n="d14.titulo">Cómo viaja la información</h2>
+  <div class="cuerpo" data-i18n="d14.cuerpo">El impulso nervioso pasa por tres fases: <b>reposo</b>, <b>estímulo</b> y <b>propagación</b>. Si el estímulo supera un umbral, el potencial de acción se dispara y recorre el axón.</div>
+</section>
+
+<!-- 15 · DESARROLLO -->
+<section class="slide desarrollo">
+  <h2 data-i18n="d15.titulo">Fase 1 · Reposo</h2>
+  <p data-i18n="d15.p">En reposo, el interior de la neurona es <b>negativo</b> respecto al exterior (aproximadamente −70 mV). Esta diferencia de carga se llama <b>potencial de membrana en reposo</b>.</p>
+  <p data-i18n="d15.p2">Es como una cuerda tensa esperando a que alguien tire de ella.</p>
+</section>
+
+<!-- 16 · DESARROLLO -->
+<section class="slide desarrollo">
+  <h2 data-i18n="d16.titulo">Fase 2 · Estímulo y umbral</h2>
+  <p data-i18n="d16.p">Cuando llega un estímulo suficientemente fuerte (que supera el <b>umbral</b>), se abren los canales de sodio y el interior se vuelve positivo. Es el <b>potencial de acción</b>.</p>
+  <p data-i18n="d16.p2">Si el estímulo no llega al umbral, no ocurre nada. Es como un interruptor: o se enciende, o no.</p>
+</section>
+
+<!-- 17 · DESARROLLO -->
+<section class="slide desarrollo">
+  <h2 data-i18n="d17.titulo">Fase 3 · Propagación</h2>
+  <p data-i18n="d17.p">El potencial de acción se propaga a lo largo del axón <b>sin perder intensidad</b>. En axones mielinizados, salta de nodo a nodo (conducción saltatoria) y viaja a gran velocidad.</p>
+</section>
+
+<!-- 18 · IDEA-FUERZA -->
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d18.etq">Idea-fuerza</span>
+  <h2 data-i18n="d18.titulo">El principio del todo o nada</h2>
+  <div class="cuerpo" data-i18n="d18.cuerpo">El impulso nervioso <b>se dispara por completo o no se dispara</b>. No hay puntos intermedios: si se supera el umbral, se genera un potencial de acción completo; si no, no hay nada.</div>
+  <div class="actividad-sugerida">
+    <div class="icono">🤔</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.reflexiona">Reflexiona</span>
+      <b data-i18n="d18.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d18.act.texto">Si el impulso es siempre del mismo tamaño, ¿cómo puede un bailarín hacer un movimiento suave y otro explosivo con el mismo músculo?</span>
+    </div>
+  </div>
+</section>
+
+<!-- 19 · IDEA-FUERZA -->
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d19.etq">Idea-fuerza</span>
+  <h2 data-i18n="d19.titulo">La frecuencia de disparo</h2>
+  <div class="cuerpo" data-i18n="d19.cuerpo">Lo que cambia con la intensidad del estímulo <b>no es el tamaño del impulso, sino su frecuencia</b>: más estímulo → más impulsos por segundo. Eso es lo que permite modular la fuerza del movimiento.</div>
+</section>
+
+<!-- 20 · ESQUEMA -->
+<section class="slide esquema">
+  <h2 data-i18n="d20.titulo">Curva del potencial de acción</h2>
+  <div class="illus">
+    <svg viewBox="0 0 500 240" xmlns="http://www.w3.org/2000/svg">
+      <line x1="40" y1="200" x2="460" y2="200" stroke="#b8c0e0" stroke-width="1"/>
+      <line x1="40" y1="200" x2="40" y2="40" stroke="#b8c0e0" stroke-width="1"/>
+      <text x="20" y="60" fill="#b8c0e0" font-size="11">+30</text>
+      <text x="20" y="125" fill="#b8c0e0" font-size="11">0</text>
+      <text x="20" y="205" fill="#b8c0e0" font-size="11">−70</text>
+      <path d="M 40 200 L 130 200 L 160 130 L 190 60 L 220 130 L 260 220 L 320 200 L 460 200" stroke="#ff5c8a" stroke-width="3" fill="none"/>
+      <text x="160" y="30" fill="#ff5c8a" font-size="12" text-anchor="middle" font-weight="700">Potencial de acción</text>
+      <text x="130" y="225" fill="#b8c0e0" font-size="10" text-anchor="middle">Reposo</text>
+      <text x="200" y="225" fill="#b8c0e0" font-size="10" text-anchor="middle">Despolarización</text>
+      <text x="270" y="225" fill="#b8c0e0" font-size="10" text-anchor="middle">Repolarización</text>
+    </svg>
+  </div>
+</section>
+
+<!-- 21 · IDEA-FUERZA -->
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d21.etq">Idea-fuerza</span>
+  <h2 data-i18n="d21.titulo">Cómo se comunican las neuronas</h2>
+  <div class="cuerpo" data-i18n="d21.cuerpo">Las neuronas se comunican en la <b>sinapsis</b>: un punto de contacto donde una neurona libera sustancias químicas (neurotransmisores) que actúan sobre la siguiente.</div>
+</section>
+
+<!-- 22 · ESQUEMA -->
+<section class="slide esquema">
+  <h2 data-i18n="d22.titulo">La sinapsis paso a paso</h2>
+  <div class="illus">
+    <svg viewBox="0 0 500 240" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="120" r="45" fill="#2d6cdf"/>
+      <text x="100" y="125" fill="#fff" font-size="12" text-anchor="middle" font-weight="700">Presináptica</text>
+      <circle cx="400" cy="120" r="45" fill="#4fd1c5"/>
+      <text x="400" y="125" fill="#0f1226" font-size="12" text-anchor="middle" font-weight="700">Postsináptica</text>
+      <rect x="180" y="90" width="140" height="60" fill="none" stroke="#b8c0e0" stroke-dasharray="5"/>
+      <text x="250" y="125" fill="#b8c0e0" font-size="11" text-anchor="middle">Hendidura</text>
+      <circle cx="200" cy="70" r="5" fill="#ff5c8a"/>
+      <circle cx="220" cy="70" r="5" fill="#ff5c8a"/>
+      <circle cx="240" cy="70" r="5" fill="#ff5c8a"/>
+      <circle cx="260" cy="70" r="5" fill="#ff5c8a"/>
+      <text x="250" y="200" fill="#f5f7ff" font-size="12" text-anchor="middle">1. Impulso → 2. Neurotransmisores → 3. Receptores</text>
+    </svg>
+  </div>
+</section>
+
+<!-- 23 · TABLA -->
+<section class="slide tabla">
+  <h2 data-i18n="d23.titulo">PEPS vs. PIPS</h2>
+  <table>
+    <tr>
+      <th data-i18n="d23.th1"></th>
+      <th data-i18n="d23.th2">PEPS (excitatorio)</th>
+      <th data-i18n="d23.th3">PIPS (inhibitorio)</th>
+    </tr>
+    <tr>
+      <td data-i18n="d23.r1a"><b>Ion principal</b></td>
+      <td data-i18n="d23.r1b">Entra Na⁺</td>
+      <td data-i18n="d23.r1c">Entra Cl⁻ o sale K⁺</td>
+    </tr>
+    <tr>
+      <td data-i18n="d23.r2a"><b>Efecto</b></td>
+      <td data-i18n="d23.r2b">Favorece la activación</td>
+      <td data-i18n="d23.r2c">Dificulta la activación</td>
+    </tr>
+    <tr>
+      <td data-i18n="d23.r3a"><b>En danza</b></td>
+      <td data-i18n="d23.r3b">Iniciar el movimiento</td>
+      <td data-i18n="d23.r3c">Controlar el músculo que NO debe moverse</td>
+    </tr>
+  </table>
+  <div class="actividad-sugerida">
+    <div class="icono">👥</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.grupos">En grupos 2-3</span>
+      <b data-i18n="d23.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d23.act.texto">Pensad 3 situaciones dancísticas donde la inhibición sea tan importante como la excitación. Ejemplo: controlar el brazo que no se mueve en un giro.</span>
+    </div>
+  </div>
+</section>
+
+<!-- 24 · IDEA-FUERZA -->
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d24.etq">Idea-fuerza</span>
+  <h2 data-i18n="d24.titulo">Los canales iónicos</h2>
+  <div class="cuerpo" data-i18n="d24.cuerpo">La membrana de la neurona no es una pared sólida: tiene <b>puertas</b> (canales iónicos) que se abren y se cierran. Cuando se abren, los iones pueden entrar o salir, y eso cambia el voltaje de la neurona.</div>
+</section>
+
+<!-- 25 · IDEA-FUERZA -->
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d25.etq">Idea-fuerza</span>
+  <h2 data-i18n="d25.titulo">La bomba Na⁺/K⁺</h2>
+  <div class="cuerpo" data-i18n="d25.cuerpo">Para que las puertas funcionen, dentro y fuera de la célula tiene que haber concentraciones distintas de iones. La neurona las mantiene con la <b>bomba Na⁺/K⁺</b>, que <b>gasta energía (ATP)</b> para sacar Na⁺ y meter K⁺.</div>
+  <div class="cuina-tematica cuina-nutricion">
+    <div class="icono">🥗</div>
+    <div class="texto">
+      <b data-i18n="c.nutricion">Nutrición</b>
+      <span data-i18n="d25.cuina">La bomba Na⁺/K⁺ necesita glucosa y oxígeno. Si entrenas en ayunas o deshidratado, funciona peor → peor concentración, coordinación y estado de ánimo. Desayuna bien antes de bailar.</span>
+    </div>
+  </div>
+</section>
+
+<!-- 26 · IDEA-FUERZA -->
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d26.etq">Idea-fuerza</span>
+  <h2 data-i18n="d26.titulo">Período refractario</h2>
+  <div class="cuerpo" data-i18n="d26.cuerpo">Después de disparar, la neurona necesita un momento para recargarse. Durante ese <b>período refractario</b> no puede disparar de nuevo (absoluto) o necesita un estímulo más fuerte (relativo). Eso limita la frecuencia máxima de disparo.</div>
+  <div class="actividad-sugerida">
+    <div class="icono">🤔</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.reflexiona">Reflexiona</span>
+      <b data-i18n="d26.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d26.act.texto">¿Por qué crees que conviene no saturar de información al aprender un paso nuevo?</span>
+    </div>
+  </div>
+</section>
+
+<!-- 27 · IDEA-FUERZA -->
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d27.etq">Idea-fuerza</span>
+  <h2 data-i18n="d27.titulo">Sumación</h2>
+  <div class="cuerpo" data-i18n="d27.cuerpo">El soma recibe miles de señales a la vez y las <b>suma</b>. Si la suma supera el umbral, la neurona dispara. Si no, no dispara. Hay dos tipos: <b>espacial</b> (señales de distintos lugares) y <b>temporal</b> (señales seguidas en el tiempo).</div>
+</section>
+
+<!-- 28 · TABLA -->
+<section class="slide tabla">
+  <h2 data-i18n="d28.titulo">Los neuromoduladores</h2>
+  <table>
+    <tr>
+      <th data-i18n="d28.th1">Neuromodulador</th>
+      <th data-i18n="d28.th2">Función</th>
+      <th data-i18n="d28.th3">En danza</th>
+    </tr>
+    <tr><td data-i18n="d28.r1a">Dopamina</td><td data-i18n="d28.r1b">Motivación</td><td data-i18n="d28.r1c">Ganas de bailar</td></tr>
+    <tr><td data-i18n="d28.r2a">Serotonina</td><td data-i18n="d28.r2b">Estado de ánimo</td><td data-i18n="d28.r2c">Buen humor</td></tr>
+    <tr><td data-i18n="d28.r3a">Noradrenalina</td><td data-i18n="d28.r3b">Alerta y atención</td><td data-i18n="d28.r3c">Concentración antes de actuar</td></tr>
+    <tr><td data-i18n="d28.r4a">Acetilcolina</td><td data-i18n="d28.r4b">Memoria y contracción</td><td data-i18n="d28.r4c">Aprender pasos nuevos</td></tr>
+    <tr><td data-i18n="d28.r5a">Endorfinas</td><td data-i18n="d28.r5b">Bienestar</td><td data-i18n="d28.r5c">Sensación tras bailar</td></tr>
+    <tr><td data-i18n="d28.r6a">Cortisol</td><td data-i18n="d28.r6b">Respuesta al estrés</td><td data-i18n="d28.r6c">Nervios antes de actuar</td></tr>
+  </table>
+  <div class="cuina-tematica cuina-salud">
+    <div class="icono">🧠</div>
+    <div class="texto">
+      <b data-i18n="c.salud">Salud mental</b>
+      <span data-i18n="d28.cuina">La dopamina y las endorfinas que se liberan al bailar explican la sensación de bienestar posterior. La noradrenalina te mantiene alerta antes de actuar; si se desborda, el cortisol puede bloquearte.</span>
+    </div>
+  </div>
+</section>
+
+<!-- 29 · IDEA-FUERZA -->
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d29.etq">Idea-fuerza</span>
+  <h2 data-i18n="d29.titulo">La plasticidad sináptica</h2>
+  <div class="cuerpo" data-i18n="d29.cuerpo">Las sinapsis no son fijas: se <b>refuerzan</b> (LTP) o se <b>debilitan</b> (LTD) con la práctica. Esto es la base fisiológica del aprendizaje motor.</div>
+  <div class="cuina-tematica cuina-descanso">
+    <div class="icono">😴</div>
+    <div class="texto">
+      <b data-i18n="c.descanso">Descanso</b>
+      <span data-i18n="d29.cuina">La consolidación de la memoria motora ocurre durante el sueño. Practicar y dormir bien al día siguiente es más eficaz que practicar muchas horas seguidas sin descansar.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.prueba">Prueba en clase</span>
+      <b data-i18n="d29.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d29.act.texto">Repetid un paso corto 10 veces seguidas. ¿En qué repetición habéis notado que se automatizaba? ¿Qué ha cambiado?</span>
+    </div>
+  </div>
+</section>
+
+<!-- 30 · IDEA-FUERZA -->
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d30.etq">Idea-fuerza</span>
+  <h2 data-i18n="d30.titulo">¿Por qué unos axones van más rápido?</h2>
+  <div class="cuerpo" data-i18n="d30.cuerpo">La velocidad de conducción depende de 4 factores: <b>diámetro</b> del axón, cantidad de <b>mielina</b>, <b>temperatura</b> y <b>salud</b> del axón.</div>
+  <div class="cuina-tematica cuina-calentamiento">
+    <div class="icono">🔥</div>
+    <div class="texto">
+      <b data-i18n="c.calentamiento">Calentamiento</b>
+      <span data-i18n="d30.cuina">El calentamiento sube ligeramente la temperatura corporal y mejora la velocidad de conducción nerviosa. Por eso los movimientos se sienten más fáciles después de 10-15 minutos de actividad suave y progresiva.</span>
+    </div>
+  </div>
+</section>
+
+<!-- 31 · IDEA-FUERZA -->
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d31.etq">Idea-fuerza</span>
+  <h2 data-i18n="d31.titulo">Cómo entrenar tu sistema nervioso</h2>
+  <div class="cuerpo" data-i18n="d31.cuerpo">Todo lo que has visto se traduce en <b>3 principios prácticos</b> para tu día a día como bailarín/a.</div>
+  <div class="cuina-tematica cuina-nutricion" style="margin-top:14px;">
+    <div class="icono">🥗</div>
+    <div class="texto">
+      <b data-i18n="c.nutricion">1 · Come bien antes de entrenar</b>
+      <span data-i18n="d31.c1">La bomba Na⁺/K⁺ y todo el sistema nervioso necesitan glucosa y oxígeno. Evita entrenar en ayunas.</span>
+    </div>
+  </div>
+  <div class="cuina-tematica cuina-calentamiento">
+    <div class="icono">🔥</div>
+    <div class="texto">
+      <b data-i18n="c.calentamiento">2 · Calienta 10-15 minutos</b>
+      <span data-i18n="d31.c2">Sube la temperatura, mejora la conducción nerviosa y activa la atención. Los movimientos serán más precisos.</span>
+    </div>
+  </div>
+  <div class="cuina-tematica cuina-descanso">
+    <div class="icono">😴</div>
+    <div class="texto">
+      <b data-i18n="c.descanso">3 · Duerme 7-9 horas</b>
+      <span data-i18n="d31.c3">La plasticidad sináptica se consolida durante el sueño. Sin descanso, lo aprendido no se fija.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">👥</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.grupos">En grupos 2-3</span>
+      <b data-i18n="d31.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d31.act.texto">Diseñad una rutina de 5 minutos que aplique estos 3 principios antes de un ensayo. Compartidla con el grupo.</span>
+    </div>
+  </div>
+</section>
+
+<!-- 32 · SÍNTESIS -->
+<section class="slide sintesis">
+  <h2 data-i18n="d32.titulo">Lo esencial del Bloque 1</h2>
+  <div class="caja" data-i18n="d32.caja">
+    <b>La neurona</b> recibe, integra y transmite información. <b>La mielina</b> acelera el impulso. <b>El potencial de acción</b> funciona con el principio del todo o nada. <b>La sinapsis</b> permite la comunicación entre neuronas, y <b>la plasticidad sináptica</b> explica por qué el cerebro aprende con la práctica. Comer bien, calentar y dormir son las claves para que tu sistema nervioso funcione a pleno rendimiento.
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">🤔</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.reflexiona">Reflexiona</span>
+      <b data-i18n="d32.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d32.act.texto">¿Qué cambiarás en tu entrenamiento a partir de ahora, después de conocer cómo funciona tu sistema nervioso?</span>
+    </div>
+  </div>
+</section>
+</main>
+
+<div class="counter" id="counter">Diapositiva 1 / 30</div>
+<div class="nav">
+  <button onclick="prev()" id="navPrev">← Anterior</button>
+  <button onclick="next()" id="navNext">Siguiente →</button>
+</div>
+
+<script>
+const I18N = {
+  es:{
+    headerTitulo:"Bloque 1 · Fisiología Neuronal y Señalización",
+    headerSub:"Fisiología · 1º Danza · Curso 2026-2027 · Cèlia Painous",
+    btnVolver:"← Índice", navPrev:"← Anterior", navNext:"Siguiente →", btnModo:"☀️ Modo claro",
+    "c.danza":"Conexión danza", "c.nutricion":"Nutrición", "c.calentamiento":"Calentamiento", "c.descanso":"Descanso", "c.salud":"Salud mental",
+    "act.reflexiona":"Reflexiona", "act.prueba":"Prueba en clase", "act.parejas":"En parejas", "act.grupos":"En grupos 2-3",
+    "p.titulo":"Bloque 1 · Fisiología Neuronal y Señalización",
+    "p.sub":"Del impulso nervioso al movimiento dancístico",
+    "p.meta":"Curso 2026-2027 · Cèlia Painous · 32 diapositivas",
+    "d2.etq":"Idea-fuerza","d2.titulo":"¿Qué es una neurona?","d2.cuerpo":"Una neurona es una <b>célula especializada en recibir, procesar e integrar información</b> mediante señales eléctricas y químicas. Es la unidad básica del sistema nervioso.","d2.act.titulo":"Actividad sugerida","d2.act.texto":"¿Qué crees que pasa en tu cerebro cuando aprendes un paso nuevo? Comparte tu idea con la persona de al lado.",
+    "d3.titulo":"La neurona por dentro","d3.l1":"<b>Soma</b>: contiene el núcleo y los orgánulos. Integra las señales recibidas.","d3.l2":"<b>Dendritas</b>: reciben señales de otras neuronas o de receptores sensoriales.","d3.l3":"<b>Axón</b>: conduce el potencial de acción desde el soma hacia otras células.",
+    "d4.titulo":"La mielina y las terminales","d4.l1":"<b>Vaina de mielina</b>: recubre el axón y aumenta la velocidad de conducción.","d4.l2":"<b>Terminales axónicas</b>: transmiten la información mediante la sinapsis.","d4.cuina":"La mielina está formada por lípidos. Una dieta rica en grasas saludables (frutos secos, pescado azul, aceite de oliva) ayuda a mantenerla en buen estado.","d4.act.titulo":"Actividad sugerida","d4.act.texto":"Con los ojos cerrados, toca tu antebrazo con un dedo y nota la información que llega. ¿Cómo sabes dónde estás tocando?",
+    "d5.titulo":"Cómo aprende un paso tu neurona","d5.cuerpo":"Cuando aprendes un paso nuevo, ocurre esta secuencia en milisegundos:","d5.l1":"Las <b>dendritas</b> reciben la información (lo que ves, oyes y sientes).","d5.l2":"El <b>soma</b> integra todas esas señales y decide si hay que disparar.","d5.l3":"El <b>axón</b> envía la orden al músculo a través de la médula.","d5.l4":"El <b>músculo</b> responde con el movimiento.","d5.cuina":"La primera vez que haces un paso, el cerebro va 'a tientas'. Con la repetición, las sinapsis se refuerzan y el paso se automatiza. Por eso la práctica distribuida (poco cada día) funciona mejor que la masiva (todo de golpe).",
+    "d6.titulo":"Síntesis · La neurona","d6.caja":"La neurona es la unidad funcional del sistema nervioso. Recibe información por las dendritas, la integra en el soma y envía la orden por el axón. La mielina acelera la conducción y las terminales transmiten la señal a la siguiente célula.",
+    "d7.etq":"Idea-fuerza","d7.titulo":"Las neuronas no trabajan solas","d7.cuerpo":"Están rodeadas y sostenidas por las <b>células gliales</b>, que cumplen funciones de soporte, nutrición, defensa y aislamiento. Sin ellas, las neuronas no podrían funcionar.",
+    "d8.titulo":"Los 4 tipos de células gliales","d8.th1":"Célula","d8.th2":"Función principal","d8.th3":"Localización","d8.r1a":"Astrocitos","d8.r1b":"Nutrición y equilibrio químico","d8.r1c":"SNC","d8.r2a":"Microglía","d8.r2b":"Defensa inmunitaria","d8.r2c":"SNC","d8.r3a":"Oligodendrocitos","d8.r3b":"Formación de mielina","d8.r3c":"SNC","d8.r4a":"Células de Schwann","d8.r4b":"Formación de mielina","d8.r4c":"SNP","d8.act.titulo":"Actividad sugerida","d8.act.texto":"Explicad uno al otro qué hace cada célula glial con vuestras propias palabras, sin leer la tabla.",
+    "d9.titulo":"Por qué la glía importa al bailarín","d9.cuina":"Cuando entrenas, los astrocitos ajustan el entorno químico de las neuronas para que las sinapsis funcionen mejor. La microglía elimina desechos después de esfuerzos intensos. Y los oligodendrocitos forman más mielina en las vías que más usas: por eso tu movimiento se vuelve más preciso con la práctica.",
+    "d10.etq":"Idea-fuerza","d10.titulo":"La mielina acelera el movimiento","d10.cuerpo":"La mielina es una <b>capa aislante rica en lípidos</b> que envuelve segmentos del axón. Su función es acelerar la transmisión del impulso nervioso y ahorrar energía.",
+    "d11.titulo":"Con mielina vs. sin mielina","d11.th1":"","d11.th2":"Sin mielina (conducción continua)","d11.th3":"Con mielina (conducción saltatoria)","d11.r1a":"<b>Velocidad</b>","d11.r1b":"0,5 – 2 m/s","d11.r1c":"70 – 120 m/s","d11.r2a":"<b>Gasto energético</b>","d11.r2b":"Alto","d11.r2c":"Bajo","d11.r3a":"<b>Conducción</b>","d11.r3b":"Punto por punto","d11.r3c":"Salta de nodo a nodo",
+    "d12.titulo":"Conducción continua vs. saltatoria","d12.act.titulo":"Actividad sugerida","d12.act.texto":"En parejas: uno hace un movimiento muy lento (elevación de brazo) y el otro uno muy rápido (salto). Comentad qué sensaciones notáis en cada caso.",
+    "d13.titulo":"La mielina y el grand jeté","d13.cuina":"Un grand jeté requiere que la orden motora llegue al músculo en milisegundos. Sin mielina, el movimiento sería lento e impreciso. La práctica constante refuerza la mielinización de las vías que usas: por eso los bailarines experimentados se mueven con tanta velocidad y precisión.",
+    "d14.etq":"Idea-fuerza","d14.titulo":"Cómo viaja la información","d14.cuerpo":"El impulso nervioso pasa por tres fases: <b>reposo</b>, <b>estímulo</b> y <b>propagación</b>. Si el estímulo supera un umbral, el potencial de acción se dispara y recorre el axón.",
+    "d15.titulo":"Fase 1 · Reposo","d15.p":"En reposo, el interior de la neurona es <b>negativo</b> respecto al exterior (aproximadamente −70 mV). Esta diferencia de carga se llama <b>potencial de membrana en reposo</b>.","d15.p2":"Es como una cuerda tensa esperando a que alguien tire de ella.",
+    "d16.titulo":"Fase 2 · Estímulo y umbral","d16.p":"Cuando llega un estímulo suficientemente fuerte (que supera el <b>umbral</b>), se abren los canales de sodio y el interior se vuelve positivo. Es el <b>potencial de acción</b>.","d16.p2":"Si el estímulo no llega al umbral, no ocurre nada. Es como un interruptor: o se enciende, o no.",
+    "d17.titulo":"Fase 3 · Propagación","d17.p":"El potencial de acción se propaga a lo largo del axón <b>sin perder intensidad</b>. En axones mielinizados, salta de nodo a nodo (conducción saltatoria) y viaja a gran velocidad.",
+    "d18.etq":"Idea-fuerza","d18.titulo":"El principio del todo o nada","d18.cuerpo":"El impulso nervioso <b>se dispara por completo o no se dispara</b>. No hay puntos intermedios: si se supera el umbral, se genera un potencial de acción completo; si no, no hay nada.","d18.act.titulo":"Actividad sugerida","d18.act.texto":"Si el impulso es siempre del mismo tamaño, ¿cómo puede un bailarín hacer un movimiento suave y otro explosivo con el mismo músculo?",
+    "d19.etq":"Idea-fuerza","d19.titulo":"La frecuencia de disparo","d19.cuerpo":"Lo que cambia con la intensidad del estímulo <b>no es el tamaño del impulso, sino su frecuencia</b>: más estímulo → más impulsos por segundo. Eso es lo que permite modular la fuerza del movimiento.",
+    "d20.titulo":"Curva del potencial de acción",
+    "d21.etq":"Idea-fuerza","d21.titulo":"Cómo se comunican las neuronas","d21.cuerpo":"Las neuronas se comunican en la <b>sinapsis</b>: un punto de contacto donde una neurona libera sustancias químicas (neurotransmisores) que actúan sobre la siguiente.",
+    "d22.titulo":"La sinapsis paso a paso",
+    "d23.titulo":"PEPS vs. PIPS","d23.th1":"","d23.th2":"PEPS (excitatorio)","d23.th3":"PIPS (inhibitorio)","d23.r1a":"<b>Ion principal</b>","d23.r1b":"Entra Na⁺","d23.r1c":"Entra Cl⁻ o sale K⁺","d23.r2a":"<b>Efecto</b>","d23.r2b":"Favorece la activación","d23.r2c":"Dificulta la activación","d23.r3a":"<b>En danza</b>","d23.r3b":"Iniciar el movimiento","d23.r3c":"Controlar el músculo que NO debe moverse","d23.act.titulo":"Actividad sugerida","d23.act.texto":"Pensad 3 situaciones dancísticas donde la inhibición sea tan importante como la excitación. Ejemplo: controlar el brazo que no se mueve en un giro.",
+    "d24.etq":"Idea-fuerza","d24.titulo":"Los canales iónicos","d24.cuerpo":"La membrana de la neurona no es una pared sólida: tiene <b>puertas</b> (canales iónicos) que se abren y se cierran. Cuando se abren, los iones pueden entrar o salir, y eso cambia el voltaje de la neurona.",
+    "d25.etq":"Idea-fuerza","d25.titulo":"La bomba Na⁺/K⁺","d25.cuerpo":"Para que las puertas funcionen, dentro y fuera de la célula tiene que haber concentraciones distintas de iones. La neurona las mantiene con la <b>bomba Na⁺/K⁺</b>, que <b>gasta energía (ATP)</b> para sacar Na⁺ y meter K⁺.","d25.cuina":"La bomba Na⁺/K⁺ necesita glucosa y oxígeno. Si entrenas en ayunas o deshidratado, funciona peor → peor concentración, coordinación y estado de ánimo. Desayuna bien antes de bailar.",
+    "d26.etq":"Idea-fuerza","d26.titulo":"Período refractario","d26.cuerpo":"Después de disparar, la neurona necesita un momento para recargarse. Durante ese <b>período refractario</b> no puede disparar de nuevo (absoluto) o necesita un estímulo más fuerte (relativo). Eso limita la frecuencia máxima de disparo.","d26.act.titulo":"Actividad sugerida","d26.act.texto":"¿Por qué crees que conviene no saturar de información al aprender un paso nuevo?",
+    "d27.etq":"Idea-fuerza","d27.titulo":"Sumación","d27.cuerpo":"El soma recibe miles de señales a la vez y las <b>suma</b>. Si la suma supera el umbral, la neurona dispara. Si no, no dispara. Hay dos tipos: <b>espacial</b> (señales de distintos lugares) y <b>temporal</b> (señales seguidas en el tiempo).",
+    "d28.titulo":"Los neuromoduladores","d28.th1":"Neuromodulador","d28.th2":"Función","d28.th3":"En danza","d28.r1a":"Dopamina","d28.r1b":"Motivación","d28.r1c":"Ganas de bailar","d28.r2a":"Serotonina","d28.r2b":"Estado de ánimo","d28.r2c":"Buen humor","d28.r3a":"Noradrenalina","d28.r3b":"Alerta y atención","d28.r3c":"Concentración antes de actuar","d28.r4a":"Acetilcolina","d28.r4b":"Memoria y contracción","d28.r4c":"Aprender pasos nuevos","d28.r5a":"Endorfinas","d28.r5b":"Bienestar","d28.r5c":"Sensación tras bailar","d28.r6a":"Cortisol","d28.r6b":"Respuesta al estrés","d28.r6c":"Nervios antes de actuar","d28.cuina":"La dopamina y las endorfinas que se liberan al bailar explican la sensación de bienestar posterior. La noradrenalina te mantiene alerta antes de actuar; si se desborda, el cortisol puede bloquearte.",
+    "d29.etq":"Idea-fuerza","d29.titulo":"La plasticidad sináptica","d29.cuerpo":"Las sinapsis no son fijas: se <b>refuerzan</b> (LTP) o se <b>debilitan</b> (LTD) con la práctica. Esto es la base fisiológica del aprendizaje motor.","d29.cuina":"La consolidación de la memoria motora ocurre durante el sueño. Practicar y dormir bien al día siguiente es más eficaz que practicar muchas horas seguidas sin descansar.","d29.act.titulo":"Actividad sugerida","d29.act.texto":"Repetid un paso corto 10 veces seguidas. ¿En qué repetición habéis notado que se automatizaba? ¿Qué ha cambiado?",
+    "d30.etq":"Idea-fuerza","d30.titulo":"¿Por qué unos axones van más rápido?","d30.cuerpo":"La velocidad de conducción depende de 4 factores: <b>diámetro</b> del axón, cantidad de <b>mielina</b>, <b>temperatura</b> y <b>salud</b> del axón.","d30.cuina":"El calentamiento sube ligeramente la temperatura corporal y mejora la velocidad de conducción nerviosa. Por eso los movimientos se sienten más fáciles después de 10-15 minutos de actividad suave y progresiva.",
+    "d31.etq":"Idea-fuerza","d31.titulo":"Cómo entrenar tu sistema nervioso","d31.cuerpo":"Todo lo que has visto se traduce en <b>3 principios prácticos</b> para tu día a día como bailarín/a.","d31.c1":"La bomba Na⁺/K⁺ y todo el sistema nervioso necesitan glucosa y oxígeno. Evita entrenar en ayunas.","d31.c2":"Sube la temperatura, mejora la conducción nerviosa y activa la atención. Los movimientos serán más precisos.","d31.c3":"La plasticidad sináptica se consolida durante el sueño. Sin descanso, lo aprendido no se fija.","d31.act.titulo":"Actividad sugerida","d31.act.texto":"Diseñad una rutina de 5 minutos que aplique estos 3 principios antes de un ensayo. Compartidla con el grupo.",
+    "d32.titulo":"Lo esencial del Bloque 1","d32.caja":"<b>La neurona</b> recibe, integra y transmite información. <b>La mielina</b> acelera el impulso. <b>El potencial de acción</b> funciona con el principio del todo o nada. <b>La sinapsis</b> permite la comunicación entre neuronas, y <b>la plasticidad sináptica</b> explica por qué el cerebro aprende con la práctica. Comer bien, calentar y dormir son las claves para que tu sistema nervioso funcione a pleno rendimiento.","d32.act.titulo":"Actividad sugerida","d32.act.texto":"¿Qué cambiarás en tu entrenamiento a partir de ahora, después de conocer cómo funciona tu sistema nervioso?"
+  },
+  ca:{
+    headerTitulo:"Bloc 1 · Fisiologia Neuronal i Senyalització",
+    headerSub:"Fisiologia · 1r Dansa · Curs 2026-2027 · Cèlia Painous",
+    btnVolver:"← Índex", navPrev:"← Anterior", navNext:"Següent →", btnModo:"☀️ Mode clar",
+    "c.danza":"Connexió dansa","c.nutricion":"Nutrició","c.calentamiento":"Calfament","c.descanso":"Descans","c.salud":"Salut mental",
+    "act.reflexiona":"Reflexiona","act.prueba":"Prova a classe","act.parejas":"En parelles","act.grupos":"En grups 2-3",
+    "p.titulo":"Bloc 1 · Fisiologia Neuronal i Senyalització","p.sub":"De l'impuls nerviós al moviment dansístic","p.meta":"Curs 2026-2027 · Cèlia Painous · 32 diapositives",
+    "d2.etq":"Idea-força","d2.titulo":"Què és una neurona?","d2.cuerpo":"Una neurona és una <b>cèl·lula especialitzada a rebre, processar i integrar informació</b> mitjançant senyals elèctrics i químics. És la unitat bàsica del sistema nerviós.","d2.act.titulo":"Activitat suggerida","d2.act.texto":"Què creus que passa al teu cervell quan aprens un pas nou? Comparteix la teva idea amb la persona del costat.",
+    "d3.titulo":"La neurona per dins","d3.l1":"<b>Soma</b>: conté el nucli i els orgànuls.","d3.l2":"<b>Dendrites</b>: reben senyals.","d3.l3":"<b>Axó</b>: condueix el potencial d'acció.",
+    "d4.titulo":"La mielina i els terminals","d4.l1":"<b>Beina de mielina</b>: embolcalla l'axó.","d4.l2":"<b>Terminals axònics</b>: transmeten la informació.","d4.cuina":"La mielina està formada per lípids. Una dieta rica en greixos saludables ajuda a mantenir-la.","d4.act.titulo":"Activitat suggerida","d4.act.texto":"Amb els ulls tancats, toca el teu avantbraç amb un dit.",
+    "d5.titulo":"Com aprèn un pas la teva neurona","d5.cuerpo":"Quan aprens un pas nou, passa aquesta seqüència en mil·lisegons:","d5.l1":"Les <b>dendrites</b> reben la informació.","d5.l2":"El <b>soma</b> integra els senyals.","d5.l3":"L'<b>axó</b> envia l'ordre al múscul.","d5.l4":"El <b>múscul</b> respon amb el moviment.","d5.cuina":"La primera vegada que fas un pas, el cervell va a les palpentes. Amb la repetició, el pas s'automatitza.",
+    "d6.titulo":"Síntesi · La neurona","d6.caja":"La neurona és la unitat funcional del sistema nerviós. Rep informació per les dendrites, la integra al soma i envia l'ordre per l'axó.",
+    "d7.etq":"Idea-força","d7.titulo":"Les neurones no treballen soles","d7.cuerpo":"Estan envoltades per les <b>cèl·lules glials</b>, que fan funcions de suport, nutrició, defensa i aïllament.",
+    "d8.titulo":"Els 4 tipus de cèl·lules glials","d8.th1":"Cèl·lula","d8.th2":"Funció","d8.th3":"Localització","d8.r1a":"Astrocits","d8.r1b":"Nutrició","d8.r1c":"SNC","d8.r2a":"Microglia","d8.r2b":"Defensa","d8.r2c":"SNC","d8.r3a":"Oligodendrocits","d8.r3b":"Mielina","d8.r3c":"SNC","d8.r4a":"Cèl·lules de Schwann","d8.r4b":"Mielina","d8.r4c":"SNP","d8.act.titulo":"Activitat suggerida","d8.act.texto":"Expliqueu-vos l'un a l'altre què fa cada cèl·lula glial.",
+    "d9.titulo":"Per què la glia importa al ballarí","d9.cuina":"Quan entrenes, els astrocits ajusten l'entorn químic. Els oligodendrocits formen més mielina a les vies que més uses.",
+    "d10.etq":"Idea-força","d10.titulo":"La mielina accelera el moviment","d10.cuerpo":"La mielina és una <b>capa aïllant rica en lípids</b> que embolcalla segments de l'axó.",
+    "d11.titulo":"Amb mielina vs. sense mielina","d11.th1":"","d11.th2":"Sense mielina","d11.th3":"Amb mielina","d11.r1a":"<b>Velocitat</b>","d11.r1b":"0,5 – 2 m/s","d11.r1c":"70 – 120 m/s","d11.r2a":"<b>Despesa</b>","d11.r2b":"Alta","d11.r2c":"Baixa","d11.r3a":"<b>Conducció</b>","d11.r3b":"Punt per punt","d11.r3c":"Salt de node a node",
+    "d12.titulo":"Conducció contínua vs. saltatòria","d12.act.titulo":"Activitat suggerida","d12.act.texto":"En parelles: un fa un moviment lent i l'altre ràpid.",
+    "d13.titulo":"La mielina i el grand jeté","d13.cuina":"Un grand jeté requereix que l'ordre arribi al múscul en mil·lisegons.",
+    "d14.etq":"Idea-força","d14.titulo":"Com viatja la informació","d14.cuerpo":"L'impuls nerviós passa per tres fases: <b>repòs</b>, <b>estímul</b> i <b>propagació</b>.",
+    "d15.titulo":"Fase 1 · Repòs","d15.p":"En repòs, l'interior és <b>negatiu</b>.","d15.p2":"És com una corda tensa.",
+    "d16.titulo":"Fase 2 · Estímul i llindar","d16.p":"Si supera el <b>llindar</b>, es genera el potencial.","d16.p2":"Si no, no passa res.",
+    "d17.titulo":"Fase 3 · Propagació","d17.p":"El potencial es propaga <b>sense perdre intensitat</b>.",
+    "d18.etq":"Idea-força","d18.titulo":"El tot o res","d18.cuerpo":"L'impuls <b>es dispara complet o no es dispara</b>.","d18.act.titulo":"Activitat suggerida","d18.act.texto":"Com pot un ballarí fer un moviment suau i un d'explosiu amb el mateix múscul?",
+    "d19.etq":"Idea-força","d19.titulo":"Freqüència de disparament","d19.cuerpo":"El que canvia és la <b>freqüència</b>.",
+    "d20.titulo":"Corba del potencial",
+    "d21.etq":"Idea-força","d21.titulo":"Com es comuniquen","d21.cuerpo":"A la <b>sinapsi</b>, una neurona allibera neurotransmissors.",
+    "d22.titulo":"La sinapsi",
+    "d23.titulo":"PEPS vs. PIPS","d23.th1":"","d23.th2":"PEPS","d23.th3":"PIPS","d23.r1a":"<b>Ió</b>","d23.r1b":"Na⁺","d23.r1c":"Cl⁻","d23.r2a":"<b>Efecte</b>","d23.r2b":"Activa","d23.r2c":"Inhibeix","d23.r3a":"<b>En dansa</b>","d23.r3b":"Iniciar","d23.r3c":"Controlar","d23.act.titulo":"Activitat suggerida","d23.act.texto":"Penseu 3 situacions on la inhibició sigui important.",
+    "d24.etq":"Idea-força","d24.titulo":"Canals iònics","d24.cuerpo":"La membrana té <b>portes</b>.",
+    "d25.etq":"Idea-força","d25.titulo":"Bomba Na⁺/K⁺","d25.cuerpo":"La neurona gasta <b>ATP</b> per mantenir les concentracions.","d25.cuina":"Necessita glucosa i oxigen. No entrenis en dejú.",
+    "d26.etq":"Idea-força","d26.titulo":"Període refractari","d26.cuerpo":"Després de disparar, cal recarregar-se.","d26.act.titulo":"Activitat suggerida","d26.act.texto":"Per què convé no saturar?",
+    "d27.etq":"Idea-força","d27.titulo":"Sumació","d27.cuerpo":"El soma <b>suma</b> els senyals.",
+    "d28.titulo":"Neuromoduladors","d28.th1":"Nom","d28.th2":"Funció","d28.th3":"En dansa","d28.r1a":"Dopamina","d28.r1b":"Motivació","d28.r1c":"Ganes","d28.r2a":"Serotonina","d28.r2b":"Ànim","d28.r2c":"Humor","d28.r3a":"Noradrenalina","d28.r3b":"Alerta","d28.r3c":"Concentració","d28.r4a":"Acetilcolina","d28.r4b":"Memòria","d28.r4c":"Aprendre","d28.r5a":"Endorfines","d28.r5b":"Benestar","d28.r5c":"Sensació","d28.r6a":"Cortisol","d28.r6b":"Estrès","d28.r6c":"Nervis","d28.cuina":"Dopamina i endorfines expliquen el benestar posterior.",
+    "d29.etq":"Idea-força","d29.titulo":"Plasticitat sinàptica","d29.cuerpo":"Les sinapsis es <b>reforcen</b> o <b>debiliten</b>.","d29.cuina":"La consolidació ocorre durant la son.","d29.act.titulo":"Activitat suggerida","d29.act.texto":"Repetiu un pas 10 vegades.",
+    "d30.etq":"Idea-força","d30.titulo":"Velocitat de conducció","d30.cuerpo":"Depèn del <b>diàmetre</b>, <b>mielina</b>, <b>temperatura</b> i <b>salut</b>.","d30.cuina":"El calfament millora la conducció.",
+    "d31.etq":"Idea-força","d31.titulo":"Com entrenar el SN","d31.cuerpo":"<b>3 principis pràctics</b>.","d31.c1":"Menja bé.","d31.c2":"Calfa.","d31.c3":"Dorm bé.","d31.act.titulo":"Activitat suggerida","d31.act.texto":"Dissenyeu una rutina de 5 minuts.",
+    "d32.titulo":"L'essencial del Bloc 1","d32.caja":"La neurona rep, integra i transmet. La mielina accelera. El potencial funciona amb el tot o res. La sinapsi comunica. La plasticitat explica l'aprenentatge.","d32.act.titulo":"Activitat suggerida","d32.act.texto":"Què canviaràs en el teu entrenament?"
+  },
+  en:{
+    headerTitulo:"Block 1 · Neuronal Physiology and Signalling",
+    headerSub:"Physiology · 1st Dance · 2026-2027 · Cèlia Painous",
+    btnVolver:"← Index", navPrev:"← Previous", navNext:"Next →", btnModo:"☀️ Light mode",
+    "c.danza":"Dance connection","c.nutricion":"Nutrition","c.calentamiento":"Warm-up","c.descanso":"Rest","c.salud":"Mental health",
+    "act.reflexiona":"Reflect","act.prueba":"Try in class","act.parejas":"In pairs","act.grupos":"In groups 2-3",
+    "p.titulo":"Block 1 · Neuronal Physiology and Signalling","p.sub":"From nerve impulse to dance movement","p.meta":"2026-2027 · Cèlia Painous · 32 slides",
+    "d2.etq":"Key idea","d2.titulo":"What is a neuron?","d2.cuerpo":"A neuron is a <b>cell specialized in receiving, processing and integrating information</b> through electrical and chemical signals.","d2.act.titulo":"Suggested activity","d2.act.texto":"What do you think happens in your brain when you learn a new step?",
+    "d3.titulo":"Inside the neuron","d3.l1":"<b>Soma</b>: contains the nucleus.","d3.l2":"<b>Dendrites</b>: receive signals.","d3.l3":"<b>Axon</b>: conducts the action potential.",
+    "d4.titulo":"Myelin and terminals","d4.l1":"<b>Myelin sheath</b>: wraps the axon.","d4.l2":"<b>Axon terminals</b>: transmit information.","d4.cuina":"Myelin is made of lipids. A diet rich in healthy fats helps.","d4.act.titulo":"Suggested activity","d4.act.texto":"With your eyes closed, touch your forearm.",
+    "d5.titulo":"How your neuron learns a step","d5.cuerpo":"When you learn a new step, this happens in milliseconds:","d5.l1":"<b>Dendrites</b> receive the information.","d5.l2":"The <b>soma</b> integrates the signals.","d5.l3":"The <b>axon</b> sends the command to the muscle.","d5.l4":"The <b>muscle</b> responds with movement.","d5.cuina":"With repetition, synapses strengthen and the step becomes automatic.",
+    "d6.titulo":"Synthesis · The neuron","d6.caja":"The neuron is the functional unit of the nervous system. It receives information through dendrites, integrates it in the soma and sends the command down the axon.",
+    "d7.etq":"Key idea","d7.titulo":"Neurons don't work alone","d7.cuerpo":"They're surrounded by <b>glial cells</b> providing support, nutrition, defence and insulation.",
+    "d8.titulo":"The 4 types of glial cells","d8.th1":"Cell","d8.th2":"Function","d8.th3":"Location","d8.r1a":"Astrocytes","d8.r1b":"Nutrition","d8.r1c":"CNS","d8.r2a":"Microglia","d8.r2b":"Defence","d8.r2c":"CNS","d8.r3a":"Oligodendrocytes","d8.r3b":"Myelin","d8.r3c":"CNS","d8.r4a":"Schwann cells","d8.r4b":"Myelin","d8.r4c":"PNS","d8.act.titulo":"Suggested activity","d8.act.texto":"Explain each glial cell to each other.",
+    "d9.titulo":"Why glia matters for a dancer","d9.cuina":"When you train, astrocytes adjust the chemical environment. Oligodendrocytes form more myelin on the pathways you use most.",
+    "d10.etq":"Key idea","d10.titulo":"Myelin speeds up movement","d10.cuerpo":"Myelin is a <b>lipid-rich insulating layer</b> that wraps segments of the axon.",
+    "d11.titulo":"With myelin vs. without","d11.th1":"","d11.th2":"Without myelin","d11.th3":"With myelin","d11.r1a":"<b>Speed</b>","d11.r1b":"0.5 – 2 m/s","d11.r1c":"70 – 120 m/s","d11.r2a":"<b>Cost</b>","d11.r2b":"High","d11.r2c":"Low","d11.r3a":"<b>Conduction</b>","d11.r3b":"Point by point","d11.r3c":"Node to node",
+    "d12.titulo":"Continuous vs. saltatory","d12.act.titulo":"Suggested activity","d12.act.texto":"In pairs: one does a slow movement and the other a fast one.",
+    "d13.titulo":"Myelin and the grand jeté","d13.cuina":"A grand jeté requires the command to reach the muscle in milliseconds.",
+    "d14.etq":"Key idea","d14.titulo":"How information travels","d14.cuerpo":"The nerve impulse goes through three phases: <b>rest</b>, <b>stimulus</b> and <b>propagation</b>.",
+    "d15.titulo":"Phase 1 · Rest","d15.p":"At rest, the inside is <b>negative</b>.","d15.p2":"Like a taut rope.",
+    "d16.titulo":"Phase 2 · Stimulus and threshold","d16.p":"If it exceeds the <b>threshold</b>, the action potential fires.","d16.p2":"If not, nothing happens.",
+    "d17.titulo":"Phase 3 · Propagation","d17.p":"The action potential propagates <b>without losing intensity</b>.",
+    "d18.etq":"Key idea","d18.titulo":"All-or-nothing","d18.cuerpo":"The impulse <b>fires completely or not at all</b>.","d18.act.titulo":"Suggested activity","d18.act.texto":"How can a dancer make a smooth movement and an explosive one with the same muscle?",
+    "d19.etq":"Key idea","d19.titulo":"Firing rate","d19.cuerpo":"What changes is the <b>frequency</b>.",
+    "d20.titulo":"Action potential curve",
+    "d21.etq":"Key idea","d21.titulo":"How neurons communicate","d21.cuerpo":"At the <b>synapse</b>, a neuron releases neurotransmitters.",
+    "d22.titulo":"The synapse",
+    "d23.titulo":"EPSP vs. IPSP","d23.th1":"","d23.th2":"EPSP","d23.th3":"IPSP","d23.r1a":"<b>Ion</b>","d23.r1b":"Na⁺","d23.r1c":"Cl⁻","d23.r2a":"<b>Effect</b>","d23.r2b":"Activates","d23.r2c":"Inhibits","d23.r3a":"<b>In dance</b>","d23.r3b":"Starting","d23.r3c":"Controlling","d23.act.titulo":"Suggested activity","d23.act.texto":"Think of 3 situations where inhibition matters.",
+    "d24.etq":"Key idea","d24.titulo":"Ion channels","d24.cuerpo":"The membrane has <b>gates</b>.",
+    "d25.etq":"Key idea","d25.titulo":"Na⁺/K⁺ pump","d25.cuerpo":"The neuron spends <b>ATP</b> to maintain concentrations.","d25.cuina":"It needs glucose and oxygen. Don't train on an empty stomach.",
+    "d26.etq":"Key idea","d26.titulo":"Refractory period","d26.cuerpo":"After firing, the neuron needs to recharge.","d26.act.titulo":"Suggested activity","d26.act.texto":"Why shouldn't you overload information?",
+    "d27.etq":"Key idea","d27.titulo":"Summation","d27.cuerpo":"The soma <b>sums</b> the signals.",
+    "d28.titulo":"Neuromodulators","d28.th1":"Name","d28.th2":"Function","d28.th3":"In dance","d28.r1a":"Dopamine","d28.r1b":"Motivation","d28.r1c":"Desire","d28.r2a":"Serotonin","d28.r2b":"Mood","d28.r2c":"Humour","d28.r3a":"Noradrenaline","d28.r3b":"Alertness","d28.r3c":"Concentration","d28.r4a":"Acetylcholine","d28.r4b":"Memory","d28.r4c":"Learning","d28.r5a":"Endorphins","d28.r5b":"Well-being","d28.r5c":"Feeling","d28.r6a":"Cortisol","d28.r6b":"Stress","d28.r6c":"Nerves","d28.cuina":"Dopamine and endorphins explain the well-being after dancing.",
+    "d29.etq":"Key idea","d29.titulo":"Synaptic plasticity","d29.cuerpo":"Synapses <b>strengthen</b> or <b>weaken</b>.","d29.cuina":"Consolidation happens during sleep.","d29.act.titulo":"Suggested activity","d29.act.texto":"Repeat a short step 10 times.",
+    "d30.etq":"Key idea","d30.titulo":"Conduction speed","d30.cuerpo":"Depends on <b>diameter</b>, <b>myelin</b>, <b>temperature</b> and <b>health</b>.","d30.cuina":"Warm-up improves conduction.",
+    "d31.etq":"Key idea","d31.titulo":"How to train your NS","d31.cuerpo":"<b>3 practical principles</b>.","d31.c1":"Eat well.","d31.c2":"Warm up.","d31.c3":"Sleep well.","d31.act.titulo":"Suggested activity","d31.act.texto":"Design a 5-minute routine.",
+    "d32.titulo":"The essentials of Block 1","d32.caja":"The neuron receives, integrates and transmits. Myelin speeds up the impulse. The action potential works on all-or-nothing. The synapse communicates. Plasticity explains learning.","d32.act.titulo":"Suggested activity","d32.act.texto":"What will you change in your training?"
+  }
+};
+
+let lang = 'es';
+function t(k){ return (I18N[lang] && I18N[lang][k]) || I18N.es[k] || k; }
+
+function aplicarIdioma(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k = el.dataset.i18n;
+    const v = t(k);
+    if(v !== undefined) el.innerHTML = v;
+  });
+  const ht = document.getElementById('headerTitulo'); if(ht) ht.textContent = t('headerTitulo');
+  const hs = document.getElementById('headerSub'); if(hs) hs.textContent = t('headerSub');
+  document.getElementById('btnVolver').textContent = t('btnVolver');
+  document.getElementById('navPrev').textContent = t('navPrev');
+  document.getElementById('navNext').textContent = t('navNext');
+  const bm = document.getElementById('btnModo');
+  bm.textContent = document.body.classList.contains('claro')
+    ? (lang==='en'?'🌙 Dark mode':lang==='ca'?'🌙 Mode fosc':'🌙 Modo oscuro')
+    : t('btnModo');
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.lang-switch button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+}
+
+document.querySelectorAll('.lang-switch button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{ lang = btn.dataset.lang; aplicarIdioma(); });
+});
+
+let idx = 0;
+const slides = document.querySelectorAll('.slide');
+function show(i){
+  slides.forEach(s=>s.classList.remove('active'));
+  slides[i].classList.add('active');
+  slides[i].scrollTop = 0;
+  document.getElementById('counter').textContent = `Diapositiva ${i+1} / ${slides.length}`;
+  document.getElementById('progress').style.width = ((i+1)/slides.length*100)+'%';
+}
+function next(){ if(idx < slides.length-1){ idx++; show(idx); } }
+function prev(){ if(idx > 0){ idx--; show(idx); } }
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight' || e.key===' ') { e.preventDefault(); next(); }
+  if(e.key==='ArrowLeft') { e.preventDefault(); prev(); }
+});
+function volverIndice(){ window.location.href = 'index.html'; }
+function toggleModo(){
+  document.body.classList.toggle('claro');
+  const bm = document.getElementById('btnModo');
+  bm.textContent = document.body.classList.contains('claro')
+    ? (lang==='en'?'🌙 Dark mode':lang==='ca'?'🌙 Mode fosc':'🌙 Modo oscuro')
+    : t('btnModo');
+}
+
+aplicarIdioma();
+show(0);
+</script>
+</body>
+</html>

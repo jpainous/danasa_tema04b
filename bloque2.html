@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Bloque 2 · Organización del Sistema Nervioso Central</title>
+<style>
+  :root{
+    --bg:#0d1024;--card:#1a1f3c;--accent:#ff5c8a;--accent2:#4fd1c5;
+    --text:#f5f7ff;--muted:#b8c0e0;--ok:#4ade80;--warn:#fbbf24;--bad:#f87171;
+    --notas:#ffd166;--cuina:#b07cff;
+  }
+  body.claro{--bg:#f7f8fc;--card:#ffffff;--text:#1a1f3c;--muted:#5a6488;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;transition:background .3s,color .3s;}
+  header{background:var(--card);padding:12px 26px;border-bottom:2px solid var(--accent2);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:relative;z-index:50;}
+  header h1{font-size:1.15rem;color:var(--accent);}
+  header .sub{color:var(--muted);font-size:.82rem;margin-top:2px;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .controls button{background:#252b52;color:var(--accent2);border:1px solid #3a4170;padding:6px 11px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.82rem;transition:.15s;}
+  body.claro .controls button{background:#e8ebf5;color:#1a1f3c;border-color:#c5cbe0;}
+  .controls button:hover{background:var(--accent2);color:#0f1226;}
+  .btn-volver{background:#252b52;color:var(--accent2);border:1px solid #3a4170;padding:6px 11px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.82rem;}
+  body.claro .btn-volver{background:#e8ebf5;color:#1a1f3c;border-color:#c5cbe0;}
+  .btn-volver:hover{background:var(--accent2);color:#0f1226;}
+  .lang-switch{display:flex;gap:4px;background:var(--card);padding:3px;border-radius:8px;border:1px solid #3a4170;}
+  body.claro .lang-switch{border-color:#c5cbe0;}
+  .lang-switch button{background:transparent;color:var(--muted);border:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-weight:800;font-size:.78rem;}
+  .lang-switch button:hover{background:#252b52;}
+  body.claro .lang-switch button:hover{background:#e0e5f0;}
+  .lang-switch button.active{background:var(--accent2);color:#0f1226;}
+
+  main{max-width:1100px;margin:0 auto;padding:14px 20px 60px;height:calc(100vh - 62px);display:flex;align-items:flex-start;justify-content:center;overflow:hidden;}
+  .slide{display:none;width:100%;max-height:100%;overflow-y:auto;padding:26px 34px;border-radius:14px;}
+  .slide.active{display:block;animation:fade .35s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  .slide::-webkit-scrollbar{width:6px;}
+  .slide::-webkit-scrollbar-track{background:transparent;}
+  .slide::-webkit-scrollbar-thumb{background:#3a4170;border-radius:3px;}
+  body.claro .slide::-webkit-scrollbar-thumb{background:#c5cbe0;}
+
+  .slide.portada{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;}
+  .slide.portada.active{display:flex;}
+  .slide.portada h2{font-size:2rem;color:var(--accent);border:none;margin-bottom:14px;}
+  .slide.portada .sub{font-size:1.05rem;color:var(--muted);}
+  .slide.portada .meta{font-size:.9rem;color:var(--muted);margin-top:14px;}
+
+  .slide.idea-fuerza{padding:40px 46px;}
+  .idea-fuerza .etiqueta{display:inline-block;background:var(--accent2);color:#0f1226;padding:3px 12px;border-radius:20px;font-size:.72rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
+  .idea-fuerza h2{font-size:1.8rem;color:var(--accent);border:none;margin-bottom:16px;line-height:1.25;}
+  .idea-fuerza .cuerpo{font-size:1.08rem;line-height:1.6;color:var(--text);}
+  .idea-fuerza .cuerpo b{color:var(--accent2);}
+
+  .slide.desarrollo h2{color:var(--accent2);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--accent2);padding-bottom:7px;}
+  .slide.desarrollo h3{color:var(--accent);font-size:1.05rem;margin:10px 0 5px;}
+  .slide.desarrollo p,.slide.desarrollo li{font-size:.96rem;line-height:1.55;margin-bottom:5px;}
+  .slide.desarrollo ul,.slide.desarrollo ol{margin-left:20px;margin-bottom:8px;}
+
+  .slide.tabla h2{color:var(--accent2);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--accent2);padding-bottom:7px;}
+  table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.9rem;}
+  th,td{border:1px solid #3a4170;padding:8px 11px;text-align:left;line-height:1.35;}
+  body.claro th,body.claro td{border-color:#c5cbe0;}
+  th{background:#252b52;color:var(--accent2);font-weight:800;}
+  body.claro th{background:#e8ebf5;color:#1a1f3c;}
+
+  .slide.esquema h2{color:var(--accent2);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--accent2);padding-bottom:7px;}
+  .illus{background:var(--card);border-radius:12px;padding:12px;display:flex;justify-content:center;align-items:center;border:1px solid #3a4170;max-height:40vh;}
+  body.claro .illus{border-color:#c5cbe0;}
+  .illus svg{max-width:100%;height:auto;max-height:36vh;}
+
+  .slide.cuina h2{color:var(--cuina);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--cuina);padding-bottom:7px;}
+  .slide.cuina .cuerpo{font-size:1rem;line-height:1.55;}
+
+  .slide.sintesis{padding:40px 46px;}
+  .slide.sintesis h2{color:var(--warn);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--warn);padding-bottom:7px;}
+  .slide.sintesis .caja{background:var(--card);border-left:5px solid var(--warn);border-radius:12px;padding:18px 22px;font-size:.98rem;line-height:1.65;}
+
+  .cuina-tematica{display:flex;gap:11px;align-items:flex-start;border-radius:10px;padding:11px 15px;margin:11px 0;font-size:.92rem;line-height:1.45;}
+  .cuina-tematica .icono{font-size:1.4rem;flex-shrink:0;line-height:1;}
+  .cuina-tematica .texto{flex:1;}
+  .cuina-tematica .texto b{display:block;margin-bottom:3px;font-size:.95rem;}
+  .cuina-danza{background:#2a1f3d;border-left:5px solid var(--accent);}
+  .cuina-danza .texto b{color:var(--accent);}
+  .cuina-nutricion{background:#1a2a1a;border-left:5px solid var(--ok);}
+  .cuina-nutricion .texto b{color:var(--ok);}
+  .cuina-calentamiento{background:#3a1a1a;border-left:5px solid var(--warn);}
+  .cuina-calentamiento .texto b{color:var(--warn);}
+  .cuina-descanso{background:#1a2540;border-left:5px solid var(--accent2);}
+  .cuina-descanso .texto b{color:var(--accent2);}
+  .cuina-salud{background:#3a2f10;border-left:5px solid var(--notas);}
+  .cuina-salud .texto b{color:var(--notas);}
+  body.claro .cuina-danza{background:#f4e8f0;}
+  body.claro .cuina-nutricion{background:#e8f5e8;}
+  body.claro .cuina-calentamiento{background:#fdeaea;}
+  body.claro .cuina-descanso{background:#e8eefc;}
+  body.claro .cuina-salud{background:#fef8e0;}
+
+  .actividad-sugerida{background:linear-gradient(135deg,#ff9f43,#ff7a3d);color:#fff;border-radius:10px;padding:12px 16px;margin:14px 0;display:flex;gap:11px;align-items:flex-start;}
+  .actividad-sugerida .icono{font-size:1.4rem;flex-shrink:0;line-height:1;}
+  .actividad-sugerida .texto{flex:1;}
+  .actividad-sugerida .texto b{display:block;font-size:.95rem;margin-bottom:4px;}
+  .actividad-sugerida .texto .tipo{display:inline-block;background:rgba(255,255,255,.25);padding:2px 9px;border-radius:20px;font-size:.7rem;font-weight:800;text-transform:uppercase;margin-bottom:4px;}
+
+  .nav{position:fixed;bottom:12px;right:18px;display:flex;gap:6px;z-index:50;}
+  .nav button{background:var(--accent);color:#0f1226;border:none;padding:8px 15px;border-radius:9px;font-weight:800;cursor:pointer;font-size:.85rem;box-shadow:0 3px 10px rgba(0,0,0,.25);}
+  .nav button:hover{background:var(--accent2);}
+  .counter{position:fixed;bottom:16px;left:18px;color:var(--muted);font-size:.78rem;z-index:50;background:var(--card);padding:4px 11px;border-radius:18px;border:1px solid #3a4170;}
+  body.claro .counter{border-color:#c5cbe0;}
+  .progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);transition:width .3s;z-index:100;}
+
+  @media(max-width:800px){
+    main{padding:10px 12px 55px;height:calc(100vh - 56px);}
+    .slide{padding:18px 16px;max-height:100%;}
+    .slide.idea-fuerza{padding:24px 20px;}
+    .idea-fuerza h2{font-size:1.4rem;}
+    .idea-fuerza .cuerpo{font-size:.98rem;}
+    .slide.desarrollo h2,.slide.tabla h2,.slide.esquema h2,.slide.cuina h2,.slide.sintesis h2{font-size:1.2rem;}
+    .slide.desarrollo p,.slide.desarrollo li{font-size:.88rem;}
+    .slide.portada h2{font-size:1.4rem;}
+    table{font-size:.82rem;}
+    th,td{padding:6px 8px;}
+    header h1{font-size:.95rem;}
+    header{padding:10px 14px;}
+  }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<header>
+  <div>
+    <h1 id="headerTitulo">Bloque 2 · Organización del Sistema Nervioso Central</h1>
+    <div class="sub" id="headerSub">Fisiología · 1º Danza · Curso 2026-2027 · Cèlia Painous</div>
+  </div>
+  <div class="controls">
+    <button class="btn-volver" id="btnVolver" onclick="volverIndice()">← Índice</button>
+    <div class="lang-switch">
+      <button data-lang="es" class="active">ES</button>
+      <button data-lang="ca">CA</button>
+      <button data-lang="en">EN</button>
+    </div>
+    <button onclick="toggleModo()" id="btnModo">☀️ Modo claro</button>
+  </div>
+</header>
+
+<main>
+
+<section class="slide idea-fuerza active">
+  <span class="etiqueta" data-i18n="d2.etq">Idea-fuerza</span>
+  <h2 data-i18n="d2.titulo">El SNC es el director de orquesta</h2>
+  <div class="cuerpo" data-i18n="d2.cuerpo">El <b>Sistema Nervioso Central</b> está formado por el <b>encéfalo</b> y la <b>médula espinal</b>. Recibe información, la integra y decide la respuesta.</div>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d3.titulo">SNC y SNP: dos sistemas, una misión</h2>
+  <div class="illus">
+    <svg viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="180" cy="90" rx="70" ry="55" fill="#2d6cdf"/>
+      <text x="180" y="95" fill="#fff" font-size="14" text-anchor="middle" font-weight="700">Encéfalo</text>
+      <rect x="160" y="150" width="40" height="60" rx="6" fill="#4fd1c5"/>
+      <text x="180" y="185" fill="#0f1226" font-size="10" text-anchor="middle" font-weight="700">Médula</text>
+      <text x="180" y="30" fill="#4fd1c5" font-size="13" text-anchor="middle" font-weight="700">SNC</text>
+      <line x1="260" y1="120" x2="360" y2="120" stroke="#ff5c8a" stroke-width="3" stroke-dasharray="6"/>
+      <text x="420" y="125" fill="#ff5c8a" font-size="13" text-anchor="middle" font-weight="700">SNP</text>
+    </svg>
+  </div>
+  <ul>
+    <li data-i18n="d3.l1"><b>SNC</b>: encéfalo + médula espinal. Procesa la información y decide.</li>
+    <li data-i18n="d3.l2"><b>SNP</b>: nervios y ganglios. Conecta el SNC con el resto del cuerpo.</li>
+  </ul>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d4.titulo">El SNP por dentro</h2>
+  <ul>
+    <li data-i18n="d4.l1"><b>12 pares de nervios craneales</b>: salen del encéfalo.</li>
+    <li data-i18n="d4.l2"><b>31 pares de nervios espinales</b>: salen de la médula.</li>
+    <li data-i18n="d4.l3"><b>Ganglios</b>: agrupaciones de neuronas fuera del SNC.</li>
+  </ul>
+  <p data-i18n="d4.p">El SNP se subdivide en <b>somático</b> (control voluntario) y <b>autónomo</b> (control involuntario).</p>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d5.titulo">Cómo llega la corrección a tu músculo</h2>
+  <div class="cuerpo" data-i18n="d5.cuerpo">Cuando el profesor/a te corrige una postura, ocurre esto:</div>
+  <ol style="margin:14px 0 0 20px;font-size:1rem;line-height:1.75;">
+    <li data-i18n="d5.l1">Tu <b>oído y tu vista</b> captan la corrección.</li>
+    <li data-i18n="d5.l2">La información viaja por el <b>SNP</b> hasta el <b>SNC</b>.</li>
+    <li data-i18n="d5.l3">El <b>SNC</b> la integra y decide cómo corregir.</li>
+    <li data-i18n="d5.l4">La orden vuelve por el <b>SNP</b> hasta el <b>músculo</b>.</li>
+  </ol>
+  <div class="cuina-tematica cuina-danza" style="margin-top:16px;">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d5.cuina">Todo el circuito ocurre en milisegundos. Cuanto más entrenado esté tu SNC, más rápido integrarás la corrección y más rápido la aplicarás en tu cuerpo.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">👥</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.parejas">En parejas</span>
+      <b data-i18n="d5.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d5.act.texto">Uno guía al otro con la mano (sin hablar) para que adopte una postura. El otro debe notar cómo llega la información y cómo responde el cuerpo.</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d6.etq">Idea-fuerza</span>
+  <h2 data-i18n="d6.titulo">Las grandes piezas del encéfalo</h2>
+  <div class="cuerpo" data-i18n="d6.cuerpo">El encéfalo está formado por <b>hemisferios cerebrales</b>, <b>diencéfalo</b>, <b>tronco encefálico</b> y <b>cerebelo</b>. Cada parte tiene funciones específicas.</div>
+</section>
+
+<section class="slide tabla">
+  <h2 data-i18n="d7.titulo">Estructura del SNC</h2>
+  <table>
+    <tr>
+      <th data-i18n="d7.th1">Componente</th>
+      <th data-i18n="d7.th2">Partes</th>
+      <th data-i18n="d7.th3">Función general</th>
+    </tr>
+    <tr>
+      <td data-i18n="d7.r1a"><b>Encéfalo</b></td>
+      <td data-i18n="d7.r1b">Hemisferios, diencéfalo, tronco, cerebelo</td>
+      <td data-i18n="d7.r1c">Procesa información y decide</td>
+    </tr>
+    <tr>
+      <td data-i18n="d7.r2a"><b>Médula espinal</b></td>
+      <td data-i18n="d7.r2b">Vías ascendentes y descendentes</td>
+      <td data-i18n="d7.r2c">Comunica y refleja</td>
+    </tr>
+  </table>
+</section>
+
+<section class="slide esquema">
+  <h2 data-i18n="d8.titulo">El encéfalo por dentro</h2>
+  <div class="illus">
+    <svg viewBox="0 0 500 240" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="250" cy="90" rx="130" ry="55" fill="#2d6cdf" opacity="0.9"/>
+      <text x="250" y="90" fill="#fff" font-size="13" text-anchor="middle" font-weight="700">Hemisferios cerebrales</text>
+      <ellipse cx="250" cy="130" rx="50" ry="25" fill="#b07cff"/>
+      <text x="250" y="135" fill="#fff" font-size="11" text-anchor="middle">Diencéfalo</text>
+      <rect x="220" y="155" width="60" height="35" rx="6" fill="#4fd1c5"/>
+      <text x="250" y="177" fill="#0f1226" font-size="10" text-anchor="middle" font-weight="700">Tronco</text>
+      <ellipse cx="330" cy="170" rx="35" ry="25" fill="#ff5c8a"/>
+      <text x="330" y="175" fill="#0f1226" font-size="10" text-anchor="middle" font-weight="700">Cerebelo</text>
+    </svg>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d9.etq">Idea-fuerza</span>
+  <h2 data-i18n="d9.titulo">Los hemisferios cerebrales</h2>
+  <div class="cuerpo" data-i18n="d9.cuerpo">Son la sede de la <b>percepción consciente</b>, el <b>movimiento voluntario</b>, la <b>memoria</b> y la <b>toma de decisiones</b>. Se dividen en 4 lóbulos.</div>
+</section>
+
+<section class="slide tabla">
+  <h2 data-i18n="d10.titulo">Los 4 lóbulos cerebrales</h2>
+  <table>
+    <tr>
+      <th data-i18n="d10.th1">Lóbulo</th>
+      <th data-i18n="d10.th2">Función principal</th>
+      <th data-i18n="d10.th3">En danza</th>
+    </tr>
+    <tr><td data-i18n="d10.r1a"><b>Frontal</b></td><td data-i18n="d10.r1b">Planificación y movimiento</td><td data-i18n="d10.r1c">Decidir y ejecutar el paso</td></tr>
+    <tr><td data-i18n="d10.r2a"><b>Parietal</b></td><td data-i18n="d10.r2b">Sensibilidad y espacio</td><td data-i18n="d10.r2c">Saber dónde estás en el escenario</td></tr>
+    <tr><td data-i18n="d10.r3a"><b>Temporal</b></td><td data-i18n="d10.r3b">Audición y memoria</td><td data-i18n="d10.r3c">Escuchar la música y recordar la coreo</td></tr>
+    <tr><td data-i18n="d10.r4a"><b>Occipital</b></td><td data-i18n="d10.r4b">Visión</td><td data-i18n="d10.r4c">Ver el espejo y a los compañeros</td></tr>
+  </table>
+</section>
+
+<section class="slide esquema">
+  <h2 data-i18n="d11.titulo">Los lóbulos en el cerebro</h2>
+  <div class="illus">
+    <svg viewBox="0 0 500 260" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="250" cy="130" rx="140" ry="90" fill="none" stroke="#4fd1c5" stroke-width="2"/>
+      <path d="M 110 130 Q 180 60 250 130" fill="#2d6cdf" opacity="0.7"/>
+      <text x="180" y="100" fill="#fff" font-size="11" text-anchor="middle" font-weight="700">Frontal</text>
+      <path d="M 250 40 Q 340 60 390 130" fill="#b07cff" opacity="0.7"/>
+      <text x="320" y="80" fill="#fff" font-size="11" text-anchor="middle" font-weight="700">Parietal</text>
+      <path d="M 110 130 Q 180 200 250 130" fill="#4fd1c5" opacity="0.7"/>
+      <text x="180" y="175" fill="#0f1226" font-size="11" text-anchor="middle" font-weight="700">Temporal</text>
+      <path d="M 250 220 Q 340 200 390 130" fill="#ff5c8a" opacity="0.7"/>
+      <text x="320" y="190" fill="#0f1226" font-size="11" text-anchor="middle" font-weight="700">Occipital</text>
+    </svg>
+  </div>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d12.titulo">El control contralateral</h2>
+  <p data-i18n="d12.p">El <b>hemisferio izquierdo</b> controla el lado <b>derecho</b> del cuerpo, y el <b>hemisferio derecho</b> controla el lado <b>izquierdo</b>. Esto ocurre porque las vías motoras y sensoriales se cruzan en el tronco encefálico.</p>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d12.cuina">Cuando un bailarín mueve el brazo derecho, la orden viene del hemisferio izquierdo. Esto es relevante al entrenar movimientos asimétricos y al trabajar la coordinación entre ambos lados del cuerpo.</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d13.titulo">El mito de la lateralización</h2>
+  <p data-i18n="d13.p">Existe la creencia popular de que hay personas "de hemisferio derecho" (creativas) y "de hemisferio izquierdo" (racionales). <b>Es un mito</b>.</p>
+  <p data-i18n="d13.p2">Las funciones complejas —como la danza— requieren <b>redes integradas de ambos hemisferios</b>. La creatividad, la técnica y la expresividad no se localizan en un solo lado.</p>
+  <div class="actividad-sugerida">
+    <div class="icono">👥</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.grupos">En grupos 2-3</span>
+      <b data-i18n="d13.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d13.act.texto">Pensad 3 argumentos fisiológicos que demuestren que el mito de la lateralización es falso. Compartidlos con el grupo.</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d14.etq">Idea-fuerza</span>
+  <h2 data-i18n="d14.titulo">El diencéfalo</h2>
+  <div class="cuerpo" data-i18n="d14.cuerpo">El diencéfalo es la zona entre los hemisferios y el tronco. Dos estructuras clave: <b>tálamo</b> e <b>hipotálamo</b>.</div>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d15.titulo">Tálamo e hipotálamo</h2>
+  <h3 data-i18n="d15.h1">Tálamo</h3>
+  <p data-i18n="d15.p1">Redistribuye la información sensorial hacia la corteza. Es como una "centralita telefónica" que dirige cada mensaje al lugar correcto.</p>
+  <h3 data-i18n="d15.h2">Hipotálamo</h3>
+  <p data-i18n="d15.p2">Regula la homeostasis: temperatura, hambre, sed, sueño y hormonas. Es el "termostato" del cuerpo.</p>
+  <div class="cuina-tematica cuina-descanso">
+    <div class="icono">😴</div>
+    <div class="texto">
+      <b data-i18n="c.descanso">Descanso</b>
+      <span data-i18n="d15.cuina">El hipotálamo regula tu ciclo de sueño. Dormir poco altera este reloj interno y afecta a la coordinación, al estado de ánimo y a la recuperación muscular.</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d16.titulo">Por qué el diencéfalo importa al bailarín</h2>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d16.cuina">El tálamo filtra la información sensorial: en un escenario con luces, sonido y movimiento, permite centrar la atención en lo importante. El hipotálamo regula tu temperatura y tu energía durante un ensayo largo: por eso conviene hidratarse y comer bien antes de bailar.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">🤔</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.reflexiona">Reflexiona</span>
+      <b data-i18n="d16.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d16.act.texto">¿Has notado alguna vez que el hambre o el calor afectan a tu forma de bailar? Explica cómo crees que el hipotálamo interviene.</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d17.etq">Idea-fuerza</span>
+  <h2 data-i18n="d17.titulo">El tronco encefálico</h2>
+  <div class="cuerpo" data-i18n="d17.cuerpo">Es la parte más antigua del encéfalo. Controla funciones vitales que no podemos detener: <b>respiración</b>, <b>ritmo cardíaco</b>, <b>nivel de alerta</b>, control ocular y postural.</div>
+</section>
+
+<section class="slide esquema">
+  <h2 data-i18n="d18.titulo">Las 3 partes del tronco</h2>
+  <div class="illus">
+    <svg viewBox="0 0 500 260" xmlns="http://www.w3.org/2000/svg">
+      <rect x="200" y="30" width="100" height="50" rx="8" fill="#2d6cdf"/>
+      <text x="250" y="60" fill="#fff" font-size="12" text-anchor="middle" font-weight="700">Mesencéfalo</text>
+      <rect x="200" y="90" width="100" height="50" rx="8" fill="#4fd1c5"/>
+      <text x="250" y="120" fill="#0f1226" font-size="12" text-anchor="middle" font-weight="700">Puente</text>
+      <rect x="200" y="150" width="100" height="60" rx="8" fill="#b07cff"/>
+      <text x="250" y="185" fill="#fff" font-size="12" text-anchor="middle" font-weight="700">Bulbo raquídeo</text>
+      <text x="360" y="120" fill="#b8c0e0" font-size="11">Controla funciones vitales</text>
+    </svg>
+  </div>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d19.titulo">El tronco y el calentamiento</h2>
+  <div class="cuina-tematica cuina-calentamiento">
+    <div class="icono">🔥</div>
+    <div class="texto">
+      <b data-i18n="c.calentamiento">Calentamiento</b>
+      <span data-i18n="d19.cuina">El tronco encefálico regula tu respiración y tu ritmo cardíaco automáticamente. Cuando empiezas a moverte, ajusta el pulso y la respiración sin que tengas que pensarlo. Por eso el calentamiento progresivo prepara todo el sistema cardiovascular y respiratorio antes de un esfuerzo intenso.</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d20.etq">Idea-fuerza</span>
+  <h2 data-i18n="d20.titulo">El cerebelo, el gran coordinador</h2>
+  <div class="cuerpo" data-i18n="d20.cuerpo">Situado en la base del cerebro, el cerebelo es pequeño pero imprescindible: coordina el <b>equilibrio</b>, la <b>postura</b>, la <b>precisión</b> y el <b>aprendizaje motor</b>.</div>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d21.titulo">Las 3 funciones del cerebelo</h2>
+  <ul>
+    <li data-i18n="d21.l1"><b>Equilibrio y postura</b>: mantiene el eje del cuerpo.</li>
+    <li data-i18n="d21.l2"><b>Precisión</b>: compara el movimiento previsto con el ejecutado y corrige el error.</li>
+    <li data-i18n="d21.l3"><b>Aprendizaje motor</b>: consolida los patrones de movimiento con la práctica.</li>
+  </ul>
+</section>
+
+<section class="slide esquema">
+  <h2 data-i18n="d22.titulo">El cerebelo como comparador</h2>
+  <div class="illus">
+    <svg viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg">
+      <rect x="40" y="80" width="120" height="60" rx="8" fill="#2d6cdf"/>
+      <text x="100" y="115" fill="#fff" font-size="12" text-anchor="middle" font-weight="700">Corteza motora</text>
+      <text x="100" y="160" fill="#b8c0e0" font-size="10" text-anchor="middle">Movimiento previsto</text>
+      <rect x="340" y="80" width="120" height="60" rx="8" fill="#4fd1c5"/>
+      <text x="400" y="115" fill="#0f1226" font-size="12" text-anchor="middle" font-weight="700">Receptores</text>
+      <text x="400" y="160" fill="#b8c0e0" font-size="10" text-anchor="middle">Movimiento real</text>
+      <circle cx="250" cy="110" r="45" fill="#ff5c8a"/>
+      <text x="250" y="115" fill="#0f1226" font-size="12" text-anchor="middle" font-weight="700">Cerebelo</text>
+      <text x="250" y="200" fill="#b8c0e0" font-size="11" text-anchor="middle">Compara y envía correcciones</text>
+    </svg>
+  </div>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d23.titulo">El cerebelo y los giros</h2>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d23.cuina">Cuando aprendes un giro, las primeras veces te tambaleas. El cerebelo detecta el error y ajusta la siguiente repetición. Después de muchas repeticiones, los ajustes se vuelven automáticos: por eso un bailarín experimentado puede hacer un giro sin pensar.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.prueba">Prueba en clase</span>
+      <b data-i18n="d23.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d23.act.texto">Haced 5 giros seguidos. ¿En cuál os habéis sentido más estables? ¿Qué ha cambiado entre el primero y el último?</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d24.etq">Idea-fuerza</span>
+  <h2 data-i18n="d24.titulo">La médula espinal</h2>
+  <div class="cuerpo" data-i18n="d24.cuerpo">La médula espinal es la <b>autopista de información</b> entre el encéfalo y el cuerpo. También integra <b>reflejos</b> sin necesidad de que el cerebro intervenga.</div>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d25.titulo">Vías ascendentes y descendentes</h2>
+  <ul>
+    <li data-i18n="d25.l1"><b>Ascendentes (sensoriales)</b>: llevan información del cuerpo al encéfalo. Ejemplo: notar el suelo bajo los pies.</li>
+    <li data-i18n="d25.l2"><b>Descendentes (motoras)</b>: llevan órdenes del encéfalo al cuerpo. Ejemplo: contraer el cuádriceps para subir en relevé.</li>
+  </ul>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d26.etq">Idea-fuerza</span>
+  <h2 data-i18n="d26.titulo">Los reflejos espinales</h2>
+  <div class="cuerpo" data-i18n="d26.cuerpo">Un reflejo espinal es una respuesta <b>automática y rapidísima</b> que ocurre en la médula sin pasar por la corteza. Su función es <b>proteger</b> el cuerpo ante estímulos bruscos.</div>
+</section>
+
+<section class="slide esquema">
+  <h2 data-i18n="d27.titulo">El arco reflejo</h2>
+  <div class="illus">
+    <svg viewBox="0 0 500 240" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="100" cy="120" rx="45" ry="30" fill="#4fd1c5"/>
+      <text x="100" y="125" fill="#0f1226" font-size="11" text-anchor="middle" font-weight="700">Receptor</text>
+      <rect x="200" y="95" width="100" height="50" rx="8" fill="#ff5c8a"/>
+      <text x="250" y="125" fill="#0f1226" font-size="12" text-anchor="middle" font-weight="700">Médula</text>
+      <ellipse cx="400" cy="120" rx="45" ry="30" fill="#b07cff"/>
+      <text x="400" y="125" fill="#fff" font-size="11" text-anchor="middle" font-weight="700">Músculo</text>
+      <path d="M 145 120 L 200 120" stroke="#ffd166" stroke-width="3"/>
+      <path d="M 300 120 L 355 120" stroke="#4fd1c5" stroke-width="3"/>
+      <text x="250" y="200" fill="#b8c0e0" font-size="11" text-anchor="middle">Estímulo → Médula → Respuesta (sin pasar por el cerebro)</text>
+    </svg>
+  </div>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d28.titulo">Reflejos y flexibilidad</h2>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d28.cuina">Cuando estiras un músculo de forma brusca, el reflejo miotático lo contrae para protegerlo: por eso "rebotar" en un estiramiento es contraproducente. Los estiramientos mantenidos (30-60 s) entrenan la inhibición del reflejo y permiten ganar flexibilidad real.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">🤔</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.reflexiona">Reflexiona</span>
+      <b data-i18n="d28.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d28.act.texto">¿Por qué los estiramientos mantenidos funcionan mejor que los rebotes? Relaciónalo con el reflejo miotático.</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d29.etq">Idea-fuerza</span>
+  <h2 data-i18n="d29.titulo">Control del equilibrio</h2>
+  <div class="cuerpo" data-i18n="d29.cuerpo">Mantener el equilibrio no depende de un solo sentido. Depende de la <b>integración de tres sistemas</b>: vista, oído interno (vestibular) y propiocepción. Se integran en el cerebelo y el tronco encefálico.</div>
+</section>
+
+<section class="slide tabla">
+  <h2 data-i18n="d30.titulo">La triple integración del equilibrio</h2>
+  <table>
+    <tr>
+      <th data-i18n="d30.th1">Sistema</th>
+      <th data-i18n="d30.th2">Qué aporta</th>
+      <th data-i18n="d30.th3">En danza</th>
+    </tr>
+    <tr><td data-i18n="d30.r1a"><b>Visual</b></td><td data-i18n="d30.r1b">Referencia espacial</td><td data-i18n="d30.r1c">Punto fijo en un giro</td></tr>
+    <tr><td data-i18n="d30.r2a"><b>Vestibular</b></td><td data-i18n="d30.r2b">Aceleraciones y gravedad</td><td data-i18n="d30.r2c">Notar que giras</td></tr>
+    <tr><td data-i18n="d30.r3a"><b>Propioceptivo</b></td><td data-i18n="d30.r3b">Posición del cuerpo</td><td data-i18n="d30.r3c">Notar el pie en el suelo</td></tr>
+  </table>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d30.cuina">Entrenar con los ojos cerrados mejora la propiocepción. Entrenar en superficies inestables mejora el sistema vestibular. Combinar ambas cosas hace tu equilibrio más robusto.</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d31.titulo">Cómo entrenar tu SNC</h2>
+  <div class="cuerpo" data-i18n="d31.cuerpo">Todo lo que has visto se traduce en <b>5 principios prácticos</b> para tu día a día.</div>
+  <div class="cuina-tematica cuina-danza" style="margin-top:14px;">
+    <div class="icono">💃</div>
+    <div class="texto"><b data-i18n="c.danza">1 · Entrena la propiocepción</b><span data-i18n="d31.c1">Ejercicios con ojos cerrados, superficies inestables y trabajo descalzo.</span></div>
+  </div>
+  <div class="cuina-tematica cuina-calentamiento">
+    <div class="icono">🔥</div>
+    <div class="texto"><b data-i18n="c.calentamiento">2 · Calienta antes de entrenar</b><span data-i18n="d31.c2">Mejora la conducción nerviosa y activa el tronco encefálico.</span></div>
+  </div>
+  <div class="cuina-tematica cuina-descanso">
+    <div class="icono">😴</div>
+    <div class="texto"><b data-i18n="c.descanso">3 · Duerme bien</b><span data-i18n="d31.c3">El hipotálamo regula tu reloj interno y la consolidación de la memoria motora.</span></div>
+  </div>
+  <div class="cuina-tematica cuina-salud">
+    <div class="icono">🧠</div>
+    <div class="texto"><b data-i18n="c.salud">4 · Gestiona tus emociones</b><span data-i18n="d31.c4">Antes de actuar, respira y visualiza para calmar la amígdala.</span></div>
+  </div>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto"><b data-i18n="c.danza">5 · Aprovecha el cuerpo calloso</b><span data-i18n="d31.c5">Practica movimientos con los dos lados del cuerpo y coordinaciones cruzadas.</span></div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">👥</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.grupos">En grupos 2-3</span>
+      <b data-i18n="d31.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d31.act.texto">Elegid uno de los 5 principios y diseñad un ejercicio concreto de 2 minutos para trabajarlo. Compartidlo con el grupo.</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d32.etq">Síntesis</span>
+  <h2 data-i18n="d32.titulo">Un sistema, muchas piezas</h2>
+  <div class="cuerpo" data-i18n="d32.cuerpo">El <b>encéfalo</b> procesa y decide. La <b>médula</b> comunica y refleja. El <b>cerebelo</b> coordina. El <b>tronco</b> mantiene las funciones vitales. Y todo ello está conectado por vías ascendentes y descendentes.</div>
+</section>
+
+<section class="slide sintesis">
+  <h2 data-i18n="d33.titulo">Lo esencial del Bloque 2</h2>
+  <div class="caja" data-i18n="d33.caja">
+    El <b>SNC</b> es el centro de procesamiento del cuerpo: recibe información, la integra y decide la respuesta. El <b>encéfalo</b> se divide en hemisferios, diencéfalo, tronco y cerebelo, cada uno con funciones específicas. La <b>médula espinal</b> comunica y refleja. El <b>equilibrio</b> integra vista, oído interno y propiocepción. Y todo el sistema se puede entrenar.
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">🤔</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.reflexiona">Reflexiona</span>
+      <b data-i18n="d33.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d33.act.texto">¿Qué estructura del SNC te parece más importante para un bailarín y por qué?</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide tabla">
+  <h2 data-i18n="d34.titulo">Resumen de estructuras</h2>
+  <table>
+    <tr>
+      <th data-i18n="d34.th1">Estructura</th>
+      <th data-i18n="d34.th2">Función principal</th>
+      <th data-i18n="d34.th3">En danza</th>
+    </tr>
+    <tr><td data-i18n="d34.r1a">Hemisferios</td><td data-i18n="d34.r1b">Percepción y movimiento voluntario</td><td data-i18n="d34.r1c">Decidir y ejecutar el paso</td></tr>
+    <tr><td data-i18n="d34.r2a">Diencéfalo</td><td data-i18n="d34.r2b">Relevo sensorial y homeostasis</td><td data-i18n="d34.r2c">Filtrar y regular el esfuerzo</td></tr>
+    <tr><td data-i18n="d34.r3a">Tronco</td><td data-i18n="d34.r3b">Funciones vitales y alerta</td><td data-i18n="d34.r3c">Mantener respiración y postura</td></tr>
+    <tr><td data-i18n="d34.r4a">Cerebelo</td><td data-i18n="d34.r4b">Coordinación y aprendizaje motor</td><td data-i18n="d34.r4c">Ajustar giros y saltos</td></tr>
+    <tr><td data-i18n="d34.r5a">Médula espinal</td><td data-i18n="d34.r5b">Comunicación y reflejos</td><td data-i18n="d34.r5c">Proteger ante estiramientos bruscos</td></tr>
+  </table>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d35.titulo">La empresa bien organizada</h2>
+  <div class="cuerpo" data-i18n="d35.cuerpo">Tu SNC es como una <b>empresa bien organizada</b>:</div>
+  <ul style="margin:14px 0 0 20px;font-size:1rem;line-height:1.75;">
+    <li data-i18n="d35.l1">Los <b>hemisferios</b> son la dirección.</li>
+    <li data-i18n="d35.l2">El <b>diencéfalo</b> es la centralita que filtra la información.</li>
+    <li data-i18n="d35.l3">El <b>tronco</b> es el departamento de mantenimiento vital.</li>
+    <li data-i18n="d35.l4">El <b>cerebelo</b> es el control de calidad.</li>
+    <li data-i18n="d35.l5">La <b>médula espinal</b> es el sistema de mensajería.</li>
+  </ul>
+  <p data-i18n="d35.p2" style="margin-top:16px;font-size:1.05rem;line-height:1.65;">Cuando todo funciona bien, el movimiento es fluido, preciso y expresivo.</p>
+</section>
+
+<section class="slide portada">
+  <h2 data-i18n="d36.titulo">Fin del Bloque 2</h2>
+  <p class="sub" data-i18n="d36.sub">Organización del Sistema Nervioso Central</p>
+  <p class="meta" data-i18n="d36.meta">Continúa con el Bloque 3 · Sistema Nervioso Periférico</p>
+</section>
+</main>
+
+<div class="counter" id="counter">Diapositiva 1 / 34</div>
+<div class="nav">
+  <button onclick="prev()" id="navPrev">← Anterior</button>
+  <button onclick="next()" id="navNext">Siguiente →</button>
+</div>
+
+<script>
+const I18N = {
+  es:{
+    headerTitulo:"Bloque 2 · Organización del Sistema Nervioso Central",
+    headerSub:"Fisiología · 1º Danza · Curso 2026-2027 · Cèlia Painous",
+    btnVolver:"← Índice", navPrev:"← Anterior", navNext:"Siguiente →", btnModo:"☀️ Modo claro",
+    "c.danza":"Conexión danza","c.nutricion":"Nutrición","c.calentamiento":"Calentamiento","c.descanso":"Descanso","c.salud":"Salud mental",
+    "act.reflexiona":"Reflexiona","act.prueba":"Prueba en clase","act.parejas":"En parejas","act.grupos":"En grupos 2-3",
+    "p.titulo":"Bloque 2 · Organización del Sistema Nervioso Central","p.sub":"Del encéfalo al movimiento dancístico","p.meta":"Curso 2026-2027 · Cèlia Painous · 36 diapositivas",
+    "d2.etq":"Idea-fuerza","d2.titulo":"El SNC es el director de orquesta","d2.cuerpo":"El <b>Sistema Nervioso Central</b> está formado por el <b>encéfalo</b> y la <b>médula espinal</b>. Recibe información, la integra y decide la respuesta.",
+    "d3.titulo":"SNC y SNP: dos sistemas, una misión","d3.l1":"<b>SNC</b>: encéfalo + médula espinal. Procesa la información y decide.","d3.l2":"<b>SNP</b>: nervios y ganglios. Conecta el SNC con el resto del cuerpo.",
+    "d4.titulo":"El SNP por dentro","d4.l1":"<b>12 pares de nervios craneales</b>: salen del encéfalo.","d4.l2":"<b>31 pares de nervios espinales</b>: salen de la médula.","d4.l3":"<b>Ganglios</b>: agrupaciones de neuronas fuera del SNC.","d4.p":"El SNP se subdivide en <b>somático</b> (control voluntario) y <b>autónomo</b> (control involuntario).",
+    "d5.titulo":"Cómo llega la corrección a tu músculo","d5.cuerpo":"Cuando el profesor/a te corrige una postura, ocurre esto:","d5.l1":"Tu <b>oído y tu vista</b> captan la corrección.","d5.l2":"La información viaja por el <b>SNP</b> hasta el <b>SNC</b>.","d5.l3":"El <b>SNC</b> la integra y decide cómo corregir.","d5.l4":"La orden vuelve por el <b>SNP</b> hasta el <b>músculo</b>.","d5.cuina":"Todo el circuito ocurre en milisegundos. Cuanto más entrenado esté tu SNC, más rápido integrarás la corrección.","d5.act.titulo":"Actividad sugerida","d5.act.texto":"Uno guía al otro con la mano (sin hablar) para que adopte una postura.",
+    "d6.etq":"Idea-fuerza","d6.titulo":"Las grandes piezas del encéfalo","d6.cuerpo":"El encéfalo está formado por <b>hemisferios cerebrales</b>, <b>diencéfalo</b>, <b>tronco encefálico</b> y <b>cerebelo</b>. Cada parte tiene funciones específicas.",
+    "d7.titulo":"Estructura del SNC","d7.th1":"Componente","d7.th2":"Partes","d7.th3":"Función general","d7.r1a":"<b>Encéfalo</b>","d7.r1b":"Hemisferios, diencéfalo, tronco, cerebelo","d7.r1c":"Procesa información y decide","d7.r2a":"<b>Médula espinal</b>","d7.r2b":"Vías ascendentes y descendentes","d7.r2c":"Comunica y refleja",
+    "d8.titulo":"El encéfalo por dentro",
+    "d9.etq":"Idea-fuerza","d9.titulo":"Los hemisferios cerebrales","d9.cuerpo":"Son la sede de la <b>percepción consciente</b>, el <b>movimiento voluntario</b>, la <b>memoria</b> y la <b>toma de decisiones</b>. Se dividen en 4 lóbulos.",
+    "d10.titulo":"Los 4 lóbulos cerebrales","d10.th1":"Lóbulo","d10.th2":"Función principal","d10.th3":"En danza","d10.r1a":"<b>Frontal</b>","d10.r1b":"Planificación y movimiento","d10.r1c":"Decidir y ejecutar el paso","d10.r2a":"<b>Parietal</b>","d10.r2b":"Sensibilidad y espacio","d10.r2c":"Saber dónde estás en el escenario","d10.r3a":"<b>Temporal</b>","d10.r3b":"Audición y memoria","d10.r3c":"Escuchar la música y recordar la coreo","d10.r4a":"<b>Occipital</b>","d10.r4b":"Visión","d10.r4c":"Ver el espejo y a los compañeros",
+    "d11.titulo":"Los lóbulos en el cerebro",
+    "d12.titulo":"El control contralateral","d12.p":"El <b>hemisferio izquierdo</b> controla el lado <b>derecho</b> del cuerpo, y el <b>hemisferio derecho</b> controla el lado <b>izquierdo</b>.","d12.cuina":"Cuando un bailarín mueve el brazo derecho, la orden viene del hemisferio izquierdo.",
+    "d13.titulo":"El mito de la lateralización","d13.p":"Existe la creencia popular de que hay personas 'de hemisferio derecho' (creativas) y 'de hemisferio izquierdo' (racionales). <b>Es un mito</b>.","d13.p2":"Las funciones complejas —como la danza— requieren <b>redes integradas de ambos hemisferios</b>.","d13.act.titulo":"Actividad sugerida","d13.act.texto":"Pensad 3 argumentos fisiológicos que demuestren que el mito es falso.",
+    "d14.etq":"Idea-fuerza","d14.titulo":"El diencéfalo","d14.cuerpo":"El diencéfalo es la zona entre los hemisferios y el tronco. Dos estructuras clave: <b>tálamo</b> e <b>hipotálamo</b>.",
+    "d15.titulo":"Tálamo e hipotálamo","d15.h1":"Tálamo","d15.p1":"Redistribuye la información sensorial hacia la corteza.","d15.h2":"Hipotálamo","d15.p2":"Regula la homeostasis: temperatura, hambre, sed, sueño y hormonas.","d15.cuina":"El hipotálamo regula tu ciclo de sueño.",
+    "d16.titulo":"Por qué el diencéfalo importa al bailarín","d16.cuina":"El tálamo filtra la información sensorial. El hipotálamo regula tu temperatura y tu energía durante un ensayo largo.","d16.act.titulo":"Actividad sugerida","d16.act.texto":"¿Has notado alguna vez que el hambre o el calor afectan a tu forma de bailar?",
+    "d17.etq":"Idea-fuerza","d17.titulo":"El tronco encefálico","d17.cuerpo":"Es la parte más antigua del encéfalo. Controla funciones vitales: <b>respiración</b>, <b>ritmo cardíaco</b>, <b>nivel de alerta</b>, control ocular y postural.",
+    "d18.titulo":"Las 3 partes del tronco",
+    "d19.titulo":"El tronco y el calentamiento","d19.cuina":"El tronco encefálico regula tu respiración y tu ritmo cardíaco automáticamente. Por eso el calentamiento progresivo prepara todo el sistema cardiovascular antes de un esfuerzo intenso.",
+    "d20.etq":"Idea-fuerza","d20.titulo":"El cerebelo, el gran coordinador","d20.cuerpo":"El cerebelo coordina el <b>equilibrio</b>, la <b>postura</b>, la <b>precisión</b> y el <b>aprendizaje motor</b>.",
+    "d21.titulo":"Las 3 funciones del cerebelo","d21.l1":"<b>Equilibrio y postura</b>: mantiene el eje del cuerpo.","d21.l2":"<b>Precisión</b>: compara el movimiento previsto con el ejecutado.","d21.l3":"<b>Aprendizaje motor</b>: consolida los patrones con la práctica.",
+    "d22.titulo":"El cerebelo como comparador",
+    "d23.titulo":"El cerebelo y los giros","d23.cuina":"Cuando aprendes un giro, las primeras veces te tambaleas. El cerebelo detecta el error y ajusta la siguiente repetición.","d23.act.titulo":"Actividad sugerida","d23.act.texto":"Haced 5 giros seguidos. ¿En cuál os habéis sentido más estables?",
+    "d24.etq":"Idea-fuerza","d24.titulo":"La médula espinal","d24.cuerpo":"La médula espinal es la <b>autopista de información</b> entre el encéfalo y el cuerpo. También integra <b>reflejos</b>.",
+    "d25.titulo":"Vías ascendentes y descendentes","d25.l1":"<b>Ascendentes (sensoriales)</b>: del cuerpo al encéfalo.","d25.l2":"<b>Descendentes (motoras)</b>: del encéfalo al cuerpo.",
+    "d26.etq":"Idea-fuerza","d26.titulo":"Los reflejos espinales","d26.cuerpo":"Un reflejo espinal es una respuesta <b>automática y rapidísima</b> que ocurre en la médula sin pasar por la corteza. Su función es <b>proteger</b>.",
+    "d27.titulo":"El arco reflejo",
+    "d28.titulo":"Reflejos y flexibilidad","d28.cuina":"Cuando estiras un músculo bruscamente, el reflejo miotático lo contrae. Los estiramientos mantenidos entrenan la inhibición del reflejo.","d28.act.titulo":"Actividad sugerida","d28.act.texto":"¿Por qué los estiramientos mantenidos funcionan mejor que los rebotes?",
+    "d29.etq":"Idea-fuerza","d29.titulo":"Control del equilibrio","d29.cuerpo":"Mantener el equilibrio depende de la <b>integración de tres sistemas</b>: vista, vestibular y propiocepción.",
+    "d30.titulo":"La triple integración del equilibrio","d30.th1":"Sistema","d30.th2":"Qué aporta","d30.th3":"En danza","d30.r1a":"<b>Visual</b>","d30.r1b":"Referencia espacial","d30.r1c":"Punto fijo en un giro","d30.r2a":"<b>Vestibular</b>","d30.r2b":"Aceleraciones y gravedad","d30.r2c":"Notar que giras","d30.r3a":"<b>Propioceptivo</b>","d30.r3b":"Posición del cuerpo","d30.r3c":"Notar el pie en el suelo","d30.cuina":"Entrenar con los ojos cerrados mejora la propiocepción. Entrenar en superficies inestables mejora el vestibular.",
+    "d31.titulo":"Cómo entrenar tu SNC","d31.cuerpo":"Todo lo que has visto se traduce en <b>5 principios prácticos</b>.","d31.c1":"Ejercicios con ojos cerrados, superficies inestables y trabajo descalzo.","d31.c2":"Mejora la conducción nerviosa y activa el tronco encefálico.","d31.c3":"El hipotálamo regula tu reloj interno y la consolidación de la memoria motora.","d31.c4":"Antes de actuar, respira y visualiza para calmar la amígdala.","d31.c5":"Practica movimientos con los dos lados del cuerpo.","d31.act.titulo":"Actividad sugerida","d31.act.texto":"Elegid uno de los 5 principios y diseñad un ejercicio de 2 minutos.",
+    "d32.etq":"Síntesis","d32.titulo":"Un sistema, muchas piezas","d32.cuerpo":"El <b>encéfalo</b> procesa y decide. La <b>médula</b> comunica y refleja. El <b>cerebelo</b> coordina. El <b>tronco</b> mantiene las funciones vitales.",
+    "d33.titulo":"Lo esencial del Bloque 2","d33.caja":"El <b>SNC</b> es el centro de procesamiento del cuerpo. El <b>encéfalo</b> se divide en hemisferios, diencéfalo, tronco y cerebelo. La <b>médula espinal</b> comunica y refleja. El <b>equilibrio</b> integra vista, oído interno y propiocepción.","d33.act.titulo":"Actividad sugerida","d33.act.texto":"¿Qué estructura del SNC te parece más importante para un bailarín?",
+    "d34.titulo":"Resumen de estructuras","d34.th1":"Estructura","d34.th2":"Función principal","d34.th3":"En danza","d34.r1a":"Hemisferios","d34.r1b":"Percepción y movimiento voluntario","d34.r1c":"Decidir y ejecutar el paso","d34.r2a":"Diencéfalo","d34.r2b":"Relevo sensorial y homeostasis","d34.r2c":"Filtrar y regular el esfuerzo","d34.r3a":"Tronco","d34.r3b":"Funciones vitales y alerta","d34.r3c":"Mantener respiración y postura","d34.r4a":"Cerebelo","d34.r4b":"Coordinación y aprendizaje motor","d34.r4c":"Ajustar giros y saltos","d34.r5a":"Médula espinal","d34.r5b":"Comunicación y reflejos","d34.r5c":"Proteger ante estiramientos bruscos",
+    "d35.titulo":"La empresa bien organizada","d35.cuerpo":"Tu SNC es como una <b>empresa bien organizada</b>:","d35.l1":"Los <b>hemisferios</b> son la dirección.","d35.l2":"El <b>diencéfalo</b> es la centralita.","d35.l3":"El <b>tronco</b> es el mantenimiento vital.","d35.l4":"El <b>cerebelo</b> es el control de calidad.","d35.l5":"La <b>médula espinal</b> es el sistema de mensajería.","d35.p2":"Cuando todo funciona bien, el movimiento es fluido, preciso y expresivo.",
+    "d36.titulo":"Fin del Bloque 2","d36.sub":"Organización del Sistema Nervioso Central","d36.meta":"Continúa con el Bloque 3 · Sistema Nervioso Periférico"
+  },
+  ca:{
+    headerTitulo:"Bloc 2 · Organització del Sistema Nerviós Central",
+    headerSub:"Fisiologia · 1r Dansa · Curs 2026-2027 · Cèlia Painous",
+    btnVolver:"← Índex", navPrev:"← Anterior", navNext:"Següent →", btnModo:"☀️ Mode clar",
+    "c.danza":"Connexió dansa","c.nutricion":"Nutrició","c.calentamiento":"Calfament","c.descanso":"Descans","c.salud":"Salut mental",
+    "act.reflexiona":"Reflexiona","act.prueba":"Prova a classe","act.parejas":"En parelles","act.grupos":"En grups 2-3",
+    "p.titulo":"Bloc 2 · Organització del Sistema Nerviós Central","p.sub":"De l'encèfal al moviment dansístic","p.meta":"Curs 2026-2027 · Cèlia Painous · 36 diapositives",
+    "d2.etq":"Idea-força","d2.titulo":"El SNC és el director d'orquestra","d2.cuerpo":"El <b>SNC</b> està format per l'<b>encèfal</b> i la <b>medul·la espinal</b>.",
+    "d3.titulo":"SNC i SNP","d3.l1":"<b>SNC</b>: encèfal + medul·la.","d3.l2":"<b>SNP</b>: nervis i ganglis.",
+    "d4.titulo":"El SNP per dins","d4.l1":"12 parells cranials.","d4.l2":"31 parells espinals.","d4.l3":"Ganglis.","d4.p":"Somàtic i autònom.",
+    "d5.titulo":"Com arriba la correcció","d5.cuerpo":"Quan el professor et corregeix:","d5.l1":"Captes la correcció.","d5.l2":"Viatja pel SNP.","d5.l3":"El SNC integra.","d5.l4":"Torna al múscul.","d5.cuina":"Tot passa en mil·lisegons.","d5.act.titulo":"Activitat suggerida","d5.act.texto":"Un guia l'altre amb la mà.",
+    "d6.etq":"Idea-força","d6.titulo":"Les grans peces","d6.cuerpo":"Hemisferis, diencèfal, tronc i cerebel.",
+    "d7.titulo":"Estructura del SNC","d7.th1":"Component","d7.th2":"Parts","d7.th3":"Funció","d7.r1a":"<b>Encèfal</b>","d7.r1b":"Hemisferis, diencèfal, tronc, cerebel","d7.r1c":"Processa i decideix","d7.r2a":"<b>Medul·la</b>","d7.r2b":"Vies ascendents i descendents","d7.r2c":"Comunica i reflecteix",
+    "d8.titulo":"L'encèfal per dins",
+    "d9.etq":"Idea-força","d9.titulo":"Els hemisferis","d9.cuerpo":"Percepció, moviment voluntari, memòria i decisions.",
+    "d10.titulo":"Els 4 lòbuls","d10.th1":"Lòbul","d10.th2":"Funció","d10.th3":"En dansa","d10.r1a":"<b>Frontal</b>","d10.r1b":"Planificació","d10.r1c":"Decidir el pas","d10.r2a":"<b>Parietal</b>","d10.r2b":"Espai","d10.r2c":"Situar-se","d10.r3a":"<b>Temporal</b>","d10.r3b":"Audició","d10.r3c":"Escoltar música","d10.r4a":"<b>Occipital</b>","d10.r4b":"Visió","d10.r4c":"Veure el mirall",
+    "d11.titulo":"Els lòbuls",
+    "d12.titulo":"Control contralateral","d12.p":"Cada hemisferi controla el costat oposat.","d12.cuina":"Rellevant en moviments asimètrics.",
+    "d13.titulo":"El mite de la lateralització","d13.p":"<b>És un mite</b>.","d13.p2":"Les funcions complexes requereixen xarxes.","d13.act.titulo":"Activitat suggerida","d13.act.texto":"Penseu 3 arguments.",
+    "d14.etq":"Idea-força","d14.titulo":"El diencèfal","d14.cuerpo":"Tàlem i hipotàlem.",
+    "d15.titulo":"Tàlem i hipotàlem","d15.h1":"Tàlem","d15.p1":"Redistribueix informació.","d15.h2":"Hipotàlem","d15.p2":"Homeòstasi.","d15.cuina":"Regula el cicle de son.",
+    "d16.titulo":"Per què importa","d16.cuina":"El tàlem filtra. L'hipotàlem regula temperatura i energia.","d16.act.titulo":"Activitat suggerida","d16.act.texto":"Has notat la fam o la calor ballant?",
+    "d17.etq":"Idea-força","d17.titulo":"El tronc encefàlic","d17.cuerpo":"Funcions vitals: respiració, ritme, alerta.",
+    "d18.titulo":"Les 3 parts",
+    "d19.titulo":"El tronc i el calfament","d19.cuina":"Regula respiració i ritme automàticament.",
+    "d20.etq":"Idea-força","d20.titulo":"El cerebel","d20.cuerpo":"Coordina equilibri, postura, precisió i aprenentatge.",
+    "d21.titulo":"Les 3 funcions","d21.l1":"Equilibri.","d21.l2":"Precisió.","d21.l3":"Aprenentatge.",
+    "d22.titulo":"Comparador",
+    "d23.titulo":"El cerebel i els girs","d23.cuina":"Detecta l'error i ajusta.","d23.act.titulo":"Activitat suggerida","d23.act.texto":"Feu 5 girs.",
+    "d24.etq":"Idea-força","d24.titulo":"La medul·la","d24.cuerpo":"Autopista d'informació.",
+    "d25.titulo":"Vies ascendents i descendents","d25.l1":"Ascendents.","d25.l2":"Descendents.",
+    "d26.etq":"Idea-força","d26.titulo":"Reflexos espinals","d26.cuerpo":"Resposta automàtica.",
+    "d27.titulo":"Arc reflex",
+    "d28.titulo":"Reflexos i flexibilitat","d28.cuina":"Estiraments mantinguts.","d28.act.titulo":"Activitat suggerida","d28.act.texto":"Per què funcionen millor?",
+    "d29.etq":"Idea-força","d29.titulo":"Control de l'equilibri","d29.cuerpo":"Vista, vestibular i propiocepció.",
+    "d30.titulo":"Triple integració","d30.th1":"Sistema","d30.th2":"Aporta","d30.th3":"En dansa","d30.r1a":"<b>Visual</b>","d30.r1b":"Referència","d30.r1c":"Punt fix","d30.r2a":"<b>Vestibular</b>","d30.r2b":"Acceleracions","d30.r2c":"Gir","d30.r3a":"<b>Propioceptiu</b>","d30.r3b":"Posició","d30.r3c":"Peu a terra","d30.cuina":"Ulls tancats → propiocepció.",
+    "d31.titulo":"Com entrenar","d31.cuerpo":"5 principis.","d31.c1":"Propiocepció.","d31.c2":"Calfament.","d31.c3":"Descans.","d31.c4":"Emocions.","d31.c5":"Cos callós.","d31.act.titulo":"Activitat suggerida","d31.act.texto":"Dissenyeu un exercici.",
+    "d32.etq":"Síntesi","d32.titulo":"Un sistema, moltes peces","d32.cuerpo":"Encèfal decideix, medul·la comunica, cerebel coordina, tronc manté.",
+    "d33.titulo":"L'essencial","d33.caja":"El SNC processa, decideix i respon.","d33.act.titulo":"Activitat suggerida","d33.act.texto":"Quina estructura és la més important?",
+    "d34.titulo":"Resum","d34.th1":"Estructura","d34.th2":"Funció","d34.th3":"En dansa","d34.r1a":"Hemisferis","d34.r1b":"Percepció","d34.r1c":"Decidir","d34.r2a":"Diencèfal","d34.r2b":"Relevo","d34.r2c":"Filtrar","d34.r3a":"Tronc","d34.r3b":"Funcions vitals","d34.r3c":"Respiració","d34.r4a":"Cerebel","d34.r4b":"Coordinació","d34.r4c":"Ajustar","d34.r5a":"Medul·la","d34.r5b":"Comunicació","d34.r5c":"Protegir",
+    "d35.titulo":"L'empresa","d35.cuerpo":"El SNC com una empresa:","d35.l1":"Direcció.","d35.l2":"Centraleta.","d35.l3":"Manteniment.","d35.l4":"Control de qualitat.","d35.l5":"Missatgeria.","d35.p2":"Quan funciona bé, tot és fluid.",
+    "d36.titulo":"Fi del Bloc 2","d36.sub":"Organització del SNC","d36.meta":"Continua amb el Bloc 3"
+  },
+  en:{
+    headerTitulo:"Block 2 · Organization of the Central Nervous System",
+    headerSub:"Physiology · 1st Dance · 2026-2027 · Cèlia Painous",
+    btnVolver:"← Index", navPrev:"← Previous", navNext:"Next →", btnModo:"☀️ Light mode",
+    "c.danza":"Dance connection","c.nutricion":"Nutrition","c.calentamiento":"Warm-up","c.descanso":"Rest","c.salud":"Mental health",
+    "act.reflexiona":"Reflect","act.prueba":"Try in class","act.parejas":"In pairs","act.grupos":"In groups 2-3",
+    "p.titulo":"Block 2 · Organization of the Central Nervous System","p.sub":"From the brain to dance movement","p.meta":"2026-2027 · Cèlia Painous · 36 slides",
+    "d2.etq":"Key idea","d2.titulo":"The CNS is the conductor","d2.cuerpo":"The <b>CNS</b> is made up of the <b>brain</b> and the <b>spinal cord</b>.",
+    "d3.titulo":"CNS and PNS","d3.l1":"<b>CNS</b>: brain + spinal cord.","d3.l2":"<b>PNS</b>: nerves and ganglia.",
+    "d4.titulo":"Inside the PNS","d4.l1":"12 cranial pairs.","d4.l2":"31 spinal pairs.","d4.l3":"Ganglia.","d4.p":"Somatic and autonomic.",
+    "d5.titulo":"How a correction reaches your muscle","d5.cuerpo":"When the teacher corrects your posture:","d5.l1":"You pick up the correction.","d5.l2":"Travels through the PNS.","d5.l3":"The CNS integrates.","d5.l4":"Returns to the muscle.","d5.cuina":"All in milliseconds.","d5.act.titulo":"Suggested activity","d5.act.texto":"One guides the other with their hand.",
+    "d6.etq":"Key idea","d6.titulo":"The big pieces","d6.cuerpo":"Hemispheres, diencephalon, brainstem, cerebellum.",
+    "d7.titulo":"CNS structure","d7.th1":"Component","d7.th2":"Parts","d7.th3":"Function","d7.r1a":"<b>Brain</b>","d7.r1b":"Hemispheres, diencephalon, brainstem, cerebellum","d7.r1c":"Processes and decides","d7.r2a":"<b>Spinal cord</b>","d7.r2b":"Ascending and descending","d7.r2c":"Communicates and reflects",
+    "d8.titulo":"Inside the brain",
+    "d9.etq":"Key idea","d9.titulo":"The hemispheres","d9.cuerpo":"Perception, voluntary movement, memory, decisions.",
+    "d10.titulo":"The 4 lobes","d10.th1":"Lobe","d10.th2":"Function","d10.th3":"In dance","d10.r1a":"<b>Frontal</b>","d10.r1b":"Planning","d10.r1c":"Deciding the step","d10.r2a":"<b>Parietal</b>","d10.r2b":"Space","d10.r2c":"Positioning","d10.r3a":"<b>Temporal</b>","d10.r3b":"Hearing","d10.r3c":"Listening to music","d10.r4a":"<b>Occipital</b>","d10.r4b":"Vision","d10.r4c":"Seeing the mirror",
+    "d11.titulo":"The lobes",
+    "d12.titulo":"Contralateral control","d12.p":"Each hemisphere controls the opposite side.","d12.cuina":"Relevant for asymmetric movements.",
+    "d13.titulo":"The lateralization myth","d13.p":"<b>It's a myth</b>.","d13.p2":"Complex functions require networks.","d13.act.titulo":"Suggested activity","d13.act.texto":"Think of 3 arguments.",
+    "d14.etq":"Key idea","d14.titulo":"The diencephalon","d14.cuerpo":"Thalamus and hypothalamus.",
+    "d15.titulo":"Thalamus and hypothalamus","d15.h1":"Thalamus","d15.p1":"Redistributes information.","d15.h2":"Hypothalamus","d15.p2":"Homeostasis.","d15.cuina":"Regulates your sleep cycle.",
+    "d16.titulo":"Why it matters","d16.cuina":"The thalamus filters. The hypothalamus regulates temperature and energy.","d16.act.titulo":"Suggested activity","d16.act.texto":"Have you noticed hunger or heat while dancing?",
+    "d17.etq":"Key idea","d17.titulo":"The brainstem","d17.cuerpo":"Vital functions: breathing, rhythm, alertness.",
+    "d18.titulo":"The 3 parts",
+    "d19.titulo":"Brainstem and warm-up","d19.cuina":"Regulates breathing and heart rate automatically.",
+    "d20.etq":"Key idea","d20.titulo":"The cerebellum","d20.cuerpo":"Coordinates balance, posture, precision and motor learning.",
+    "d21.titulo":"The 3 functions","d21.l1":"Balance.","d21.l2":"Precision.","d21.l3":"Learning.",
+    "d22.titulo":"Comparator",
+    "d23.titulo":"Cerebellum and turns","d23.cuina":"Detects the error and adjusts.","d23.act.titulo":"Suggested activity","d23.act.texto":"Do 5 turns.",
+    "d24.etq":"Key idea","d24.titulo":"The spinal cord","d24.cuerpo":"Information highway.",
+    "d25.titulo":"Ascending and descending","d25.l1":"Ascending.","d25.l2":"Descending.",
+    "d26.etq":"Key idea","d26.titulo":"Spinal reflexes","d26.cuerpo":"Automatic response.",
+    "d27.titulo":"Reflex arc",
+    "d28.titulo":"Reflexes and flexibility","d28.cuina":"Sustained stretches.","d28.act.titulo":"Suggested activity","d28.act.texto":"Why do they work better?",
+    "d29.etq":"Key idea","d29.titulo":"Balance control","d29.cuerpo":"Vision, vestibular, proprioception.",
+    "d30.titulo":"Triple integration","d30.th1":"System","d30.th2":"Provides","d30.th3":"In dance","d30.r1a":"<b>Visual</b>","d30.r1b":"Reference","d30.r1c":"Fixed point","d30.r2a":"<b>Vestibular</b>","d30.r2b":"Accelerations","d30.r2c":"Turn","d30.r3a":"<b>Proprioceptive</b>","d30.r3b":"Position","d30.r3c":"Foot on floor","d30.cuina":"Eyes closed → proprioception.",
+    "d31.titulo":"How to train","d31.cuerpo":"5 principles.","d31.c1":"Proprioception.","d31.c2":"Warm-up.","d31.c3":"Rest.","d31.c4":"Emotions.","d31.c5":"Corpus callosum.","d31.act.titulo":"Suggested activity","d31.act.texto":"Design an exercise.",
+    "d32.etq":"Synthesis","d32.titulo":"One system, many pieces","d32.cuerpo":"Brain decides, spinal cord communicates, cerebellum coordinates, brainstem maintains.",
+    "d33.titulo":"The essentials","d33.caja":"The CNS processes, decides and responds.","d33.act.titulo":"Suggested activity","d33.act.texto":"Which structure matters most?",
+    "d34.titulo":"Summary","d34.th1":"Structure","d34.th2":"Function","d34.th3":"In dance","d34.r1a":"Hemispheres","d34.r1b":"Perception","d34.r1c":"Deciding","d34.r2a":"Diencephalon","d34.r2b":"Relay","d34.r2c":"Filtering","d34.r3a":"Brainstem","d34.r3b":"Vital functions","d34.r3c":"Breathing","d34.r4a":"Cerebellum","d34.r4b":"Coordination","d34.r4c":"Adjusting","d34.r5a":"Spinal cord","d34.r5b":"Communication","d34.r5c":"Protecting",
+    "d35.titulo":"The company","d35.cuerpo":"The CNS as a company:","d35.l1":"Management.","d35.l2":"Switchboard.","d35.l3":"Maintenance.","d35.l4":"Quality control.","d35.l5":"Messaging.","d35.p2":"When it works well, everything is fluid.",
+    "d36.titulo":"End of Block 2","d36.sub":"CNS Organization","d36.meta":"Continue with Block 3"
+  }
+};
+
+let lang = 'es';
+function t(k){ return (I18N[lang] && I18N[lang][k]) || I18N.es[k] || k; }
+function aplicarIdioma(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k = el.dataset.i18n;
+    const v = t(k);
+    if(v !== undefined) el.innerHTML = v;
+  });
+  const ht = document.getElementById('headerTitulo'); if(ht) ht.textContent = t('headerTitulo');
+  const hs = document.getElementById('headerSub'); if(hs) hs.textContent = t('headerSub');
+  document.getElementById('btnVolver').textContent = t('btnVolver');
+  document.getElementById('navPrev').textContent = t('navPrev');
+  document.getElementById('navNext').textContent = t('navNext');
+  const bm = document.getElementById('btnModo');
+  bm.textContent = document.body.classList.contains('claro')
+    ? (lang==='en'?'🌙 Dark mode':lang==='ca'?'🌙 Mode fosc':'🌙 Modo oscuro')
+    : t('btnModo');
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.lang-switch button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+}
+document.querySelectorAll('.lang-switch button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{ lang = btn.dataset.lang; aplicarIdioma(); });
+});
+
+let idx = 0;
+const slides = document.querySelectorAll('.slide');
+function show(i){
+  slides.forEach(s=>s.classList.remove('active'));
+  slides[i].classList.add('active');
+  slides[i].scrollTop = 0;
+  document.getElementById('counter').textContent = `Diapositiva ${i+1} / ${slides.length}`;
+  document.getElementById('progress').style.width = ((i+1)/slides.length*100)+'%';
+}
+function next(){ if(idx < slides.length-1){ idx++; show(idx); } }
+function prev(){ if(idx > 0){ idx--; show(idx); } }
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight' || e.key===' ') { e.preventDefault(); next(); }
+  if(e.key==='ArrowLeft') { e.preventDefault(); prev(); }
+});
+function volverIndice(){ window.location.href = 'index.html'; }
+function toggleModo(){
+  document.body.classList.toggle('claro');
+  const bm = document.getElementById('btnModo');
+  bm.textContent = document.body.classList.contains('claro')
+    ? (lang==='en'?'🌙 Dark mode':lang==='ca'?'🌙 Mode fosc':'🌙 Modo oscuro')
+    : t('btnModo');
+}
+aplicarIdioma();
+show(0);
+</script>
+</body>
+</html>

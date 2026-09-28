@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Bloque 5 · Temas Transversales de Fisiología</title>
+<style>
+  :root{
+    --bg:#0d1024;--card:#1a1f3c;--accent:#ff5c8a;--accent2:#4fd1c5;
+    --text:#f5f7ff;--muted:#b8c0e0;--ok:#4ade80;--warn:#fbbf24;--bad:#f87171;
+    --notas:#ffd166;--cuina:#b07cff;
+  }
+  body.claro{--bg:#f7f8fc;--card:#ffffff;--text:#1a1f3c;--muted:#5a6488;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;transition:background .3s,color .3s;}
+  header{background:var(--card);padding:12px 26px;border-bottom:2px solid var(--accent2);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:relative;z-index:50;}
+  header h1{font-size:1.15rem;color:var(--accent);}
+  header .sub{color:var(--muted);font-size:.82rem;margin-top:2px;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .controls button{background:#252b52;color:var(--accent2);border:1px solid #3a4170;padding:6px 11px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.82rem;transition:.15s;}
+  body.claro .controls button{background:#e8ebf5;color:#1a1f3c;border-color:#c5cbe0;}
+  .controls button:hover{background:var(--accent2);color:#0f1226;}
+  .btn-volver{background:#252b52;color:var(--accent2);border:1px solid #3a4170;padding:6px 11px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.82rem;}
+  body.claro .btn-volver{background:#e8ebf5;color:#1a1f3c;border-color:#c5cbe0;}
+  .btn-volver:hover{background:var(--accent2);color:#0f1226;}
+  .lang-switch{display:flex;gap:4px;background:var(--card);padding:3px;border-radius:8px;border:1px solid #3a4170;}
+  body.claro .lang-switch{border-color:#c5cbe0;}
+  .lang-switch button{background:transparent;color:var(--muted);border:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-weight:800;font-size:.78rem;}
+  .lang-switch button:hover{background:#252b52;}
+  body.claro .lang-switch button:hover{background:#e0e5f0;}
+  .lang-switch button.active{background:var(--accent2);color:#0f1226;}
+
+  main{max-width:1100px;margin:0 auto;padding:14px 20px 60px;height:calc(100vh - 62px);display:flex;align-items:flex-start;justify-content:center;overflow:hidden;}
+  .slide{display:none;width:100%;max-height:100%;overflow-y:auto;padding:26px 34px;border-radius:14px;}
+  .slide.active{display:block;animation:fade .35s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  .slide::-webkit-scrollbar{width:6px;}
+  .slide::-webkit-scrollbar-track{background:transparent;}
+  .slide::-webkit-scrollbar-thumb{background:#3a4170;border-radius:3px;}
+  body.claro .slide::-webkit-scrollbar-thumb{background:#c5cbe0;}
+
+  .slide.portada{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;}
+  .slide.portada.active{display:flex;}
+  .slide.portada h2{font-size:2rem;color:var(--accent);border:none;margin-bottom:14px;}
+  .slide.portada .sub{font-size:1.05rem;color:var(--muted);}
+  .slide.portada .meta{font-size:.9rem;color:var(--muted);margin-top:14px;}
+
+  .slide.idea-fuerza{padding:40px 46px;}
+  .idea-fuerza .etiqueta{display:inline-block;background:var(--accent2);color:#0f1226;padding:3px 12px;border-radius:20px;font-size:.72rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
+  .idea-fuerza h2{font-size:1.8rem;color:var(--accent);border:none;margin-bottom:16px;line-height:1.25;}
+  .idea-fuerza .cuerpo{font-size:1.08rem;line-height:1.6;color:var(--text);}
+  .idea-fuerza .cuerpo b{color:var(--accent2);}
+
+  .slide.desarrollo h2{color:var(--accent2);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--accent2);padding-bottom:7px;}
+  .slide.desarrollo h3{color:var(--accent);font-size:1.05rem;margin:10px 0 5px;}
+  .slide.desarrollo p,.slide.desarrollo li{font-size:.96rem;line-height:1.55;margin-bottom:5px;}
+  .slide.desarrollo ul,.slide.desarrollo ol{margin-left:20px;margin-bottom:8px;}
+
+  .slide.tabla h2{color:var(--accent2);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--accent2);padding-bottom:7px;}
+  table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.9rem;}
+  th,td{border:1px solid #3a4170;padding:8px 11px;text-align:left;line-height:1.35;}
+  body.claro th,body.claro td{border-color:#c5cbe0;}
+  th{background:#252b52;color:var(--accent2);font-weight:800;}
+  body.claro th{background:#e8ebf5;color:#1a1f3c;}
+
+  .slide.esquema h2{color:var(--accent2);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--accent2);padding-bottom:7px;}
+  .illus{background:var(--card);border-radius:12px;padding:12px;display:flex;justify-content:center;align-items:center;border:1px solid #3a4170;max-height:40vh;}
+  body.claro .illus{border-color:#c5cbe0;}
+  .illus svg{max-width:100%;height:auto;max-height:36vh;}
+
+  .slide.cuina h2{color:var(--cuina);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--cuina);padding-bottom:7px;}
+  .slide.cuina .cuerpo{font-size:1rem;line-height:1.55;}
+
+  .slide.sintesis{padding:40px 46px;}
+  .slide.sintesis h2{color:var(--warn);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--warn);padding-bottom:7px;}
+  .slide.sintesis .caja{background:var(--card);border-left:5px solid var(--warn);border-radius:12px;padding:18px 22px;font-size:.98rem;line-height:1.65;}
+
+  .cuina-tematica{display:flex;gap:11px;align-items:flex-start;border-radius:10px;padding:11px 15px;margin:11px 0;font-size:.92rem;line-height:1.45;}
+  .cuina-tematica .icono{font-size:1.4rem;flex-shrink:0;line-height:1;}
+  .cuina-tematica .texto{flex:1;}
+  .cuina-tematica .texto b{display:block;margin-bottom:3px;font-size:.95rem;}
+  .cuina-danza{background:#2a1f3d;border-left:5px solid var(--accent);}
+  .cuina-danza .texto b{color:var(--accent);}
+  .cuina-nutricion{background:#1a2a1a;border-left:5px solid var(--ok);}
+  .cuina-nutricion .texto b{color:var(--ok);}
+  .cuina-calentamiento{background:#3a1a1a;border-left:5px solid var(--warn);}
+  .cuina-calentamiento .texto b{color:var(--warn);}
+  .cuina-descanso{background:#1a2540;border-left:5px solid var(--accent2);}
+  .cuina-descanso .texto b{color:var(--accent2);}
+  .cuina-salud{background:#3a2f10;border-left:5px solid var(--notas);}
+  .cuina-salud .texto b{color:var(--notas);}
+  body.claro .cuina-danza{background:#f4e8f0;}
+  body.claro .cuina-nutricion{background:#e8f5e8;}
+  body.claro .cuina-calentamiento{background:#fdeaea;}
+  body.claro .cuina-descanso{background:#e8eefc;}
+  body.claro .cuina-salud{background:#fef8e0;}
+
+  .actividad-sugerida{background:linear-gradient(135deg,#ff9f43,#ff7a3d);color:#fff;border-radius:10px;padding:12px 16px;margin:14px 0;display:flex;gap:11px;align-items:flex-start;}
+  .actividad-sugerida .icono{font-size:1.4rem;flex-shrink:0;line-height:1;}
+  .actividad-sugerida .texto{flex:1;}
+  .actividad-sugerida .texto b{display:block;font-size:.95rem;margin-bottom:4px;}
+  .actividad-sugerida .texto .tipo{display:inline-block;background:rgba(255,255,255,.25);padding:2px 9px;border-radius:20px;font-size:.7rem;font-weight:800;text-transform:uppercase;margin-bottom:4px;}
+
+  .nav{position:fixed;bottom:12px;right:18px;display:flex;gap:6px;z-index:50;}
+  .nav button{background:var(--accent);color:#0f1226;border:none;padding:8px 15px;border-radius:9px;font-weight:800;cursor:pointer;font-size:.85rem;box-shadow:0 3px 10px rgba(0,0,0,.25);}
+  .nav button:hover{background:var(--accent2);}
+  .counter{position:fixed;bottom:16px;left:18px;color:var(--muted);font-size:.78rem;z-index:50;background:var(--card);padding:4px 11px;border-radius:18px;border:1px solid #3a4170;}
+  body.claro .counter{border-color:#c5cbe0;}
+  .progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);transition:width .3s;z-index:100;}
+
+  @media(max-width:800px){
+    main{padding:10px 12px 55px;height:calc(100vh - 56px);}
+    .slide{padding:18px 16px;max-height:100%;}
+    .slide.idea-fuerza{padding:24px 20px;}
+    .idea-fuerza h2{font-size:1.4rem;}
+    .idea-fuerza .cuerpo{font-size:.98rem;}
+    .slide.desarrollo h2,.slide.tabla h2,.slide.esquema h2,.slide.cuina h2,.slide.sintesis h2{font-size:1.2rem;}
+    .slide.desarrollo p,.slide.desarrollo li{font-size:.88rem;}
+    .slide.portada h2{font-size:1.4rem;}
+    table{font-size:.82rem;}
+    th,td{padding:6px 8px;}
+    header h1{font-size:.95rem;}
+    header{padding:10px 14px;}
+  }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<header>
+  <div>
+    <h1 id="headerTitulo">Bloque 5 · Temas Transversales de Fisiología</h1>
+    <div class="sub" id="headerSub">Fisiología · 1º Danza · Curso 2026-2027 · Cèlia Painous</div>
+  </div>
+  <div class="controls">
+    <button class="btn-volver" id="btnVolver" onclick="volverIndice()">← Índice</button>
+    <div class="lang-switch">
+      <button data-lang="es" class="active">ES</button>
+      <button data-lang="ca">CA</button>
+      <button data-lang="en">EN</button>
+    </div>
+    <button onclick="toggleModo()" id="btnModo">☀️ Modo claro</button>
+  </div>
+</header>
+
+<main>
+
+<section class="slide idea-fuerza active">
+  <span class="etiqueta" data-i18n="d2.etq">Idea-fuerza</span>
+  <h2 data-i18n="d2.titulo">El cerebro consume mucha energía</h2>
+  <div class="cuerpo" data-i18n="d2.cuerpo">El cerebro representa el <b>2% del peso corporal</b>, pero consume el <b>20% de la energía</b> del cuerpo. Necesita <b>glucosa y oxígeno</b> de forma continua.</div>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d3.titulo">Qué ocurre si falta glucosa u oxígeno</h2>
+  <ul>
+    <li data-i18n="d3.l1"><b>Sin glucosa</b>: peor concentración, peor coordinación, mareos, irritabilidad.</li>
+    <li data-i18n="d3.l2"><b>Sin oxígeno</b>: en segundos, pérdida de conciencia. El cerebro no puede almacenar oxígeno.</li>
+  </ul>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d4.titulo">Cómo alimentar tu cerebro antes de bailar</h2>
+  <div class="cuina-tematica cuina-nutricion">
+    <div class="icono">🥗</div>
+    <div class="texto">
+      <b data-i18n="c.nutricion">Nutrición</b>
+      <span data-i18n="d4.cuina">No bailes en ayunas: la bomba Na⁺/K⁺ y todo el sistema nervioso necesitan glucosa. Un buen desayuno o una merienda ligera 1-2 h antes del entrenamiento marca la diferencia en concentración y coordinación. Hidrátate antes, durante y después.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">🤔</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.reflexiona">Reflexiona</span>
+      <b data-i18n="d4.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d4.act.texto">¿Has notado alguna vez que te cuesta concentrarte al final de una clase larga? ¿Crees que puede estar relacionado con la glucosa?</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d5.titulo">Antes de un ensayo</h2>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d5.cuina">Un ensayo de 3 horas consume mucha energía. Si empiezas con el depósito vacío, el rendimiento cae en picado a partir de la primera hora: errores, torpeza, irritabilidad. La preparación previa (comida + hidratación) es tan importante como el calentamiento físico.</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d6.etq">Idea-fuerza</span>
+  <h2 data-i18n="d6.titulo">El reloj interno del cuerpo</h2>
+  <div class="cuerpo" data-i18n="d6.cuerpo">El cuerpo tiene un <b>reloj interno</b> que regula cuándo estás despierto, cuándo tienes más energía y cuándo necesitas dormir. Ese reloj se llama <b>ritmo circadiano</b>.</div>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d7.titulo">Qué regula el ritmo circadiano</h2>
+  <ul>
+    <li data-i18n="d7.l1"><b>Sueño y vigilia</b>: cuándo tienes sueño y cuándo estás alerta.</li>
+    <li data-i18n="d7.l2"><b>Temperatura corporal</b>: sube y baja a lo largo del día.</li>
+    <li data-i18n="d7.l3"><b>Hormonas</b>: cortisol (alerta) y melatonina (sueño).</li>
+    <li data-i18n="d7.l4"><b>Atención y coordinación</b>: cambian según la hora.</li>
+  </ul>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d8.titulo">El sueño y el aprendizaje motor</h2>
+  <p data-i18n="d8.p">Durante el sueño se <b>consolida</b> lo aprendido. Bailar bien hoy depende, en parte, de haber dormido bien ayer.</p>
+  <table>
+    <tr>
+      <th data-i18n="d8.th1">Fase</th>
+      <th data-i18n="d8.th2">Función principal</th>
+    </tr>
+    <tr>
+      <td data-i18n="d8.r1a">Sueño profundo</td>
+      <td data-i18n="d8.r1b">Reparación física, crecimiento</td>
+    </tr>
+    <tr>
+      <td data-i18n="d8.r2a">Sueño REM</td>
+      <td data-i18n="d8.r2b">Memoria, aprendizaje, emociones</td>
+    </tr>
+  </table>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d9.titulo">Higiene del sueño para bailarines</h2>
+  <div class="cuina-tematica cuina-descanso">
+    <div class="icono">😴</div>
+    <div class="texto">
+      <b data-i18n="c.descanso">Descanso</b>
+      <span data-i18n="d9.cuina">Dormir <b>7-9 horas</b>. Evitar pantallas 30 min antes de dormir. No entrenar justo después de una comida copiosa. Mantener horarios regulares. Estos hábitos no solo mejoran el descanso: mejoran la memoria motora, la coordinación y la recuperación muscular.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">👥</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.grupos">En grupos 2-3</span>
+      <b data-i18n="d9.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d9.act.texto">Compartid vuestros hábitos de sueño. ¿Cuántas horas dormís? ¿Qué notáis al día siguiente cuando dormís poco?</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d10.etq">Idea-fuerza</span>
+  <h2 data-i18n="d10.titulo">El estrés es una respuesta completa</h2>
+  <div class="cuerpo" data-i18n="d10.cuerpo">El estrés no es solo "nervios". Es una <b>respuesta fisiológica completa</b> que afecta a todo el cuerpo: pulso, respiración, hormonas, digestión, atención.</div>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d11.titulo">Las 3 fases del estrés</h2>
+  <ol>
+    <li data-i18n="d11.l1"><b>Alarma</b>: el cuerpo detecta la amenaza. Se activa el simpático.</li>
+    <li data-i18n="d11.l2"><b>Resistencia</b>: el cuerpo se adapta. El cortisol mantiene la alerta.</li>
+    <li data-i18n="d11.l3"><b>Agotamiento</b>: si dura demasiado, el cuerpo se desgasta.</li>
+  </ol>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d12.titulo">Estrés bueno vs. estrés malo</h2>
+  <p data-i18n="d12.p">Un poco de estrés <b>mejora el rendimiento</b> (activación óptima). Demasiado estrés lo <b>bloquea</b>.</p>
+  <p data-i18n="d12.p2">La diferencia no está en "tener nervios" o no tenerlos, sino en <b>cómo de intensa</b> es la respuesta y en <b>cómo la gestionas</b>.</p>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d13.titulo">El cortisol y la ansiedad escénica</h2>
+  <div class="cuina-tematica cuina-salud">
+    <div class="icono">🧠</div>
+    <div class="texto">
+      <b data-i18n="c.salud">Salud mental</b>
+      <span data-i18n="d13.cuina">Antes de actuar, el eje HPA libera <b>cortisol</b>. Un poco de cortisol te mantiene alerta. Si se desborda: bloqueo, temblor, olvido. Regularlo requiere <b>respiración diafragmática</b>, <b>visualización</b> y <b>descanso</b>. Estas herramientas no eliminan los nervios: los ponen a tu favor.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">👥</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.grupos">En grupos 2-3</span>
+      <b data-i18n="d13.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d13.act.texto">Compartid estrategias concretas para bajar el estrés antes de una actuación. ¿Cuáles os han funcionado?</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d14.etq">Idea-fuerza</span>
+  <h2 data-i18n="d14.titulo">El dolor se puede modular</h2>
+  <div class="cuerpo" data-i18n="d14.cuerpo">El dolor no es solo una señal que llega al cerebro. El cerebro puede <b>modularlo</b>: aumentarlo o reducirlo según el contexto, las emociones y la atención.</div>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d15.titulo">Nocicepción y tipos de dolor</h2>
+  <p data-i18n="d15.p">La <b>nocicepción</b> es el proceso por el que se detecta un estímulo dañino (pinchazo, golpe, calor extremo).</p>
+  <table>
+    <tr>
+      <th data-i18n="d15.th1">Tipo</th>
+      <th data-i18n="d15.th2">Duración</th>
+      <th data-i18n="d15.th3">Función</th>
+    </tr>
+    <tr>
+      <td data-i18n="d15.r1a"><b>Agudo</b></td>
+      <td data-i18n="d15.r1b">Menos de 3 meses</td>
+      <td data-i18n="d15.r1c">Avisa de una lesión (útil)</td>
+    </tr>
+    <tr>
+      <td data-i18n="d15.r2a"><b>Crónico</b></td>
+      <td data-i18n="d15.r2b">Más de 3 meses</td>
+      <td data-i18n="d15.r2c">Pierde su función de aviso</td>
+    </tr>
+  </table>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d16.titulo">Cómo se modula el dolor</h2>
+  <ul>
+    <li data-i18n="d16.l1"><b>Vía descendente</b>: el cerebro puede inhibir la señal de dolor.</li>
+    <li data-i18n="d16.l2"><b>Endorfinas</b>: analgesia natural que se libera con el ejercicio.</li>
+    <li data-i18n="d16.l3"><b>Distracción</b>: puede reducir la percepción del dolor.</li>
+  </ul>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d17.titulo">El dolor en la danza</h2>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d17.cuina">El dolor agudo es una <b>señal de aviso</b>: no lo ignores. El dolor crónico requiere un abordaje distinto: fisioterapia, ejercicio gradual, técnicas de modulación. Ni "aguantar" ni "pastilla y a bailar" son buenas estrategias. Escuchar el cuerpo es parte del entrenamiento.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">🤔</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.reflexiona">Reflexiona</span>
+      <b data-i18n="d17.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d17.act.texto">¿Has tenido alguna vez una lesión que empezó con un dolor "pequeño" que ignoraste? ¿Qué habrías hecho distinto?</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d18.etq">Idea-fuerza</span>
+  <h2 data-i18n="d18.titulo">Calentar y enfriar</h2>
+  <div class="cuerpo" data-i18n="d18.cuerpo">El <b>calentamiento</b> y el <b>enfriamiento</b> son parte del entrenamiento, no una pérdida de tiempo. Preparan el sistema nervioso, cardiovascular y muscular para el esfuerzo y para la recuperación.</div>
+</section>
+
+<section class="slide tabla">
+  <h2 data-i18n="d19.titulo">Qué hace cada uno</h2>
+  <table>
+    <tr>
+      <th data-i18n="d19.th1"></th>
+      <th data-i18n="d19.th2">Calentamiento</th>
+      <th data-i18n="d19.th3">Enfriamiento</th>
+    </tr>
+    <tr>
+      <td data-i18n="d19.r1a"><b>Temperatura</b></td>
+      <td data-i18n="d19.r1b">Sube</td>
+      <td data-i18n="d19.r1c">Baja gradualmente</td>
+    </tr>
+    <tr>
+      <td data-i18n="d19.r2a"><b>Conducción nerviosa</b></td>
+      <td data-i18n="d19.r2b">Mejora</td>
+      <td data-i18n="d19.r2c">Se normaliza</td>
+    </tr>
+    <tr>
+      <td data-i18n="d19.r3a"><b>Pulso</b></td>
+      <td data-i18n="d19.r3b">Sube progresivamente</td>
+      <td data-i18n="d19.r3c">Baja progresivamente</td>
+    </tr>
+    <tr>
+      <td data-i18n="d19.r4a"><b>Sistema autónomo</b></td>
+      <td data-i18n="d19.r4b">Activa el simpático</td>
+      <td data-i18n="d19.r4c">Activa el parasimpático</td>
+    </tr>
+  </table>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d20.titulo">Calentamiento progresivo y enfriamiento suave</h2>
+  <div class="cuina-tematica cuina-calentamiento">
+    <div class="icono">🔥</div>
+    <div class="texto">
+      <b data-i18n="c.calentamiento">Calentamiento</b>
+      <span data-i18n="d20.cuina">Dedica <b>10-15 min</b> al calentamiento: movilidad articular suave, actividad cardiovascular progresiva y movimientos específicos de danza. Al terminar, dedica <b>5-10 min</b> al enfriamiento: actividad suave, estiramientos suaves, respiración diafragmática. Tu cuerpo lo agradecerá al día siguiente.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">👥</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.grupos">En grupos 2-3</span>
+      <b data-i18n="d20.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d20.act.texto">Diseñad un calentamiento de 10 minutos para una clase de danza clásica. Justificad cada parte con lo que habéis aprendido.</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d21.etq">Idea-fuerza</span>
+  <h2 data-i18n="d21.titulo">Imaginar es entrenar</h2>
+  <div class="cuerpo" data-i18n="d21.cuerpo">Imaginar un movimiento activa las <b>mismas áreas cerebrales</b> que ejecutarlo. La <b>visualización motora</b> es una herramienta real de entrenamiento, no solo una técnica mental.</div>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d22.titulo">Qué activa la visualización</h2>
+  <ul>
+    <li data-i18n="d22.l1"><b>Corteza motora</b>: prepara el movimiento.</li>
+    <li data-i18n="d22.l2"><b>Áreas premotoras</b>: planifican la secuencia.</li>
+    <li data-i18n="d22.l3"><b>Cerebelo</b>: coordina el timing.</li>
+    <li data-i18n="d22.l4"><b>Ganglios basales</b>: inician y secuencian.</li>
+  </ul>
+  <p data-i18n="d22.p">Hay dos tipos: <b>interna</b> (desde dentro del propio cuerpo) y <b>externa</b> (viéndote como un espectador).</p>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d23.titulo">Cómo usar la visualización antes de bailar</h2>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d23.cuina">Antes de una actuación, dedica 2 minutos a visualizar la coreografía: la entrada, los pasos clave, la respiración, la expresión. Antes de un paso difícil, ensáyalo mentalmente un par de veces. La visualización mejora la técnica, consolida la memoria motora y reduce la ansiedad escénica.</span>
+    </div>
+  </div>
+  <div class="cuina-tematica cuina-salud">
+    <div class="icono">🧠</div>
+    <div class="texto">
+      <b data-i18n="c.salud">Salud mental</b>
+      <span data-i18n="d23.cuina2">La visualización también sirve para regular el estrés: imaginar una actuación exitosa activa el sistema de recompensa y baja la percepción de amenaza.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.prueba">Prueba en clase</span>
+      <b data-i18n="d23.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d23.act.texto">Cerrad los ojos y visualizad un movimiento que dominéis. ¿Notáis activación muscular o cambios en la respiración?</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d24.etq">Idea-fuerza</span>
+  <h2 data-i18n="d24.titulo">El cerebro cambia toda la vida</h2>
+  <div class="cuerpo" data-i18n="d24.cuerpo">El cerebro no deja de cambiar. Se adapta a lo que haces, <b>durante toda la vida</b>. Esta capacidad se llama <b>neuroplasticidad</b>.</div>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d25.titulo">Qué cambia en el cerebro</h2>
+  <ul>
+    <li data-i18n="d25.l1"><b>Sinapsis</b>: se refuerzan o debilitan (LTP / LTD).</li>
+    <li data-i18n="d25.l2"><b>Corteza</b>: cambia el mapa del cuerpo según el uso.</li>
+    <li data-i18n="d25.l3"><b>Mielina</b>: se forma más donde se entrena.</li>
+  </ul>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d26.titulo">Qué favorece y qué reduce la plasticidad</h2>
+  <table>
+    <tr>
+      <th data-i18n="d26.th1">Favorecen</th>
+      <th data-i18n="d26.th2">Reducen</th>
+    </tr>
+    <tr>
+      <td data-i18n="d26.r1a">Novedad y esfuerzo significativo</td>
+      <td data-i18n="d26.r1b">Estrés crónico</td>
+    </tr>
+    <tr>
+      <td data-i18n="d26.r2a">Descanso y sueño</td>
+      <td data-i18n="d26.r2b">Falta de sueño</td>
+    </tr>
+    <tr>
+      <td data-i18n="d26.r3a">Ejercicio físico</td>
+      <td data-i18n="d26.r3b">Sedentarismo</td>
+    </tr>
+    <tr>
+      <td data-i18n="d26.r4a">Buena alimentación e hidratación</td>
+      <td data-i18n="d26.r4b">Aislamiento social</td>
+    </tr>
+  </table>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d27.titulo">Cómo aprovechar la plasticidad</h2>
+  <div class="cuina-tematica cuina-descanso">
+    <div class="icono">😴</div>
+    <div class="texto">
+      <b data-i18n="c.descanso">Descanso</b>
+      <span data-i18n="d27.cuina">Aprender un nuevo estilo, variar el entrenamiento, descansar bien y dormir lo suficiente son las mejores formas de mantener la plasticidad activa. La plasticidad no tiene edad: lo que cambia es la velocidad, no la capacidad.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">🤔</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.reflexiona">Reflexiona</span>
+      <b data-i18n="d27.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d27.act.texto">¿Por qué crees que muchas personas mayores pueden seguir aprendiendo a bailar? Relaciónalo con la neuroplasticidad.</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d28.etq">Idea-fuerza</span>
+  <h2 data-i18n="d28.titulo">Cada cuerpo es un mundo</h2>
+  <div class="cuerpo" data-i18n="d28.cuerpo">El control motor no es igual en todas las personas. Influyen la <b>genética</b>, el <b>sexo</b>, la <b>edad</b>, la <b>experiencia</b> y el <b>estado físico</b>. Adaptar el entrenamiento a cada persona es parte del buen hacer.</div>
+</section>
+
+<section class="slide tabla">
+  <h2 data-i18n="d29.titulo">Diferencias generales por sexo y edad</h2>
+  <table>
+    <tr>
+      <th data-i18n="d29.th1">Aspecto</th>
+      <th data-i18n="d29.th2">Tendencia general</th>
+    </tr>
+    <tr>
+      <td data-i18n="d29.r1a"><b>Fuerza</b></td>
+      <td data-i18n="d29.r1b">Los hombres suelen tener más masa muscular y fuerza absoluta</td>
+    </tr>
+    <tr>
+      <td data-i18n="d29.r2a"><b>Resistencia</b></td>
+      <td data-i18n="d29.r2b">Las mujeres suelen tener mejor resistencia a la fatiga</td>
+    </tr>
+    <tr>
+      <td data-i18n="d29.r3a"><b>Flexibilidad</b></td>
+      <td data-i18n="d29.r3b">Las mujeres suelen tener mayor amplitud articular</td>
+    </tr>
+    <tr>
+      <td data-i18n="d29.r4a"><b>Control motor</b></td>
+      <td data-i18n="d29.r4b">Depende más del entrenamiento que del sexo</td>
+    </tr>
+    <tr>
+      <td data-i18n="d29.r5a"><b>Con la edad</b></td>
+      <td data-i18n="d29.r5b">Disminuye la velocidad, la fuerza y el equilibrio, pero <b>la plasticidad se mantiene</b></td>
+    </tr>
+  </table>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d30.titulo">Adaptar el entrenamiento</h2>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d30.cuina">Un buen profesor/a de danza <b>adapta el entrenamiento a cada alumno</b>: no compara, no fuerza ritmos imposibles, respeta la edad y la experiencia. En danza, la diversidad es la norma, no la excepción. Trabajar desde las características propias es más eficaz que intentar copiar a otro.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">🤔</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.reflexiona">Reflexiona</span>
+      <b data-i18n="d30.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d30.act.texto">¿Por qué es importante no comparar el control motor entre personas de distintas edades o sexos? Explica con un ejemplo dancístico.</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide sintesis">
+  <h2 data-i18n="d31.titulo">Lo esencial del Bloque 5</h2>
+  <div class="caja" data-i18n="d31.caja">
+    El cerebro consume mucha energía y necesita glucosa y oxígeno. El <b>sueño</b> consolida lo aprendido. El <b>estrés</b>, en su justa medida, mejora el rendimiento. El <b>dolor</b> se puede modular. El <b>calentamiento y el enfriamiento</b> preparan y recuperan el cuerpo. La <b>visualización</b> activa las mismas áreas que el movimiento. La <b>neuroplasticidad</b> se mantiene toda la vida. Y cada cuerpo tiene sus características propias. Todos estos factores forman parte de tu entrenamiento como bailarín/a.
+  </div>
+</section>
+</main>
+
+<div class="counter" id="counter">Diapositiva 1 / 30</div>
+<div class="nav">
+  <button onclick="prev()" id="navPrev">← Anterior</button>
+  <button onclick="next()" id="navNext">Siguiente →</button>
+</div>
+
+<script>
+const I18N = {
+  es:{
+    headerTitulo:"Bloque 5 · Temas Transversales de Fisiología",
+    headerSub:"Fisiología · 1º Danza · Curso 2026-2027 · Cèlia Painous",
+    btnVolver:"← Índice", navPrev:"← Anterior", navNext:"Siguiente →", btnModo:"☀️ Modo claro",
+    "c.danza":"Conexión danza","c.nutricion":"Nutrición","c.calentamiento":"Calentamiento","c.descanso":"Descanso","c.salud":"Salud mental",
+    "act.reflexiona":"Reflexiona","act.prueba":"Prueba en clase","act.parejas":"En parejas","act.grupos":"En grupos 2-3",
+    "p.titulo":"Bloque 5 · Temas Transversales de Fisiología","p.sub":"Los factores que acompañan a todo movimiento dancístico","p.meta":"Curso 2026-2027 · Cèlia Painous · 32 diapositivas",
+    "d2.etq":"Idea-fuerza","d2.titulo":"El cerebro consume mucha energía","d2.cuerpo":"El cerebro representa el <b>2% del peso corporal</b>, pero consume el <b>20% de la energía</b> del cuerpo. Necesita <b>glucosa y oxígeno</b> de forma continua.",
+    "d3.titulo":"Qué ocurre si falta glucosa u oxígeno","d3.l1":"<b>Sin glucosa</b>: peor concentración, peor coordinación, mareos, irritabilidad.","d3.l2":"<b>Sin oxígeno</b>: en segundos, pérdida de conciencia. El cerebro no puede almacenar oxígeno.",
+    "d4.titulo":"Cómo alimentar tu cerebro antes de bailar","d4.cuina":"No bailes en ayunas: la bomba Na⁺/K⁺ y todo el sistema nervioso necesitan glucosa. Un buen desayuno o una merienda ligera 1-2 h antes del entrenamiento marca la diferencia en concentración y coordinación. Hidrátate antes, durante y después.","d4.act.titulo":"Actividad sugerida","d4.act.texto":"¿Has notado alguna vez que te cuesta concentrarte al final de una clase larga? ¿Crees que puede estar relacionado con la glucosa?",
+    "d5.titulo":"Antes de un ensayo","d5.cuina":"Un ensayo de 3 horas consume mucha energía. Si empiezas con el depósito vacío, el rendimiento cae en picado a partir de la primera hora: errores, torpeza, irritabilidad. La preparación previa (comida + hidratación) es tan importante como el calentamiento físico.",
+    "d6.etq":"Idea-fuerza","d6.titulo":"El reloj interno del cuerpo","d6.cuerpo":"El cuerpo tiene un <b>reloj interno</b> que regula cuándo estás despierto, cuándo tienes más energía y cuándo necesitas dormir. Ese reloj se llama <b>ritmo circadiano</b>.",
+    "d7.titulo":"Qué regula el ritmo circadiano","d7.l1":"<b>Sueño y vigilia</b>: cuándo tienes sueño y cuándo estás alerta.","d7.l2":"<b>Temperatura corporal</b>: sube y baja a lo largo del día.","d7.l3":"<b>Hormonas</b>: cortisol (alerta) y melatonina (sueño).","d7.l4":"<b>Atención y coordinación</b>: cambian según la hora.",
+    "d8.titulo":"El sueño y el aprendizaje motor","d8.p":"Durante el sueño se <b>consolida</b> lo aprendido. Bailar bien hoy depende, en parte, de haber dormido bien ayer.","d8.th1":"Fase","d8.th2":"Función principal","d8.r1a":"Sueño profundo","d8.r1b":"Reparación física, crecimiento","d8.r2a":"Sueño REM","d8.r2b":"Memoria, aprendizaje, emociones",
+    "d9.titulo":"Higiene del sueño para bailarines","d9.cuina":"Dormir <b>7-9 horas</b>. Evitar pantallas 30 min antes de dormir. No entrenar justo después de una comida copiosa. Mantener horarios regulares. Estos hábitos no solo mejoran el descanso: mejoran la memoria motora, la coordinación y la recuperación muscular.","d9.act.titulo":"Actividad sugerida","d9.act.texto":"Compartid vuestros hábitos de sueño. ¿Cuántas horas dormís? ¿Qué notáis al día siguiente cuando dormís poco?",
+    "d10.etq":"Idea-fuerza","d10.titulo":"El estrés es una respuesta completa","d10.cuerpo":"El estrés no es solo 'nervios'. Es una <b>respuesta fisiológica completa</b> que afecta a todo el cuerpo: pulso, respiración, hormonas, digestión, atención.",
+    "d11.titulo":"Las 3 fases del estrés","d11.l1":"<b>Alarma</b>: el cuerpo detecta la amenaza. Se activa el simpático.","d11.l2":"<b>Resistencia</b>: el cuerpo se adapta. El cortisol mantiene la alerta.","d11.l3":"<b>Agotamiento</b>: si dura demasiado, el cuerpo se desgasta.",
+    "d12.titulo":"Estrés bueno vs. estrés malo","d12.p":"Un poco de estrés <b>mejora el rendimiento</b> (activación óptima). Demasiado estrés lo <b>bloquea</b>.","d12.p2":"La diferencia no está en 'tener nervios' o no tenerlos, sino en <b>cómo de intensa</b> es la respuesta y en <b>cómo la gestionas</b>.",
+    "d13.titulo":"El cortisol y la ansiedad escénica","d13.cuina":"Antes de actuar, el eje HPA libera cortisol. Un poco de cortisol te mantiene alerta. Si se desborda: bloqueo, temblor, olvido. Regularlo requiere respiración diafragmática, visualización y descanso.","d13.act.titulo":"Actividad sugerida","d13.act.texto":"Compartid estrategias concretas para bajar el estrés antes de una actuación. ¿Cuáles os han funcionado?",
+    "d14.etq":"Idea-fuerza","d14.titulo":"El dolor se puede modular","d14.cuerpo":"El dolor no es solo una señal que llega al cerebro. El cerebro puede <b>modularlo</b>: aumentarlo o reducirlo según el contexto, las emociones y la atención.",
+    "d15.titulo":"Nocicepción y tipos de dolor","d15.p":"La <b>nocicepción</b> es el proceso por el que se detecta un estímulo dañino.","d15.th1":"Tipo","d15.th2":"Duración","d15.th3":"Función","d15.r1a":"<b>Agudo</b>","d15.r1b":"Menos de 3 meses","d15.r1c":"Avisa de una lesión (útil)","d15.r2a":"<b>Crónico</b>","d15.r2b":"Más de 3 meses","d15.r2c":"Pierde su función de aviso",
+    "d16.titulo":"Cómo se modula el dolor","d16.l1":"<b>Vía descendente</b>: el cerebro puede inhibir la señal de dolor.","d16.l2":"<b>Endorfinas</b>: analgesia natural que se libera con el ejercicio.","d16.l3":"<b>Distracción</b>: puede reducir la percepción del dolor.",
+    "d17.titulo":"El dolor en la danza","d17.cuina":"El dolor agudo es una señal de aviso: no lo ignores. El dolor crónico requiere un abordaje distinto. Ni 'aguantar' ni 'pastilla y a bailar' son buenas estrategias.","d17.act.titulo":"Actividad sugerida","d17.act.texto":"¿Has tenido alguna vez una lesión que empezó con un dolor 'pequeño' que ignoraste?",
+    "d18.etq":"Idea-fuerza","d18.titulo":"Calentar y enfriar","d18.cuerpo":"El <b>calentamiento</b> y el <b>enfriamiento</b> son parte del entrenamiento. Preparan el sistema nervioso, cardiovascular y muscular.",
+    "d19.titulo":"Qué hace cada uno","d19.th1":"","d19.th2":"Calentamiento","d19.th3":"Enfriamiento","d19.r1a":"<b>Temperatura</b>","d19.r1b":"Sube","d19.r1c":"Baja gradualmente","d19.r2a":"<b>Conducción nerviosa</b>","d19.r2b":"Mejora","d19.r2c":"Se normaliza","d19.r3a":"<b>Pulso</b>","d19.r3b":"Sube progresivamente","d19.r3c":"Baja progresivamente","d19.r4a":"<b>Sistema autónomo</b>","d19.r4b":"Activa el simpático","d19.r4c":"Activa el parasimpático",
+    "d20.titulo":"Calentamiento progresivo y enfriamiento suave","d20.cuina":"Dedica 10-15 min al calentamiento y 5-10 min al enfriamiento. Tu cuerpo lo agradecerá al día siguiente.","d20.act.titulo":"Actividad sugerida","d20.act.texto":"Diseñad un calentamiento de 10 minutos para una clase de danza clásica.",
+    "d21.etq":"Idea-fuerza","d21.titulo":"Imaginar es entrenar","d21.cuerpo":"Imaginar un movimiento activa las <b>mismas áreas cerebrales</b> que ejecutarlo.",
+    "d22.titulo":"Qué activa la visualización","d22.l1":"<b>Corteza motora</b>: prepara el movimiento.","d22.l2":"<b>Áreas premotoras</b>: planifican la secuencia.","d22.l3":"<b>Cerebelo</b>: coordina el timing.","d22.l4":"<b>Ganglios basales</b>: inician y secuencian.","d22.p":"Hay dos tipos: <b>interna</b> y <b>externa</b>.",
+    "d23.titulo":"Cómo usar la visualización antes de bailar","d23.cuina":"Antes de una actuación, dedica 2 minutos a visualizar la coreografía.","d23.cuina2":"La visualización también sirve para regular el estrés.","d23.act.titulo":"Actividad sugerida","d23.act.texto":"Cerrad los ojos y visualizad un movimiento que dominéis.",
+    "d24.etq":"Idea-fuerza","d24.titulo":"El cerebro cambia toda la vida","d24.cuerpo":"El cerebro no deja de cambiar. Se adapta a lo que haces, <b>durante toda la vida</b>.",
+    "d25.titulo":"Qué cambia en el cerebro","d25.l1":"<b>Sinapsis</b>: se refuerzan o debilitan (LTP / LTD).","d25.l2":"<b>Corteza</b>: cambia el mapa del cuerpo según el uso.","d25.l3":"<b>Mielina</b>: se forma más donde se entrena.",
+    "d26.titulo":"Qué favorece y qué reduce la plasticidad","d26.th1":"Favorecen","d26.th2":"Reducen","d26.r1a":"Novedad y esfuerzo significativo","d26.r1b":"Estrés crónico","d26.r2a":"Descanso y sueño","d26.r2b":"Falta de sueño","d26.r3a":"Ejercicio físico","d26.r3b":"Sedentarismo","d26.r4a":"Buena alimentación e hidratación","d26.r4b":"Aislamiento social",
+    "d27.titulo":"Cómo aprovechar la plasticidad","d27.cuina":"Aprender un nuevo estilo, variar el entrenamiento, descansar bien y dormir lo suficiente. La plasticidad no tiene edad.","d27.act.titulo":"Actividad sugerida","d27.act.texto":"¿Por qué muchas personas mayores pueden seguir aprendiendo a bailar?",
+    "d28.etq":"Idea-fuerza","d28.titulo":"Cada cuerpo es un mundo","d28.cuerpo":"El control motor no es igual en todas las personas. Influyen la <b>genética</b>, el <b>sexo</b>, la <b>edad</b>, la <b>experiencia</b> y el <b>estado físico</b>.",
+    "d29.titulo":"Diferencias generales por sexo y edad","d29.th1":"Aspecto","d29.th2":"Tendencia general","d29.r1a":"<b>Fuerza</b>","d29.r1b":"Los hombres suelen tener más masa muscular y fuerza absoluta","d29.r2a":"<b>Resistencia</b>","d29.r2b":"Las mujeres suelen tener mejor resistencia a la fatiga","d29.r3a":"<b>Flexibilidad</b>","d29.r3b":"Las mujeres suelen tener mayor amplitud articular","d29.r4a":"<b>Control motor</b>","d29.r4b":"Depende más del entrenamiento que del sexo","d29.r5a":"<b>Con la edad</b>","d29.r5b":"Disminuye la velocidad, la fuerza y el equilibrio, pero <b>la plasticidad se mantiene</b>",
+    "d30.titulo":"Adaptar el entrenamiento","d30.cuina":"Un buen profesor/a de danza adapta el entrenamiento a cada alumno: no compara, no fuerza ritmos imposibles, respeta la edad y la experiencia.","d30.act.titulo":"Actividad sugerida","d30.act.texto":"¿Por qué es importante no comparar el control motor entre personas de distintas edades o sexos?",
+    "d31.titulo":"Lo esencial del Bloque 5","d31.caja":"El cerebro consume mucha energía. El <b>sueño</b> consolida. El <b>estrés</b> justo mejora el rendimiento. El <b>dolor</b> se puede modular. El <b>calentamiento y el enfriamiento</b> preparan y recuperan. La <b>visualización</b> activa las mismas áreas. La <b>neuroplasticidad</b> se mantiene toda la vida. Cada cuerpo tiene sus características propias.",
+    "d32.titulo":"Fin del Bloque 5","d32.sub":"Temas Transversales de Fisiología","d32.meta":"Fin de la presentación · Vuelve al índice para repasar cualquier bloque"
+  },
+  ca:{
+    headerTitulo:"Bloc 5 · Temes Transversals de Fisiologia",
+    headerSub:"Fisiologia · 1r Dansa · Curs 2026-2027 · Cèlia Painous",
+    btnVolver:"← Índex", navPrev:"← Anterior", navNext:"Següent →", btnModo:"☀️ Mode clar",
+    "c.danza":"Connexió dansa","c.nutricion":"Nutrició","c.calentamiento":"Calfament","c.descanso":"Descans","c.salud":"Salut mental",
+    "act.reflexiona":"Reflexiona","act.prueba":"Prova a classe","act.parejas":"En parelles","act.grupos":"En grups 2-3",
+    "p.titulo":"Bloc 5 · Temes Transversals de Fisiologia","p.sub":"Els factors que acompanyen tot moviment","p.meta":"Curs 2026-2027 · Cèlia Painous · 32 diapositives",
+    "d2.etq":"Idea-força","d2.titulo":"El cervell consumeix molta energia","d2.cuerpo":"El cervell és el 2% del pes però consumeix el 20% de l'energia.",
+    "d3.titulo":"Sense glucosa o oxigen","d3.l1":"Sense glucosa: pitjor concentració.","d3.l2":"Sense oxigen: pèrdua de consciència.",
+    "d4.titulo":"Com alimentar el cervell","d4.cuina":"No ballis en dejú.","d4.act.titulo":"Activitat suggerida","d4.act.texto":"Et costa concentrar-te al final d'una classe?",
+    "d5.titulo":"Abans d'un assaig","d5.cuina":"Un assaig de 3 h consumeix molta energia.",
+    "d6.etq":"Idea-força","d6.titulo":"El rellotge intern","d6.cuerpo":"Ritme circadià.",
+    "d7.titulo":"Què regula","d7.l1":"Son.","d7.l2":"Temperatura.","d7.l3":"Hormones.","d7.l4":"Atenció.",
+    "d8.titulo":"Son i aprenentatge","d8.p":"Durant la son es consolida.","d8.th1":"Fase","d8.th2":"Funció","d8.r1a":"Profund","d8.r1b":"Reparació","d8.r2a":"REM","d8.r2b":"Memòria",
+    "d9.titulo":"Higiene del son","d9.cuina":"7-9 hores.","d9.act.titulo":"Activitat suggerida","d9.act.texto":"Quantes hores dorms?",
+    "d10.etq":"Idea-força","d10.titulo":"Estrès complet","d10.cuerpo":"Resposta fisiològica completa.",
+    "d11.titulo":"Les 3 fases","d11.l1":"Alarma.","d11.l2":"Resistència.","d11.l3":"Agotament.",
+    "d12.titulo":"Estrès bo vs. dolent","d12.p":"Una mica millora el rendiment.","d12.p2":"Massa el bloqueja.",
+    "d13.titulo":"Cortisol","d13.cuina":"Un poc manté alerta. Massa bloqueja.","d13.act.titulo":"Activitat suggerida","d13.act.texto":"Estratègies per baixar l'estrès.",
+    "d14.etq":"Idea-força","d14.titulo":"Dolor modulable","d14.cuerpo":"El cervell pot modular el dolor.",
+    "d15.titulo":"Tipus de dolor","d15.p":"Nocicepció.","d15.th1":"Tipus","d15.th2":"Durada","d15.th3":"Funció","d15.r1a":"<b>Agut</b>","d15.r1b":"<3 mesos","d15.r1c":"Avisa","d15.r2a":"<b>Crònic</b>","d15.r2b":">3 mesos","d15.r2c":"Perd funció",
+    "d16.titulo":"Modulació","d16.l1":"Via descendent.","d16.l2":"Endorfines.","d16.l3":"Distracció.",
+    "d17.titulo":"Dolor i dansa","d17.cuina":"El dolor agut és avís.","d17.act.titulo":"Activitat suggerida","d17.act.texto":"Has ignorat mai un dolor petit?",
+    "d18.etq":"Idea-força","d18.titulo":"Calfar i refredar","d18.cuerpo":"Part de l'entrenament.",
+    "d19.titulo":"Què fa cadascú","d19.th1":"","d19.th2":"Calfament","d19.th3":"Refredament","d19.r1a":"<b>Temperatura</b>","d19.r1b":"Puja","d19.r1c":"Baixa","d19.r2a":"<b>Conducció</b>","d19.r2b":"Millora","d19.r2c":"Normalitza","d19.r3a":"<b>Pols</b>","d19.r3b":"Puja","d19.r3c":"Baixa","d19.r4a":"<b>Autònom</b>","d19.r4b":"Simpàtic","d19.r4c":"Parasimpàtic",
+    "d20.titulo":"Calfament i refredament","d20.cuina":"10-15 min calfament i 5-10 min refredament.","d20.act.titulo":"Activitat suggerida","d20.act.texto":"Dissenyeu un calfament.",
+    "d21.etq":"Idea-força","d21.titulo":"Imaginar és entrenar","d21.cuerpo":"Mateixes àrees cerebrals.",
+    "d22.titulo":"Què activa","d22.l1":"Escorça motora.","d22.l2":"Premotores.","d22.l3":"Cerebel.","d22.l4":"Ganglis basals.","d22.p":"Interna i externa.",
+    "d23.titulo":"Visualització abans de ballar","d23.cuina":"2 minuts abans d'actuar.","d23.cuina2":"També regula l'estrès.","d23.act.titulo":"Activitat suggerida","d23.act.texto":"Visualitzeu un moviment.",
+    "d24.etq":"Idea-força","d24.titulo":"El cervell canvia","d24.cuerpo":"Neuroplasticitat tota la vida.",
+    "d25.titulo":"Què canvia","d25.l1":"Sinapsis.","d25.l2":"Escorça.","d25.l3":"Mielina.",
+    "d26.titulo":"Què afavoreix","d26.th1":"Afavoreixen","d26.th2":"Redueixen","d26.r1a":"Novetat","d26.r1b":"Estrès crònic","d26.r2a":"Descans","d26.r2b":"Poca son","d26.r3a":"Exercici","d26.r3b":"Sedentarisme","d26.r4a":"Bona alimentació","d26.r4b":"Aïllament",
+    "d27.titulo":"Aprofitar la plasticitat","d27.cuina":"Nou estil, variar, descansar.","d27.act.titulo":"Activitat suggerida","d27.act.texto":"Per què els grans aprenen?",
+    "d28.etq":"Idea-força","d28.titulo":"Cada cos és un món","d28.cuerpo":"Genètica, sexe, edat, experiència.",
+    "d29.titulo":"Diferències","d29.th1":"Aspecte","d29.th2":"Tendència","d29.r1a":"<b>Força</b>","d29.r1b":"Homes més","d29.r2a":"<b>Resistència</b>","d29.r2b":"Dones millor","d29.r3a":"<b>Flexibilitat</b>","d29.r3b":"Dones més","d29.r4a":"<b>Control</b>","d29.r4b":"Depèn de l'entrenament","d29.r5a":"<b>Edat</b>","d29.r5b":"Disminueix però plasticitat es manté",
+    "d30.titulo":"Adaptar","d30.cuina":"Un bon professor adapta.","d30.act.titulo":"Activitat suggerida","d30.act.texto":"Per què no comparar?",
+    "d31.titulo":"L'essencial","d31.caja":"Energia, son, estrès, dolor, calfament, visualització, plasticitat, diferències individuals.",
+    "d32.titulo":"Fi del Bloc 5","d32.sub":"Temes Transversals","d32.meta":"Fi de la presentació"
+  },
+  en:{
+    headerTitulo:"Block 5 · Cross-cutting Topics in Physiology",
+    headerSub:"Physiology · 1st Dance · 2026-2027 · Cèlia Painous",
+    btnVolver:"← Index", navPrev:"← Previous", navNext:"Next →", btnModo:"☀️ Light mode",
+    "c.danza":"Dance connection","c.nutricion":"Nutrition","c.calentamiento":"Warm-up","c.descanso":"Rest","c.salud":"Mental health",
+    "act.reflexiona":"Reflect","act.prueba":"Try in class","act.parejas":"In pairs","act.grupos":"In groups 2-3",
+    "p.titulo":"Block 5 · Cross-cutting Topics in Physiology","p.sub":"The factors accompanying every dance movement","p.meta":"2026-2027 · Cèlia Painous · 32 slides",
+    "d2.etq":"Key idea","d2.titulo":"The brain uses a lot of energy","d2.cuerpo":"The brain is 2% of body weight but consumes 20% of energy.",
+    "d3.titulo":"Without glucose or oxygen","d3.l1":"Without glucose: worse concentration.","d3.l2":"Without oxygen: loss of consciousness.",
+    "d4.titulo":"How to feed your brain","d4.cuina":"Don't dance on an empty stomach.","d4.act.titulo":"Suggested activity","d4.act.texto":"Hard to concentrate at the end of a long class?",
+    "d5.titulo":"Before a rehearsal","d5.cuina":"A 3-hour rehearsal uses a lot of energy.",
+    "d6.etq":"Key idea","d6.titulo":"The internal clock","d6.cuerpo":"Circadian rhythm.",
+    "d7.titulo":"What it regulates","d7.l1":"Sleep.","d7.l2":"Temperature.","d7.l3":"Hormones.","d7.l4":"Attention.",
+    "d8.titulo":"Sleep and learning","d8.p":"Consolidation during sleep.","d8.th1":"Phase","d8.th2":"Function","d8.r1a":"Deep","d8.r1b":"Repair","d8.r2a":"REM","d8.r2b":"Memory",
+    "d9.titulo":"Sleep hygiene","d9.cuina":"7-9 hours.","d9.act.titulo":"Suggested activity","d9.act.texto":"How many hours do you sleep?",
+    "d10.etq":"Key idea","d10.titulo":"Complete stress response","d10.cuerpo":"A full physiological response.",
+    "d11.titulo":"The 3 phases","d11.l1":"Alarm.","d11.l2":"Resistance.","d11.l3":"Exhaustion.",
+    "d12.titulo":"Good vs. bad stress","d12.p":"A little improves performance.","d12.p2":"Too much blocks it.",
+    "d13.titulo":"Cortisol","d13.cuina":"A little keeps you alert. Too much blocks.","d13.act.titulo":"Suggested activity","d13.act.texto":"Strategies to lower stress.",
+    "d14.etq":"Key idea","d14.titulo":"Pain can be modulated","d14.cuerpo":"The brain can modulate pain.",
+    "d15.titulo":"Types of pain","d15.p":"Nociception.","d15.th1":"Type","d15.th2":"Duration","d15.th3":"Function","d15.r1a":"<b>Acute</b>","d15.r1b":"<3 months","d15.r1c":"Warns","d15.r2a":"<b>Chronic</b>","d15.r2b":">3 months","d15.r2c":"Loses function",
+    "d16.titulo":"Modulation","d16.l1":"Descending pathway.","d16.l2":"Endorphins.","d16.l3":"Distraction.",
+    "d17.titulo":"Pain in dance","d17.cuina":"Acute pain is a warning.","d17.act.titulo":"Suggested activity","d17.act.texto":"Ever ignored a small pain?",
+    "d18.etq":"Key idea","d18.titulo":"Warm-up and cool-down","d18.cuerpo":"Part of training.",
+    "d19.titulo":"What each does","d19.th1":"","d19.th2":"Warm-up","d19.th3":"Cool-down","d19.r1a":"<b>Temperature</b>","d19.r1b":"Rises","d19.r1c":"Falls","d19.r2a":"<b>Conduction</b>","d19.r2b":"Improves","d19.r2c":"Normalises","d19.r3a":"<b>HR</b>","d19.r3b":"Rises","d19.r3c":"Falls","d19.r4a":"<b>Autonomic</b>","d19.r4b":"Sympathetic","d19.r4c":"Parasympathetic",
+    "d20.titulo":"Warm-up and cool-down","d20.cuina":"10-15 min warm-up, 5-10 min cool-down.","d20.act.titulo":"Suggested activity","d20.act.texto":"Design a warm-up.",
+    "d21.etq":"Key idea","d21.titulo":"Imagining is training","d21.cuerpo":"Same brain areas.",
+    "d22.titulo":"What it activates","d22.l1":"Motor cortex.","d22.l2":"Premotor.","d22.l3":"Cerebellum.","d22.l4":"Basal ganglia.","d22.p":"Internal and external.",
+    "d23.titulo":"Imagery before dancing","d23.cuina":"2 minutes before performing.","d23.cuina2":"Also regulates stress.","d23.act.titulo":"Suggested activity","d23.act.texto":"Visualise a movement.",
+    "d24.etq":"Key idea","d24.titulo":"Brain changes","d24.cuerpo":"Neuroplasticity throughout life.",
+    "d25.titulo":"What changes","d25.l1":"Synapses.","d25.l2":"Cortex.","d25.l3":"Myelin.",
+    "d26.titulo":"What favours","d26.th1":"Favour","d26.th2":"Reduce","d26.r1a":"Novelty","d26.r1b":"Chronic stress","d26.r2a":"Rest","d26.r2b":"Sleep loss","d26.r3a":"Exercise","d26.r3b":"Sedentarism","d26.r4a":"Good nutrition","d26.r4b":"Isolation",
+    "d27.titulo":"Using plasticity","d27.cuina":"New styles, variety, rest.","d27.act.titulo":"Suggested activity","d27.act.texto":"Why do older people learn?",
+    "d28.etq":"Key idea","d28.titulo":"Every body is a world","d28.cuerpo":"Genetics, sex, age, experience.",
+    "d29.titulo":"Differences","d29.th1":"Aspect","d29.th2":"Trend","d29.r1a":"<b>Strength</b>","d29.r1b":"Men more","d29.r2a":"<b>Endurance</b>","d29.r2b":"Women better","d29.r3a":"<b>Flexibility</b>","d29.r3b":"Women more","d29.r4a":"<b>Control</b>","d29.r4b":"Depends on training","d29.r5a":"<b>Age</b>","d29.r5b":"Decreases but plasticity remains",
+    "d30.titulo":"Adapting","d30.cuina":"A good teacher adapts.","d30.act.titulo":"Suggested activity","d30.act.texto":"Why not compare?",
+    "d31.titulo":"The essentials","d31.caja":"Energy, sleep, stress, pain, warm-up, imagery, plasticity, individual differences.",
+    "d32.titulo":"End of Block 5","d32.sub":"Cross-cutting Topics","d32.meta":"End of presentation"
+  }
+};
+
+let lang = 'es';
+function t(k){ return (I18N[lang] && I18N[lang][k]) || I18N.es[k] || k; }
+function aplicarIdioma(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k = el.dataset.i18n;
+    const v = t(k);
+    if(v !== undefined) el.innerHTML = v;
+  });
+  const ht = document.getElementById('headerTitulo'); if(ht) ht.textContent = t('headerTitulo');
+  const hs = document.getElementById('headerSub'); if(hs) hs.textContent = t('headerSub');
+  document.getElementById('btnVolver').textContent = t('btnVolver');
+  document.getElementById('navPrev').textContent = t('navPrev');
+  document.getElementById('navNext').textContent = t('navNext');
+  const bm = document.getElementById('btnModo');
+  bm.textContent = document.body.classList.contains('claro')
+    ? (lang==='en'?'🌙 Dark mode':lang==='ca'?'🌙 Mode fosc':'🌙 Modo oscuro')
+    : t('btnModo');
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.lang-switch button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+}
+document.querySelectorAll('.lang-switch button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{ lang = btn.dataset.lang; aplicarIdioma(); });
+});
+
+let idx = 0;
+const slides = document.querySelectorAll('.slide');
+function show(i){
+  slides.forEach(s=>s.classList.remove('active'));
+  slides[i].classList.add('active');
+  slides[i].scrollTop = 0;
+  document.getElementById('counter').textContent = `Diapositiva ${i+1} / ${slides.length}`;
+  document.getElementById('progress').style.width = ((i+1)/slides.length*100)+'%';
+}
+function next(){ if(idx < slides.length-1){ idx++; show(idx); } }
+function prev(){ if(idx > 0){ idx--; show(idx); } }
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight' || e.key===' ') { e.preventDefault(); next(); }
+  if(e.key==='ArrowLeft') { e.preventDefault(); prev(); }
+});
+function volverIndice(){ window.location.href = 'index.html'; }
+function toggleModo(){
+  document.body.classList.toggle('claro');
+  const bm = document.getElementById('btnModo');
+  bm.textContent = document.body.classList.contains('claro')
+    ? (lang==='en'?'🌙 Dark mode':lang==='ca'?'🌙 Mode fosc':'🌙 Modo oscuro')
+    : t('btnModo');
+}
+aplicarIdioma();
+show(0);
+</script>
+</body>
+</html>

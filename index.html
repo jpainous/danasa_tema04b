@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Fisiología del Sistema Nervioso · Presentación</title>
+<style>
+  :root{
+    --bg:#0d1024;--card:#1a1f3c;--accent:#ff5c8a;--accent2:#4fd1c5;
+    --text:#f5f7ff;--muted:#b8c0e0;--ok:#4ade80;--warn:#fbbf24;--bad:#f87171;
+    --notas:#ffd166;--cuina:#b07cff;
+  }
+  body.claro{
+    --bg:#f7f8fc;--card:#ffffff;--text:#1a1f3c;--muted:#5a6488;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;}
+
+  /* HERO */
+  .hero{
+    background:linear-gradient(135deg, var(--card), var(--bg));
+    padding:70px 30px 60px;
+    text-align:center;
+    border-bottom:3px solid var(--accent2);
+    position:relative;
+  }
+  .hero .etiqueta{
+    display:inline-block;
+    background:var(--accent2);
+    color:#0f1226;
+    padding:5px 16px;
+    border-radius:20px;
+    font-size:.8rem;
+    font-weight:800;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    margin-bottom:24px;
+  }
+  .hero h1{
+    font-size:3rem;
+    color:var(--accent);
+    margin-bottom:16px;
+    line-height:1.15;
+  }
+  .hero .sub{
+    font-size:1.25rem;
+    color:var(--muted);
+    margin-bottom:8px;
+  }
+  .hero .meta{
+    font-size:1rem;
+    color:var(--muted);
+    margin-top:14px;
+  }
+  .hero .controles{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-top:30px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .hero .controles button{
+    background:#252b52;color:var(--accent2);
+    border:1px solid #3a4170;
+    padding:9px 16px;border-radius:10px;
+    cursor:pointer;font-weight:800;font-size:.9rem;
+    transition:.15s;
+  }
+  body.claro .hero .controles button{background:#e8ebf5;color:#1a1f3c;border-color:#c5cbe0;}
+  .hero .controles button:hover{background:var(--accent2);color:#0f1226;}
+  .lang-switch{
+    display:flex;gap:4px;background:var(--card);
+    padding:4px;border-radius:10px;border:1px solid #3a4170;
+  }
+  body.claro .lang-switch{border-color:#c5cbe0;}
+  .lang-switch button{
+    background:transparent;color:var(--muted);border:none;
+    padding:6px 12px;border-radius:6px;cursor:pointer;
+    font-weight:800;font-size:.85rem;transition:.15s;
+  }
+  .lang-switch button:hover{background:#252b52;}
+  body.claro .lang-switch button:hover{background:#e0e5f0;}
+  .lang-switch button.active{background:var(--accent2);color:#0f1226;}
+
+  /* MAIN */
+  main{max-width:1200px;margin:0 auto;padding:50px 24px 100px;}
+
+  .intro{
+    background:var(--card);
+    border-radius:16px;
+    padding:28px 34px;
+    border-left:5px solid var(--accent2);
+    margin-bottom:40px;
+    font-size:1.05rem;
+    line-height:1.7;
+    color:var(--text);
+  }
+  .intro b{color:var(--accent2);}
+
+  .seccion-titulo{
+    font-size:1.4rem;
+    color:var(--accent2);
+    margin-bottom:22px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .seccion-titulo::before{
+    content:"";
+    width:8px;height:28px;
+    background:var(--accent);
+    border-radius:4px;
+    display:inline-block;
+  }
+
+  /* GRID DE BLOQUES */
+  .grid-bloques{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:22px;
+    margin-bottom:50px;
+  }
+  .bloque-card{
+    background:var(--card);
+    border-radius:16px;
+    padding:28px 26px;
+    cursor:pointer;
+    transition:.25s;
+    text-decoration:none;
+    color:inherit;
+    display:flex;
+    flex-direction:column;
+    border-top:5px solid var(--accent);
+    position:relative;
+    overflow:hidden;
+  }
+  .bloque-card::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at top right, rgba(255,92,138,.08), transparent 60%);
+    opacity:0;
+    transition:.3s;
+    pointer-events:none;
+  }
+  .bloque-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 12px 32px rgba(255,92,138,.18);
+  }
+  .bloque-card:hover::after{opacity:1;}
+  .bloque-card .num{
+    font-size:3rem;
+    font-weight:900;
+    color:var(--accent);
+    line-height:1;
+    margin-bottom:14px;
+  }
+  .bloque-card h3{
+    font-size:1.2rem;
+    color:var(--accent2);
+    margin-bottom:10px;
+    line-height:1.3;
+  }
+  .bloque-card p{
+    font-size:.95rem;
+    color:var(--muted);
+    line-height:1.55;
+    margin-bottom:16px;
+    flex:1;
+  }
+  .bloque-card .info-bloque{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:.82rem;
+    color:var(--accent2);
+    font-weight:700;
+    padding-top:14px;
+    border-top:1px solid #3a4170;
+  }
+  body.claro .bloque-card .info-bloque{border-top-color:#c5cbe0;}
+  .bloque-card .info-bloque .diapos{
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .bloque-card .info-bloque .flecha{
+    font-size:1.2rem;
+    color:var(--accent);
+  }
+
+  /* COLORES DE ACENTO POR BLOQUE */
+  .b1{border-top-color:#ff5c8a;}
+  .b1 .num{color:#ff5c8a;}
+  .b2{border-top-color:#4fd1c5;}
+  .b2 .num{color:#4fd1c5;}
+  .b3{border-top-color:#b07cff;}
+  .b3 .num{color:#b07cff;}
+  .b4{border-top-color:#ff9f43;}
+  .b4 .num{color:#ff9f43;}
+  .b5{border-top-color:#ffd166;}
+  .b5 .num{color:#ffd166;}
+
+  /* CUÑAS RESUMEN */
+  .cunas-resumen{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:14px;
+    margin-bottom:50px;
+  }
+  .cuna-resumen{
+    background:var(--card);
+    border-radius:12px;
+    padding:16px 18px;
+    border-left:4px solid var(--cuina);
+    font-size:.9rem;
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    line-height:1.5;
+  }
+  .cuna-resumen .icono{font-size:1.5rem;line-height:1;}
+  .cuna-resumen b{display:block;color:var(--cuina);margin-bottom:2px;font-size:.95rem;}
+  .cuna-resumen span{color:var(--muted);}
+
+  /* ESTADÍSTICAS */
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:18px;
+    margin-bottom:50px;
+  }
+  .stat{
+    background:var(--card);
+    border-radius:14px;
+    padding:22px 20px;
+    text-align:center;
+    border-bottom:4px solid var(--accent2);
+  }
+  .stat .valor{
+    font-size:2.4rem;
+    font-weight:900;
+    color:var(--accent2);
+    line-height:1;
+    margin-bottom:6px;
+  }
+  .stat .etiqueta-stat{
+    font-size:.85rem;
+    color:var(--muted);
+    font-weight:600;
+  }
+
+  /* CÓMO USAR */
+  .como-usar{
+    background:var(--card);
+    border-radius:16px;
+    padding:32px 36px;
+    border-left:5px solid var(--warn);
+    margin-bottom:40px;
+  }
+  .como-usar h3{
+    color:var(--warn);
+    font-size:1.25rem;
+    margin-bottom:18px;
+  }
+  .como-usar ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  .como-usar li{
+    font-size:1rem;
+    line-height:1.7;
+    margin-bottom:10px;
+    padding-left:28px;
+    position:relative;
+    color:var(--text);
+  }
+  .como-usar li::before{
+    content:"▸";
+    position:absolute;
+    left:8px;
+    color:var(--warn);
+    font-weight:900;
+  }
+  .como-usar b{color:var(--accent2);}
+
+  /* FOOTER */
+  footer{
+    text-align:center;
+    padding:40px 20px;
+    color:var(--muted);
+    font-size:.9rem;
+    border-top:1px solid #3a4170;
+    margin-top:40px;
+  }
+  body.claro footer{border-top-color:#c5cbe0;}
+  footer .nombre{
+    color:var(--accent2);
+    font-weight:700;
+  }
+
+  @media(max-width:700px){
+    .hero{padding:50px 20px 40px;}
+    .hero h1{font-size:2rem;}
+    .hero .sub{font-size:1rem;}
+    main{padding:30px 16px 60px;}
+    .intro,.como-usar{padding:22px 22px;}
+    .bloque-card{padding:22px 20px;}
+    .bloque-card .num{font-size:2.4rem;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <span class="etiqueta" data-i18n="hero.etq">Presentación</span>
+  <h1 data-i18n="hero.titulo">Fisiología del Sistema Nervioso</h1>
+  <p class="sub" data-i18n="hero.sub">Del impulso nervioso al movimiento dancístico</p>
+  <p class="meta" data-i18n="hero.meta">Curso 2026-2027 · Cèlia Painous · 1º Danza</p>
+  <div class="controles">
+    <div class="lang-switch">
+      <button data-lang="es" class="active">ES</button>
+      <button data-lang="ca">CA</button>
+      <button data-lang="en">EN</button>
+    </div>
+    <button onclick="toggleModo()" id="btnModo">☀️ Modo claro</button>
+  </div>
+</section>
+
+<main>
+
+<!-- ========== INTRO ========== -->
+<section class="intro">
+  <p data-i18n="intro.texto">Esta presentación recorre la fisiología del sistema nervioso desde la neurona hasta el movimiento dancístico. Está organizada en <b>5 bloques temáticos</b>, cada uno con su propio recorrido, sus cuñas sobre danza, nutrición, calentamiento, descanso y salud mental, y actividades sugeridas para trabajar en clase.</p>
+</section>
+
+<!-- ========== ESTADÍSTICAS ========== -->
+<section class="stats">
+  <div class="stat">
+    <div class="valor">5</div>
+    <div class="etiqueta-stat" data-i18n="stat.bloques">Bloques</div>
+  </div>
+  <div class="stat">
+    <div class="valor">168</div>
+    <div class="etiqueta-stat" data-i18n="stat.diapositivas">Diapositivas</div>
+  </div>
+  <div class="stat">
+    <div class="valor">48</div>
+    <div class="etiqueta-stat" data-i18n="stat.cunas">Cuñas temáticas</div>
+  </div>
+  <div class="stat">
+    <div class="valor">45</div>
+    <div class="etiqueta-stat" data-i18n="stat.actividades">Actividades sugeridas</div>
+  </div>
+</section>
+
+<!-- ========== BLOQUES ========== -->
+<h2 class="seccion-titulo" data-i18n="seccion.bloques">Bloques temáticos</h2>
+<div class="grid-bloques">
+
+  <a href="bloque1.html" class="bloque-card b1">
+    <div class="num">01</div>
+    <h3 data-i18n="b1.titulo">Fisiología Neuronal y Señalización</h3>
+    <p data-i18n="b1.desc">Neurona, células gliales, mielina, potencial de acción, sinapsis, PEPS y PIPS, plasticidad sináptica, velocidad de conducción.</p>
+    <div class="info-bloque">
+      <span class="diapos">📑 <span data-i18n="b1.diapos">32 diapositivas</span></span>
+      <span class="flecha">→</span>
+    </div>
+  </a>
+
+  <a href="bloque2.html" class="bloque-card b2">
+    <div class="num">02</div>
+    <h3 data-i18n="b2.titulo">Organización del Sistema Nervioso Central</h3>
+    <p data-i18n="b2.desc">SNC y SNP, hemisferios, lóbulos, diencéfalo, tronco encefálico, cerebelo, médula espinal, reflejos, equilibrio.</p>
+    <div class="info-bloque">
+      <span class="diapos">📑 <span data-i18n="b2.diapos">36 diapositivas</span></span>
+      <span class="flecha">→</span>
+    </div>
+  </a>
+
+  <a href="bloque3.html" class="bloque-card b3">
+    <div class="num">03</div>
+    <h3 data-i18n="b3.titulo">Sistema Nervioso Periférico</h3>
+    <p data-i18n="b3.desc">Somático y autónomo, vías aferentes y eferentes, dermatomas, plexos, simpático y parasimpático, receptores cutáneos, barorreflejo y eje HPA.</p>
+    <div class="info-bloque">
+      <span class="diapos">📑 <span data-i18n="b3.diapos">30 diapositivas</span></span>
+      <span class="flecha">→</span>
+    </div>
+  </a>
+
+  <a href="bloque4.html" class="bloque-card b4">
+    <div class="num">04</div>
+    <h3 data-i18n="b4.titulo">Unión Neuromuscular y Control Motor</h3>
+    <p data-i18n="b4.desc">Unión neuromuscular, ciclo de la contracción, tipos de contracción y de fibras, propiocepción, coordinación muscular, feedback y feedforward, fatiga y control postural.</p>
+    <div class="info-bloque">
+      <span class="diapos">📑 <span data-i18n="b4.diapos">38 diapositivas</span></span>
+      <span class="flecha">→</span>
+    </div>
+  </a>
+
+  <a href="bloque5.html" class="bloque-card b5">
+    <div class="num">05</div>
+    <h3 data-i18n="b5.titulo">Temas Transversales de Fisiología</h3>
+    <p data-i18n="b5.desc">Metabolismo neuronal, sueño y ritmos circadianos, estrés y eje HPA, dolor y modulación, calentamiento y enfriamiento, visualización motora, neuroplasticidad y diferencias individuales.</p>
+    <div class="info-bloque">
+      <span class="diapos">📑 <span data-i18n="b5.diapos">32 diapositivas</span></span>
+      <span class="flecha">→</span>
+    </div>
+  </a>
+
+</div>
+
+<!-- ========== CUÑAS RESUMEN ========== -->
+<h2 class="seccion-titulo" data-i18n="seccion.cunas">Cuñas temáticas en toda la presentación</h2>
+<div class="cunas-resumen">
+  <div class="cuna-resumen">
+    <div class="icono">💃</div>
+    <div><b data-i18n="c.danza">Danza</b><span data-i18n="c.danza.desc">Conexiones directas con la práctica dancística.</span></div>
+  </div>
+  <div class="cuna-resumen">
+    <div class="icono">🥗</div>
+    <div><b data-i18n="c.nutricion">Nutrición</b><span data-i18n="c.nutricion.desc">Qué comer y cuándo, para el sistema nervioso.</span></div>
+  </div>
+  <div class="cuna-resumen">
+    <div class="icono">🔥</div>
+    <div><b data-i18n="c.calentamiento">Calentamiento</b><span data-i18n="c.calentamiento.desc">Cómo preparar el sistema nervioso antes de bailar.</span></div>
+  </div>
+  <div class="cuna-resumen">
+    <div class="icono">😴</div>
+    <div><b data-i18n="c.descanso">Descanso</b><span data-i18n="c.descanso.desc">Sueño y recuperación para consolidar el aprendizaje.</span></div>
+  </div>
+  <div class="cuna-resumen">
+    <div class="icono">🧠</div>
+    <div><b data-i18n="c.salud">Salud mental</b><span data-i18n="c.salud.desc">Gestión del estrés y ansiedad escénica.</span></div>
+  </div>
+</div>
+
+<!-- ========== CÓMO USAR ========== -->
+<section class="como-usar">
+  <h3 data-i18n="como.titulo">Cómo usar esta presentación</h3>
+  <ul>
+    <li data-i18n="como.l1"><b>Navega</b> con las flechas del teclado ← →, con la barra espaciadora o con los botones inferiores.</li>
+    <li data-i18n="como.l2"><b>Cambia de idioma</b> con los botones ES / CA / EN de la parte superior.</li>
+    <li data-i18n="como.l3"><b>Cambia de modo</b> con el botón ☀️ / 🌙 para proyectar en clase con luz o en sala oscura.</li>
+    <li data-i18n="como.l4"><b>Cada bloque</b> es independiente: puedes empezar por el que necesites sin seguir un orden estricto.</li>
+    <li data-i18n="como.l5"><b>Las cuñas temáticas</b> aparecen a lo largo de las diapositivas. Úsalas para enlazar la teoría con la práctica.</li>
+    <li data-i18n="como.l6"><b>Las actividades sugeridas</b> están pensadas para hacerlas en el momento, en individual, parejas o grupos 2-3.</li>
+  </ul>
+</section>
+
+</main>
+
+<footer>
+  <p data-i18n="footer.texto">Fisiología del Sistema Nervioso · 1º Danza · Curso 2026-2027</p>
+  <p style="margin-top:8px;" data-i18n="footer.profesora">Profesora: <span class="nombre">Cèlia Painous</span></p>
+</footer>
+
+<script>
+const I18N = {
+  es:{
+    "hero.etq":"Presentación",
+    "hero.titulo":"Fisiología del Sistema Nervioso",
+    "hero.sub":"Del impulso nervioso al movimiento dancístico",
+    "hero.meta":"Curso 2026-2027 · Cèlia Painous · 1º Danza",
+    "intro.texto":"Esta presentación recorre la fisiología del sistema nervioso desde la neurona hasta el movimiento dancístico. Está organizada en <b>5 bloques temáticos</b>, cada uno con su propio recorrido, sus cuñas sobre danza, nutrición, calentamiento, descanso y salud mental, y actividades sugeridas para trabajar en clase.",
+    "stat.bloques":"Bloques",
+    "stat.diapositivas":"Diapositivas",
+    "stat.cunas":"Cuñas temáticas",
+    "stat.actividades":"Actividades sugeridas",
+    "seccion.bloques":"Bloques temáticos",
+    "seccion.cunas":"Cuñas temáticas en toda la presentación",
+    "b1.titulo":"Fisiología Neuronal y Señalización",
+    "b1.desc":"Neurona, células gliales, mielina, potencial de acción, sinapsis, PEPS y PIPS, plasticidad sináptica, velocidad de conducción.",
+    "b1.diapos":"32 diapositivas",
+    "b2.titulo":"Organización del Sistema Nervioso Central",
+    "b2.desc":"SNC y SNP, hemisferios, lóbulos, diencéfalo, tronco encefálico, cerebelo, médula espinal, reflejos, equilibrio.",
+    "b2.diapos":"36 diapositivas",
+    "b3.titulo":"Sistema Nervioso Periférico",
+    "b3.desc":"Somático y autónomo, vías aferentes y eferentes, dermatomas, plexos, simpático y parasimpático, receptores cutáneos, barorreflejo y eje HPA.",
+    "b3.diapos":"30 diapositivas",
+    "b4.titulo":"Unión Neuromuscular y Control Motor",
+    "b4.desc":"Unión neuromuscular, ciclo de la contracción, tipos de contracción y de fibras, propiocepción, coordinación muscular, feedback y feedforward, fatiga y control postural.",
+    "b4.diapos":"38 diapositivas",
+    "b5.titulo":"Temas Transversales de Fisiología",
+    "b5.desc":"Metabolismo neuronal, sueño y ritmos circadianos, estrés y eje HPA, dolor y modulación, calentamiento y enfriamiento, visualización motora, neuroplasticidad y diferencias individuales.",
+    "b5.diapos":"32 diapositivas",
+    "c.danza":"Danza",
+    "c.danza.desc":"Conexiones directas con la práctica dancística.",
+    "c.nutricion":"Nutrición",
+    "c.nutricion.desc":"Qué comer y cuándo, para el sistema nervioso.",
+    "c.calentamiento":"Calentamiento",
+    "c.calentamiento.desc":"Cómo preparar el sistema nervioso antes de bailar.",
+    "c.descanso":"Descanso",
+    "c.descanso.desc":"Sueño y recuperación para consolidar el aprendizaje.",
+    "c.salud":"Salud mental",
+    "c.salud.desc":"Gestión del estrés y ansiedad escénica.",
+    "como.titulo":"Cómo usar esta presentación",
+    "como.l1":"<b>Navega</b> con las flechas del teclado ← →, con la barra espaciadora o con los botones inferiores.",
+    "como.l2":"<b>Cambia de idioma</b> con los botones ES / CA / EN de la parte superior.",
+    "como.l3":"<b>Cambia de modo</b> con el botón ☀️ / 🌙 para proyectar en clase con luz o en sala oscura.",
+    "como.l4":"<b>Cada bloque</b> es independiente: puedes empezar por el que necesites sin seguir un orden estricto.",
+    "como.l5":"<b>Las cuñas temáticas</b> aparecen a lo largo de las diapositivas. Úsalas para enlazar la teoría con la práctica.",
+    "como.l6":"<b>Las actividades sugeridas</b> están pensadas para hacerlas en el momento, en individual, parejas o grupos 2-3.",
+    "footer.texto":"Fisiología del Sistema Nervioso · 1º Danza · Curso 2026-2027",
+    "footer.profesora":'Profesora: <span class="nombre">Cèlia Painous</span>',
+    "btnModo":"☀️ Modo claro",
+    "btnModo.oscuro":"🌙 Modo oscuro"
+  },
+  ca:{
+    "hero.etq":"Presentació",
+    "hero.titulo":"Fisiologia del Sistema Nerviós",
+    "hero.sub":"De l'impuls nerviós al moviment dansístic",
+    "hero.meta":"Curs 2026-2027 · Cèlia Painous · 1r Dansa",
+    "intro.texto":"Aquesta presentació recorre la fisiologia del sistema nerviós des de la neurona fins al moviment dansístic. Està organitzada en <b>5 blocs temàtics</b>, cadascun amb el seu recorregut, les seves cunyes sobre dansa, nutrició, calfament, descans i salut mental, i activitats suggerides per treballar a classe.",
+    "stat.bloques":"Blocs",
+    "stat.diapositivas":"Diapositives",
+    "stat.cunas":"Cunyes temàtiques",
+    "stat.actividades":"Activitats suggerides",
+    "seccion.bloques":"Blocs temàtics",
+    "seccion.cunas":"Cunyes temàtiques a tota la presentació",
+    "b1.titulo":"Fisiologia Neuronal i Senyalització",
+    "b1.desc":"Neurona, cèl·lules glials, mielina, potencial d'acció, sinapsi, PEPS i PIPS, plasticitat sinàptica, velocitat de conducció.",
+    "b1.diapos":"32 diapositives",
+    "b2.titulo":"Organització del Sistema Nerviós Central",
+    "b2.desc":"SNC i SNP, hemisferis, lòbuls, diencèfal, tronc encefàlic, cerebel, medul·la espinal, reflexos, equilibri.",
+    "b2.diapos":"36 diapositives",
+    "b3.titulo":"Sistema Nerviós Perifèric",
+    "b3.desc":"Somàtic i autònom, vies aferents i eferents, dermatomes, plexes, simpàtic i parasimpàtic, receptors cutanis, baroreflex i eix HPA.",
+    "b3.diapos":"30 diapositives",
+    "b4.titulo":"Unió Neuromuscular i Control Motor",
+    "b4.desc":"Unió neuromuscular, cicle de la contracció, tipus de contracció i de fibres, propiocepció, coordinació muscular, feedback i feedforward, fatiga i control postural.",
+    "b4.diapos":"38 diapositives",
+    "b5.titulo":"Temes Transversals de Fisiologia",
+    "b5.desc":"Metabolisme neuronal, son i ritmes circadians, estrès i eix HPA, dolor i modulació, calfament i refredament, visualització motora, neuroplasticitat i diferències individuals.",
+    "b5.diapos":"32 diapositives",
+    "c.danza":"Dansa",
+    "c.danza.desc":"Connexions directes amb la pràctica dansística.",
+    "c.nutricion":"Nutrició",
+    "c.nutricion.desc":"Què menjar i quan, per al sistema nerviós.",
+    "c.calentamiento":"Calfament",
+    "c.calentamiento.desc":"Com preparar el sistema nerviós abans de ballar.",
+    "c.descanso":"Descans",
+    "c.descanso.desc":"Son i recuperació per consolidar l'aprenentatge.",
+    "c.salud":"Salut mental",
+    "c.salud.desc":"Gestió de l'estrès i ansietat escènica.",
+    "como.titulo":"Com usar aquesta presentació",
+    "como.l1":"<b>Navega</b> amb les fletxes del teclat ← →, amb la barra espaiadora o amb els botons inferiors.",
+    "como.l2":"<b>Canvia d'idioma</b> amb els botons ES / CA / EN de la part superior.",
+    "como.l3":"<b>Canvia de mode</b> amb el botó ☀️ / 🌙 per projectar a classe amb llum o en sala fosca.",
+    "como.l4":"<b>Cada bloc</b> és independent: pots començar pel que necessitis sense seguir un ordre estricte.",
+    "como.l5":"<b>Les cunyes temàtiques</b> apareixen al llarg de les diapositives. Usa-les per enllaçar la teoria amb la pràctica.",
+    "como.l6":"<b>Les activitats suggerides</b> estan pensades per fer-les al moment, individual, parelles o grups 2-3.",
+    "footer.texto":"Fisiologia del Sistema Nerviós · 1r Dansa · Curs 2026-2027",
+    "footer.profesora":'Professora: <span class="nombre">Cèlia Painous</span>',
+    "btnModo":"☀️ Mode clar",
+    "btnModo.oscuro":"🌙 Mode fosc"
+  },
+  en:{
+    "hero.etq":"Presentation",
+    "hero.titulo":"Physiology of the Nervous System",
+    "hero.sub":"From nerve impulse to dance movement",
+    "hero.meta":"2026-2027 · Cèlia Painous · 1st Dance",
+    "intro.texto":"This presentation covers the physiology of the nervous system from the neuron to dance movement. It is organized in <b>5 thematic blocks</b>, each with its own journey, its connections to dance, nutrition, warm-up, rest and mental health, and suggested activities for classroom use.",
+    "stat.bloques":"Blocks",
+    "stat.diapositivas":"Slides",
+    "stat.cunas":"Thematic notes",
+    "stat.actividades":"Suggested activities",
+    "seccion.bloques":"Thematic blocks",
+    "seccion.cunas":"Thematic notes throughout the presentation",
+    "b1.titulo":"Neuronal Physiology and Signalling",
+    "b1.desc":"Neuron, glial cells, myelin, action potential, synapse, EPSP and IPSP, synaptic plasticity, conduction speed.",
+    "b1.diapos":"32 slides",
+    "b2.titulo":"Organization of the Central Nervous System",
+    "b2.desc":"CNS and PNS, hemispheres, lobes, diencephalon, brainstem, cerebellum, spinal cord, reflexes, balance.",
+    "b2.diapos":"36 slides",
+    "b3.titulo":"Peripheral Nervous System",
+    "b3.desc":"Somatic and autonomic, afferent and efferent pathways, dermatomes, plexuses, sympathetic and parasympathetic, cutaneous receptors, baroreflex and HPA axis.",
+    "b3.diapos":"30 slides",
+    "b4.titulo":"Neuromuscular Junction and Motor Control",
+    "b4.desc":"Neuromuscular junction, contraction cycle, types of contraction and fibers, proprioception, muscle coordination, feedback and feedforward, fatigue and postural control.",
+    "b4.diapos":"38 slides",
+    "b5.titulo":"Cross-cutting Topics in Physiology",
+    "b5.desc":"Neuronal metabolism, sleep and circadian rhythms, stress and HPA axis, pain and modulation, warm-up and cool-down, motor imagery, neuroplasticity and individual differences.",
+    "b5.diapos":"32 slides",
+    "c.danza":"Dance",
+    "c.danza.desc":"Direct connections with dance practice.",
+    "c.nutricion":"Nutrition",
+    "c.nutricion.desc":"What to eat and when, for the nervous system.",
+    "c.calentamiento":"Warm-up",
+    "c.calentamiento.desc":"How to prepare the nervous system before dancing.",
+    "c.descanso":"Rest",
+    "c.descanso.desc":"Sleep and recovery to consolidate learning.",
+    "c.salud":"Mental health",
+    "c.salud.desc":"Managing stress and stage anxiety.",
+    "como.titulo":"How to use this presentation",
+    "como.l1":"<b>Navigate</b> with the arrow keys ← →, with the spacebar or with the bottom buttons.",
+    "como.l2":"<b>Change language</b> with the ES / CA / EN buttons at the top.",
+    "como.l3":"<b>Change mode</b> with the ☀️ / 🌙 button to project in class with light or in a dark room.",
+    "como.l4":"<b>Each block</b> is independent: you can start with whatever you need without following a strict order.",
+    "como.l5":"<b>Thematic notes</b> appear throughout the slides. Use them to link theory to practice.",
+    "como.l6":"<b>Suggested activities</b> are designed to be done on the spot, individually, in pairs or in groups of 2-3.",
+    "footer.texto":"Physiology of the Nervous System · 1st Dance · 2026-2027",
+    "footer.profesora":'Teacher: <span class="nombre">Cèlia Painous</span>',
+    "btnModo":"☀️ Light mode",
+    "btnModo.oscuro":"🌙 Dark mode"
+  }
+};
+
+let lang = 'es';
+function t(k){ return (I18N[lang] && I18N[lang][k]) || I18N.es[k] || k; }
+
+function aplicarIdioma(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k = el.dataset.i18n;
+    const v = t(k);
+    if(v !== undefined) el.innerHTML = v;
+  });
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.lang-switch button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  const bm = document.getElementById('btnModo');
+  bm.textContent = document.body.classList.contains('claro') ? t('btnModo.oscuro') : t('btnModo');
+}
+
+document.querySelectorAll('.lang-switch button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{ lang = btn.dataset.lang; aplicarIdioma(); });
+});
+
+function toggleModo(){
+  document.body.classList.toggle('claro');
+  aplicarIdioma();
+}
+
+aplicarIdioma();
+</script>
+</body>
+</html>

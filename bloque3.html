@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Bloque 3 · Sistema Nervioso Periférico</title>
+<style>
+  :root{
+    --bg:#0d1024;--card:#1a1f3c;--accent:#ff5c8a;--accent2:#4fd1c5;
+    --text:#f5f7ff;--muted:#b8c0e0;--ok:#4ade80;--warn:#fbbf24;--bad:#f87171;
+    --notas:#ffd166;--cuina:#b07cff;
+  }
+  body.claro{--bg:#f7f8fc;--card:#ffffff;--text:#1a1f3c;--muted:#5a6488;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;transition:background .3s,color .3s;}
+  header{background:var(--card);padding:12px 26px;border-bottom:2px solid var(--accent2);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:relative;z-index:50;}
+  header h1{font-size:1.15rem;color:var(--accent);}
+  header .sub{color:var(--muted);font-size:.82rem;margin-top:2px;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .controls button{background:#252b52;color:var(--accent2);border:1px solid #3a4170;padding:6px 11px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.82rem;transition:.15s;}
+  body.claro .controls button{background:#e8ebf5;color:#1a1f3c;border-color:#c5cbe0;}
+  .controls button:hover{background:var(--accent2);color:#0f1226;}
+  .btn-volver{background:#252b52;color:var(--accent2);border:1px solid #3a4170;padding:6px 11px;border-radius:8px;cursor:pointer;font-weight:700;font-size:.82rem;}
+  body.claro .btn-volver{background:#e8ebf5;color:#1a1f3c;border-color:#c5cbe0;}
+  .btn-volver:hover{background:var(--accent2);color:#0f1226;}
+  .lang-switch{display:flex;gap:4px;background:var(--card);padding:3px;border-radius:8px;border:1px solid #3a4170;}
+  body.claro .lang-switch{border-color:#c5cbe0;}
+  .lang-switch button{background:transparent;color:var(--muted);border:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-weight:800;font-size:.78rem;}
+  .lang-switch button:hover{background:#252b52;}
+  body.claro .lang-switch button:hover{background:#e0e5f0;}
+  .lang-switch button.active{background:var(--accent2);color:#0f1226;}
+
+  main{max-width:1100px;margin:0 auto;padding:14px 20px 60px;height:calc(100vh - 62px);display:flex;align-items:flex-start;justify-content:center;overflow:hidden;}
+  .slide{display:none;width:100%;max-height:100%;overflow-y:auto;padding:26px 34px;border-radius:14px;}
+  .slide.active{display:block;animation:fade .35s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  .slide::-webkit-scrollbar{width:6px;}
+  .slide::-webkit-scrollbar-track{background:transparent;}
+  .slide::-webkit-scrollbar-thumb{background:#3a4170;border-radius:3px;}
+  body.claro .slide::-webkit-scrollbar-thumb{background:#c5cbe0;}
+
+  .slide.portada{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;}
+  .slide.portada.active{display:flex;}
+  .slide.portada h2{font-size:2rem;color:var(--accent);border:none;margin-bottom:14px;}
+  .slide.portada .sub{font-size:1.05rem;color:var(--muted);}
+  .slide.portada .meta{font-size:.9rem;color:var(--muted);margin-top:14px;}
+
+  .slide.idea-fuerza{padding:40px 46px;}
+  .idea-fuerza .etiqueta{display:inline-block;background:var(--accent2);color:#0f1226;padding:3px 12px;border-radius:20px;font-size:.72rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
+  .idea-fuerza h2{font-size:1.8rem;color:var(--accent);border:none;margin-bottom:16px;line-height:1.25;}
+  .idea-fuerza .cuerpo{font-size:1.08rem;line-height:1.6;color:var(--text);}
+  .idea-fuerza .cuerpo b{color:var(--accent2);}
+
+  .slide.desarrollo h2{color:var(--accent2);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--accent2);padding-bottom:7px;}
+  .slide.desarrollo h3{color:var(--accent);font-size:1.05rem;margin:10px 0 5px;}
+  .slide.desarrollo p,.slide.desarrollo li{font-size:.96rem;line-height:1.55;margin-bottom:5px;}
+  .slide.desarrollo ul,.slide.desarrollo ol{margin-left:20px;margin-bottom:8px;}
+
+  .slide.tabla h2{color:var(--accent2);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--accent2);padding-bottom:7px;}
+  table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.9rem;}
+  th,td{border:1px solid #3a4170;padding:8px 11px;text-align:left;line-height:1.35;}
+  body.claro th,body.claro td{border-color:#c5cbe0;}
+  th{background:#252b52;color:var(--accent2);font-weight:800;}
+  body.claro th{background:#e8ebf5;color:#1a1f3c;}
+
+  .slide.esquema h2{color:var(--accent2);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--accent2);padding-bottom:7px;}
+  .illus{background:var(--card);border-radius:12px;padding:12px;display:flex;justify-content:center;align-items:center;border:1px solid #3a4170;max-height:40vh;}
+  body.claro .illus{border-color:#c5cbe0;}
+  .illus svg{max-width:100%;height:auto;max-height:36vh;}
+
+  .slide.cuina h2{color:var(--cuina);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--cuina);padding-bottom:7px;}
+  .slide.cuina .cuerpo{font-size:1rem;line-height:1.55;}
+
+  .slide.sintesis{padding:40px 46px;}
+  .slide.sintesis h2{color:var(--warn);font-size:1.4rem;margin-bottom:14px;border-bottom:2px solid var(--warn);padding-bottom:7px;}
+  .slide.sintesis .caja{background:var(--card);border-left:5px solid var(--warn);border-radius:12px;padding:18px 22px;font-size:.98rem;line-height:1.65;}
+
+  .cuina-tematica{display:flex;gap:11px;align-items:flex-start;border-radius:10px;padding:11px 15px;margin:11px 0;font-size:.92rem;line-height:1.45;}
+  .cuina-tematica .icono{font-size:1.4rem;flex-shrink:0;line-height:1;}
+  .cuina-tematica .texto{flex:1;}
+  .cuina-tematica .texto b{display:block;margin-bottom:3px;font-size:.95rem;}
+  .cuina-danza{background:#2a1f3d;border-left:5px solid var(--accent);}
+  .cuina-danza .texto b{color:var(--accent);}
+  .cuina-nutricion{background:#1a2a1a;border-left:5px solid var(--ok);}
+  .cuina-nutricion .texto b{color:var(--ok);}
+  .cuina-calentamiento{background:#3a1a1a;border-left:5px solid var(--warn);}
+  .cuina-calentamiento .texto b{color:var(--warn);}
+  .cuina-descanso{background:#1a2540;border-left:5px solid var(--accent2);}
+  .cuina-descanso .texto b{color:var(--accent2);}
+  .cuina-salud{background:#3a2f10;border-left:5px solid var(--notas);}
+  .cuina-salud .texto b{color:var(--notas);}
+  body.claro .cuina-danza{background:#f4e8f0;}
+  body.claro .cuina-nutricion{background:#e8f5e8;}
+  body.claro .cuina-calentamiento{background:#fdeaea;}
+  body.claro .cuina-descanso{background:#e8eefc;}
+  body.claro .cuina-salud{background:#fef8e0;}
+
+  .actividad-sugerida{background:linear-gradient(135deg,#ff9f43,#ff7a3d);color:#fff;border-radius:10px;padding:12px 16px;margin:14px 0;display:flex;gap:11px;align-items:flex-start;}
+  .actividad-sugerida .icono{font-size:1.4rem;flex-shrink:0;line-height:1;}
+  .actividad-sugerida .texto{flex:1;}
+  .actividad-sugerida .texto b{display:block;font-size:.95rem;margin-bottom:4px;}
+  .actividad-sugerida .texto .tipo{display:inline-block;background:rgba(255,255,255,.25);padding:2px 9px;border-radius:20px;font-size:.7rem;font-weight:800;text-transform:uppercase;margin-bottom:4px;}
+
+  .nav{position:fixed;bottom:12px;right:18px;display:flex;gap:6px;z-index:50;}
+  .nav button{background:var(--accent);color:#0f1226;border:none;padding:8px 15px;border-radius:9px;font-weight:800;cursor:pointer;font-size:.85rem;box-shadow:0 3px 10px rgba(0,0,0,.25);}
+  .nav button:hover{background:var(--accent2);}
+  .counter{position:fixed;bottom:16px;left:18px;color:var(--muted);font-size:.78rem;z-index:50;background:var(--card);padding:4px 11px;border-radius:18px;border:1px solid #3a4170;}
+  body.claro .counter{border-color:#c5cbe0;}
+  .progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);transition:width .3s;z-index:100;}
+
+  @media(max-width:800px){
+    main{padding:10px 12px 55px;height:calc(100vh - 56px);}
+    .slide{padding:18px 16px;max-height:100%;}
+    .slide.idea-fuerza{padding:24px 20px;}
+    .idea-fuerza h2{font-size:1.4rem;}
+    .idea-fuerza .cuerpo{font-size:.98rem;}
+    .slide.desarrollo h2,.slide.tabla h2,.slide.esquema h2,.slide.cuina h2,.slide.sintesis h2{font-size:1.2rem;}
+    .slide.desarrollo p,.slide.desarrollo li{font-size:.88rem;}
+    .slide.portada h2{font-size:1.4rem;}
+    table{font-size:.82rem;}
+    th,td{padding:6px 8px;}
+    header h1{font-size:.95rem;}
+    header{padding:10px 14px;}
+  }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<header>
+  <div>
+    <h1 id="headerTitulo">Bloque 3 · Sistema Nervioso Periférico</h1>
+    <div class="sub" id="headerSub">Fisiología · 1º Danza · Curso 2026-2027 · Cèlia Painous</div>
+  </div>
+  <div class="controls">
+    <button class="btn-volver" id="btnVolver" onclick="volverIndice()">← Índice</button>
+    <div class="lang-switch">
+      <button data-lang="es" class="active">ES</button>
+      <button data-lang="ca">CA</button>
+      <button data-lang="en">EN</button>
+    </div>
+    <button onclick="toggleModo()" id="btnModo">☀️ Modo claro</button>
+  </div>
+</header>
+
+<main>
+
+<section class="slide idea-fuerza active">
+  <span class="etiqueta" data-i18n="d2.etq">Idea-fuerza</span>
+  <h2 data-i18n="d2.titulo">El SNP conecta el SNC con el cuerpo</h2>
+  <div class="cuerpo" data-i18n="d2.cuerpo">El <b>Sistema Nervioso Periférico</b> (SNP) está formado por nervios y ganglios. Es el <b>puente de comunicación</b> entre el sistema nervioso central y el resto del cuerpo.</div>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d3.titulo">Somático y autónomo</h2>
+  <div class="illus">
+    <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
+      <rect x="40" y="70" width="180" height="70" rx="10" fill="#4fd1c5"/>
+      <text x="130" y="100" fill="#0f1226" font-size="14" text-anchor="middle" font-weight="700">Somático</text>
+      <text x="130" y="125" fill="#0f1226" font-size="10" text-anchor="middle">Voluntario</text>
+      <rect x="280" y="70" width="180" height="70" rx="10" fill="#b07cff"/>
+      <text x="370" y="100" fill="#fff" font-size="14" text-anchor="middle" font-weight="700">Autónomo</text>
+      <text x="370" y="125" fill="#fff" font-size="10" text-anchor="middle">Involuntario</text>
+    </svg>
+  </div>
+  <ul>
+    <li data-i18n="d3.l1"><b>Somático</b>: controla la musculatura esquelética de forma voluntaria.</li>
+    <li data-i18n="d3.l2"><b>Autónomo</b>: regula órganos, vasos y glándulas de forma involuntaria.</li>
+  </ul>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d4.titulo">Las dos direcciones de la información</h2>
+  <div class="illus">
+    <svg viewBox="0 0 500 180" xmlns="http://www.w3.org/2000/svg">
+      <rect x="200" y="50" width="100" height="80" rx="10" fill="#2d6cdf"/>
+      <text x="250" y="95" fill="#fff" font-size="13" text-anchor="middle" font-weight="700">SNC</text>
+      <path d="M 60 90 L 195 90" stroke="#4fd1c5" stroke-width="4"/>
+      <text x="120" y="70" fill="#4fd1c5" font-size="12" text-anchor="middle" font-weight="700">Aferente</text>
+      <text x="120" y="120" fill="#b8c0e0" font-size="10" text-anchor="middle">sensibilidad</text>
+      <path d="M 305 90 L 440 90" stroke="#ff5c8a" stroke-width="4"/>
+      <text x="375" y="70" fill="#ff5c8a" font-size="12" text-anchor="middle" font-weight="700">Eferente</text>
+      <text x="375" y="120" fill="#b8c0e0" font-size="10" text-anchor="middle">movimiento</text>
+    </svg>
+  </div>
+  <ul>
+    <li data-i18n="d4.l1"><b>Vía aferente (sensorial)</b>: del cuerpo al SNC.</li>
+    <li data-i18n="d4.l2"><b>Vía eferente (motora)</b>: del SNC al cuerpo.</li>
+  </ul>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d5.titulo">Cuando bailas, ambas vías trabajan a la vez</h2>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d5.cuina">Mientras bailas, la vía aferente te informa constantemente de la posición del cuerpo, la textura del suelo y el sonido de la música. La vía eferente envía las órdenes a los músculos para ajustar cada movimiento. Sin este diálogo continuo, el movimiento sería torpe e impreciso.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">👥</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.parejas">En parejas</span>
+      <b data-i18n="d5.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d5.act.texto">Uno hace un movimiento lento (p. ej. elevar un brazo) y el otro le va indicando con la mano, sin hablar, si lo hace bien o mal. Comentad qué información llega por la vía aferente y qué orden por la eferente.</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d6.etq">Idea-fuerza</span>
+  <h2 data-i18n="d6.titulo">La vía aferente: sensibilidad</h2>
+  <div class="cuerpo" data-i18n="d6.cuerpo">La vía aferente <b>recoge información</b> desde la piel, los músculos, los tendones y las articulaciones, y la envía al SNC. Sin ella, no sabrías dónde estás ni qué está tocando tu cuerpo.</div>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d7.titulo">De dónde recoge la información</h2>
+  <ul>
+    <li data-i18n="d7.l1"><b>Piel</b>: tacto, presión, temperatura, dolor.</li>
+    <li data-i18n="d7.l2"><b>Músculos</b>: longitud y tensión.</li>
+    <li data-i18n="d7.l3"><b>Tendones</b>: tensión en la unión músculo-hueso.</li>
+    <li data-i18n="d7.l4"><b>Articulaciones</b>: posición y movimiento.</li>
+  </ul>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d8.titulo">La información que llega por tus pies</h2>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d8.cuina">Cuando estás descalzo sobre una tarima de madera, la vía aferente te envía información sobre la textura, la temperatura, la presión y la posición exacta de cada hueso del pie. Esa información es la base de la precisión y del equilibrio. Por eso muchos estilos de danza trabajan descalzos.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.prueba">Prueba en clase</span>
+      <b data-i18n="d8.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d8.act.texto">Con los ojos cerrados, notad la textura del suelo bajo cada pie, la temperatura y la presión. ¿Qué información llega? ¿Cambia si tenéis los ojos abiertos?</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d9.etq">Idea-fuerza</span>
+  <h2 data-i18n="d9.titulo">Los dermatomas</h2>
+  <div class="cuerpo" data-i18n="d9.cuerpo">Cada raíz nerviosa de la médula espinal inerva una <b>zona concreta de la piel</b>. Ese mapa se llama <b>dermatoma</b> y sigue un patrón ordenado desde el cuello hasta los pies.</div>
+</section>
+
+<section class="slide tabla">
+  <h2 data-i18n="d10.titulo">Mapa simplificado de dermatomas</h2>
+  <table>
+    <tr>
+      <th data-i18n="d10.th1">Zona del cuerpo</th>
+      <th data-i18n="d10.th2">Raíces espinales</th>
+    </tr>
+    <tr><td data-i18n="d10.r1a">Cuello</td><td>C1-C8</td></tr>
+    <tr><td data-i18n="d10.r2a">Hombros y brazos</td><td>C5-T1</td></tr>
+    <tr><td data-i18n="d10.r3a">Tórax</td><td>T1-T12</td></tr>
+    <tr><td data-i18n="d10.r4a">Abdomen</td><td>T7-L2</td></tr>
+    <tr><td data-i18n="d10.r5a">Piernas</td><td>L1-S5</td></tr>
+    <tr><td data-i18n="d10.r6a">Zona genital</td><td>S2-S5</td></tr>
+  </table>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d11.titulo">Los dermatomas y las lesiones</h2>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d11.cuina">Los dermatomas L4-S1 inervan los pies y tobillos: fundamentales para sentir el suelo. Los C5-T1 inervan brazos y manos: clave en portés y gestos. Conocer este mapa ayuda al fisioterapeuta de danza a localizar el origen de una pérdida de sensibilidad o de un dolor irradiado.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">🤔</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.reflexiona">Reflexiona</span>
+      <b data-i18n="d11.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d11.act.texto">Si un bailarín nota adormecimiento en la planta del pie, ¿qué zona del mapa consultaríais primero? ¿Por qué creéis que es importante hacerlo?</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d12.etq">Idea-fuerza</span>
+  <h2 data-i18n="d12.titulo">La vía eferente: respuesta motora</h2>
+  <div class="cuerpo" data-i18n="d12.cuerpo">La vía eferente <b>envía las órdenes motoras</b> desde el SNC hasta los músculos esqueléticos a través de los nervios motores. Es la vía que convierte la decisión en movimiento.</div>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d13.titulo">De la decisión al músculo</h2>
+  <ol>
+    <li data-i18n="d13.l1">La <b>corteza motora</b> decide el movimiento.</li>
+    <li data-i18n="d13.l2">La orden baja por las <b>vías descendentes</b> hasta la médula.</li>
+    <li data-i18n="d13.l3">La <b>motoneurona</b> sale por el nervio periférico.</li>
+    <li data-i18n="d13.l4">El <b>músculo</b> se contrae y ejecuta el movimiento.</li>
+  </ol>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d14.titulo">La orden viaja en milisegundos</h2>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d14.cuina">Cuando decides mover un brazo, la orden ya ha llegado al músculo antes de que te des cuenta. Todo el circuito (corteza → médula → nervio periférico → músculo) tarda milisegundos. La mielina y el entrenamiento hacen que sea todavía más rápido y preciso.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.prueba">Prueba en clase</span>
+      <b data-i18n="d14.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d14.act.texto">En parejas: uno dice "ahora" y el otro debe mover un dedo lo más rápido posible. Medid el tiempo aproximado entre el estímulo y la respuesta.</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d15.etq">Idea-fuerza</span>
+  <h2 data-i18n="d15.titulo">El sistema autónomo</h2>
+  <div class="cuerpo" data-i18n="d15.cuerpo">El sistema autónomo regula funciones <b>involuntarias</b>: el pulso, la respiración, la digestión, la temperatura, la sudoración. Tiene dos ramas: <b>simpático</b> y <b>parasimpático</b>.</div>
+</section>
+
+<section class="slide tabla">
+  <h2 data-i18n="d16.titulo">Simpático vs. parasimpático</h2>
+  <table>
+    <tr>
+      <th data-i18n="d16.th1"></th>
+      <th data-i18n="d16.th2">Simpático</th>
+      <th data-i18n="d16.th3">Parasimpático</th>
+    </tr>
+    <tr>
+      <td data-i18n="d16.r1a"><b>Función</b></td>
+      <td data-i18n="d16.r1b">Activación ("lucha o huida")</td>
+      <td data-i18n="d16.r1c">Reposo y recuperación</td>
+    </tr>
+    <tr>
+      <td data-i18n="d16.r2a"><b>Pulso</b></td>
+      <td data-i18n="d16.r2b">Sube</td>
+      <td data-i18n="d16.r2c">Baja</td>
+    </tr>
+    <tr>
+      <td data-i18n="d16.r3a"><b>Respiración</b></td>
+      <td data-i18n="d16.r3b">Rápida, bronquios dilatados</td>
+      <td data-i18n="d16.r3c">Lenta, bronquios contraídos</td>
+    </tr>
+    <tr>
+      <td data-i18n="d16.r4a"><b>Digestión</b></td>
+      <td data-i18n="d16.r4b">Se inhibe</td>
+      <td data-i18n="d16.r4c">Se estimula</td>
+    </tr>
+  </table>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d17.titulo">La activación óptima</h2>
+  <p data-i18n="d17.p">El simpático no es "malo" ni el parasimpático "bueno". Ambos son necesarios, y el cuerpo busca un <b>equilibrio</b>.</p>
+  <p data-i18n="d17.p2">Antes de una actuación, un poco de simpático mejora el rendimiento. Si se desborda, bloquea. Aprender a regular ambos sistemas es parte del entrenamiento.</p>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d18.titulo">El pánico escénico</h2>
+  <div class="cuina-tematica cuina-salud">
+    <div class="icono">🧠</div>
+    <div class="texto">
+      <b data-i18n="c.salud">Salud mental</b>
+      <span data-i18n="d18.cuina">El "pánico escénico" es una activación excesiva del simpático: taquicardia, sudoración, respiración rápida, temblor. Las técnicas de respiración diafragmática y de visualización activan el parasimpático y ayudan a regularlo. No se trata de eliminar los nervios, sino de encontrar la activación óptima para rendir bien.</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d19.titulo">Del nerviosismo a la calma</h2>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d19.cuina">Antes de salir a escena, el simpático te activa. Al caer el telón, el parasimpático te relaja. Reconocer estos dos estados te permite anticiparte y usar herramientas concretas: respiración, calentamiento suave, rutinas previas.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">👥</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.grupos">En grupos 2-3</span>
+      <b data-i18n="d19.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d19.act.texto">Compartid experiencias de pánico escénico. ¿Qué síntomas habéis notado? ¿Qué estrategias os han funcionado?</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d20.etq">Idea-fuerza</span>
+  <h2 data-i18n="d20.titulo">Los receptores cutáneos</h2>
+  <div class="cuerpo" data-i18n="d20.cuerpo">La piel no es un simple "detector de tacto". Tiene <b>varios tipos de receptores</b>, cada uno especializado en un tipo de información distinta.</div>
+</section>
+
+<section class="slide tabla">
+  <h2 data-i18n="d21.titulo">Los receptores de la piel</h2>
+  <table>
+    <tr>
+      <th data-i18n="d21.th1">Receptor</th>
+      <th data-i18n="d21.th2">Qué detecta</th>
+      <th data-i18n="d21.th3">En danza</th>
+    </tr>
+    <tr><td data-i18n="d21.r1a"><b>Meissner</b></td><td data-i18n="d21.r1b">Tacto fino y movimiento suave</td><td data-i18n="d21.r1c">Textura del suelo</td></tr>
+    <tr><td data-i18n="d21.r2a"><b>Merkel</b></td><td data-i18n="d21.r2b">Presión sostenida</td><td data-i18n="d21.r2c">Presión del pie</td></tr>
+    <tr><td data-i18n="d21.r3a"><b>Ruffini</b></td><td data-i18n="d21.r3b">Estiramiento de la piel</td><td data-i18n="d21.r3c">Tensión al estirar</td></tr>
+    <tr><td data-i18n="d21.r4a"><b>Pacini</b></td><td data-i18n="d21.r4b">Vibración y presión rápida</td><td data-i18n="d21.r4c">Impactos al aterrizar</td></tr>
+    <tr><td data-i18n="d21.r5a"><b>Nociceptores</b></td><td data-i18n="d21.r5b">Dolor</td><td data-i18n="d21.r5c">Avisar de lesión</td></tr>
+    <tr><td data-i18n="d21.r6a"><b>Termorreceptores</b></td><td data-i18n="d21.r6b">Frío y calor</td><td data-i18n="d21.r6c">Temperatura del suelo</td></tr>
+  </table>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d22.titulo">Por qué bailar descalzo mejora la sensibilidad</h2>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <b data-i18n="c.danza">Conexión danza</b>
+      <span data-i18n="d22.cuina">Cuando bailas descalzo, activas más receptores cutáneos en la planta del pie. Esa información adicional llega al SNC y mejora el control del equilibrio, la precisión del apoyo y la reacción ante cambios de superficie. Por eso muchos estilos trabajan descalzos.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">💃</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.prueba">Prueba en clase</span>
+      <b data-i18n="d22.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d22.act.texto">Comparad la sensación de hacer un equilibrio a una pierna descalzo y con calzado. ¿Notáis diferencias en la información que llega?</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d23.etq">Idea-fuerza</span>
+  <h2 data-i18n="d23.titulo">Cómo funcionan las fibras autónomas</h2>
+  <div class="cuerpo" data-i18n="d23.cuerpo">El sistema autónomo transmite sus mensajes mediante <b>dos sustancias químicas principales</b>: la <b>acetilcolina</b> (parasimpático) y la <b>noradrenalina</b> (simpático).</div>
+</section>
+
+<section class="slide tabla">
+  <h2 data-i18n="d24.titulo">Acetilcolina y noradrenalina</h2>
+  <table>
+    <tr>
+      <th data-i18n="d24.th1">Sustancia</th>
+      <th data-i18n="d24.th2">Quién la libera</th>
+      <th data-i18n="d24.th3">Efecto principal</th>
+    </tr>
+    <tr><td data-i18n="d24.r1a"><b>Acetilcolina</b></td><td data-i18n="d24.r1b">Parasimpático (y algunas simpáticas)</td><td data-i18n="d24.r1c">Baja el pulso, activa la digestión</td></tr>
+    <tr><td data-i18n="d24.r2a"><b>Noradrenalina</b></td><td data-i18n="d24.r2b">Simpático</td><td data-i18n="d24.r2c">Sube el pulso, dilata los bronquios</td></tr>
+  </table>
+</section>
+
+<section class="slide desarrollo">
+  <h2 data-i18n="d25.titulo">En reposo y en movimiento</h2>
+  <p data-i18n="d25.p1">En reposo, el parasimpático libera acetilcolina: baja el pulso, activa la digestión y conserva la energía.</p>
+  <p data-i18n="d25.p2">Cuando empiezas a bailar, el simpático libera noradrenalina: sube el pulso, acelera la respiración, moviliza la glucosa.</p>
+  <p data-i18n="d25.p3">Cuando terminas, el parasimpático vuelve a actuar y recupera el equilibrio interno.</p>
+  <div class="actividad-sugerida">
+    <div class="icono">🤔</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.reflexiona">Reflexiona</span>
+      <b data-i18n="d25.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d25.act.texto">¿Qué notáis en el cuerpo justo antes de empezar una clase intensa? ¿Y justo después de terminar?</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide idea-fuerza">
+  <span class="etiqueta" data-i18n="d26.etq">Idea-fuerza</span>
+  <h2 data-i18n="d26.titulo">El barorreflejo</h2>
+  <div class="cuerpo" data-i18n="d26.cuerpo">El cuerpo <b>no espera</b> a que tú decidas subir o bajar el pulso. Existe un reflejo automático —el <b>barorreflejo</b>— que lo regula momento a momento.</div>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d27.titulo">Cómo funciona el barorreflejo</h2>
+  <div class="cuerpo" data-i18n="d27.cuerpo">Unos receptores llamados <b>barorreceptores</b> detectan la presión en las arterias. Si sube, el tronco encefálico baja el pulso y dilata los vasos. Si baja, sube el pulso y contrae los vasos.</div>
+  <div class="cuina-tematica cuina-calentamiento">
+    <div class="icono">🔥</div>
+    <div class="texto">
+      <b data-i18n="c.calentamiento">Calentamiento</b>
+      <span data-i18n="d27.cuina">Cuando empiezas a bailar, el pulso sube por el simpático. El barorreflejo lo modula para que no suba demasiado deprisa. Por eso conviene hacer un calentamiento <b>progresivo</b>: permite que el barorreflejo se adapte sin forzar el sistema.</span>
+    </div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">🤔</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.reflexiona">Reflexiona</span>
+      <b data-i18n="d27.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d27.act.texto">¿Por qué a veces te marea si te levantas bruscamente después de un ejercicio en el suelo? Relaciónalo con el barorreflejo.</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d28.titulo">El eje HPA y la ansiedad escénica</h2>
+  <div class="cuina-tematica cuina-salud">
+    <div class="icono">🧠</div>
+    <div class="texto">
+      <b data-i18n="c.salud">Salud mental</b>
+      <span data-i18n="d28.cuina">La ansiedad escénica no es solo simpático. También activa el <b>eje HPA</b> (hipotálamo-pituitaria-adrenales), que libera <b>cortisol</b>. El cortisol mantiene la alerta durante más tiempo, pero si se desborda produce bloqueo, temblor y olvido. Regularlo requiere sueño, respiración y visualización.</span>
+    </div>
+  </div>
+</section>
+
+<section class="slide cuina">
+  <h2 data-i18n="d29.titulo">Aplicación dancística</h2>
+  <div class="cuerpo" data-i18n="d29.cuerpo">Todo lo visto en el Bloque 3 se traduce en <b>5 principios prácticos</b>.</div>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto"><b data-i18n="c.danza">1 · Baila descalzo cuando puedas</b><span data-i18n="d29.c1">Activa más receptores cutáneos y mejora la propiocepción.</span></div>
+  </div>
+  <div class="cuina-tematica cuina-calentamiento">
+    <div class="icono">🔥</div>
+    <div class="texto"><b data-i18n="c.calentamiento">2 · Calienta progresivamente</b><span data-i18n="d29.c2">Facilita la adaptación del pulso y la respiración.</span></div>
+  </div>
+  <div class="cuina-tematica cuina-salud">
+    <div class="icono">🧠</div>
+    <div class="texto"><b data-i18n="c.salud">3 · Regula el estrés escénico</b><span data-i18n="d29.c3">Respiración diafragmática y visualización para controlar simpático y cortisol.</span></div>
+  </div>
+  <div class="cuina-tematica cuina-descanso">
+    <div class="icono">😴</div>
+    <div class="texto"><b data-i18n="c.descanso">4 · Duerme bien</b><span data-i18n="d29.c4">El eje HPA se regula durante el sueño.</span></div>
+  </div>
+  <div class="cuina-tematica cuina-danza">
+    <div class="icono">💃</div>
+    <div class="texto"><b data-i18n="c.danza">5 · Cuida la espalda y el nervio ciático</b><span data-i18n="d29.c5">Evita sobrecargas repetidas en la zona lumbar.</span></div>
+  </div>
+  <div class="actividad-sugerida">
+    <div class="icono">👥</div>
+    <div class="texto">
+      <span class="tipo" data-i18n="act.grupos">En grupos 2-3</span>
+      <b data-i18n="d29.act.titulo">Actividad sugerida</b>
+      <span data-i18n="d29.act.texto">Elegid uno de los 5 principios y diseñad una rutina concreta de 2 minutos. Compartidla con el grupo.</span>
+    </div>
+  </div>
+</section>
+</main>
+
+<div class="counter" id="counter">Diapositiva 1 / 28</div>
+<div class="nav">
+  <button onclick="prev()" id="navPrev">← Anterior</button>
+  <button onclick="next()" id="navNext">Siguiente →</button>
+</div>
+
+<script>
+const I18N = {
+  es:{
+    headerTitulo:"Bloque 3 · Sistema Nervioso Periférico",
+    headerSub:"Fisiología · 1º Danza · Curso 2026-2027 · Cèlia Painous",
+    btnVolver:"← Índice", navPrev:"← Anterior", navNext:"Siguiente →", btnModo:"☀️ Modo claro",
+    "c.danza":"Conexión danza","c.nutricion":"Nutrición","c.calentamiento":"Calentamiento","c.descanso":"Descanso","c.salud":"Salud mental",
+    "act.reflexiona":"Reflexiona","act.prueba":"Prueba en clase","act.parejas":"En parejas","act.grupos":"En grupos 2-3",
+    "p.titulo":"Bloque 3 · Sistema Nervioso Periférico","p.sub":"Del cuerpo al cerebro y del cerebro al cuerpo","p.meta":"Curso 2026-2027 · Cèlia Painous · 30 diapositivas",
+    "d2.etq":"Idea-fuerza","d2.titulo":"El SNP conecta el SNC con el cuerpo","d2.cuerpo":"El <b>Sistema Nervioso Periférico</b> (SNP) está formado por nervios y ganglios. Es el <b>puente de comunicación</b> entre el sistema nervioso central y el resto del cuerpo.",
+    "d3.titulo":"Somático y autónomo","d3.l1":"<b>Somático</b>: controla la musculatura esquelética de forma voluntaria.","d3.l2":"<b>Autónomo</b>: regula órganos, vasos y glándulas de forma involuntaria.",
+    "d4.titulo":"Las dos direcciones de la información","d4.l1":"<b>Vía aferente (sensorial)</b>: del cuerpo al SNC.","d4.l2":"<b>Vía eferente (motora)</b>: del SNC al cuerpo.",
+    "d5.titulo":"Cuando bailas, ambas vías trabajan a la vez","d5.cuina":"Mientras bailas, la vía aferente te informa constantemente de la posición del cuerpo, la textura del suelo y el sonido de la música. La vía eferente envía las órdenes a los músculos para ajustar cada movimiento. Sin este diálogo continuo, el movimiento sería torpe e impreciso.","d5.act.titulo":"Actividad sugerida","d5.act.texto":"Uno hace un movimiento lento (p. ej. elevar un brazo) y el otro le va indicando con la mano, sin hablar, si lo hace bien o mal. Comentad qué información llega por la vía aferente y qué orden por la eferente.",
+    "d6.etq":"Idea-fuerza","d6.titulo":"La vía aferente: sensibilidad","d6.cuerpo":"La vía aferente <b>recoge información</b> desde la piel, los músculos, los tendones y las articulaciones, y la envía al SNC. Sin ella, no sabrías dónde estás ni qué está tocando tu cuerpo.",
+    "d7.titulo":"De dónde recoge la información","d7.l1":"<b>Piel</b>: tacto, presión, temperatura, dolor.","d7.l2":"<b>Músculos</b>: longitud y tensión.","d7.l3":"<b>Tendones</b>: tensión en la unión músculo-hueso.","d7.l4":"<b>Articulaciones</b>: posición y movimiento.",
+    "d8.titulo":"La información que llega por tus pies","d8.cuina":"Cuando estás descalzo sobre una tarima de madera, la vía aferente te envía información sobre la textura, la temperatura, la presión y la posición exacta de cada hueso del pie. Esa información es la base de la precisión y del equilibrio. Por eso muchos estilos de danza trabajan descalzos.","d8.act.titulo":"Actividad sugerida","d8.act.texto":"Con los ojos cerrados, notad la textura del suelo bajo cada pie, la temperatura y la presión. ¿Qué información llega? ¿Cambia si tenéis los ojos abiertos?",
+    "d9.etq":"Idea-fuerza","d9.titulo":"Los dermatomas","d9.cuerpo":"Cada raíz nerviosa de la médula espinal inerva una <b>zona concreta de la piel</b>. Ese mapa se llama <b>dermatoma</b> y sigue un patrón ordenado desde el cuello hasta los pies.",
+    "d10.titulo":"Mapa simplificado de dermatomas","d10.th1":"Zona del cuerpo","d10.th2":"Raíces espinales",
+    "d10.r1a":"Cuello","d10.r2a":"Hombros y brazos","d10.r3a":"Tórax","d10.r4a":"Abdomen","d10.r5a":"Piernas","d10.r6a":"Zona genital",
+    "d11.titulo":"Los dermatomas y las lesiones","d11.cuina":"Los dermatomas L4-S1 inervan los pies y tobillos: fundamentales para sentir el suelo. Los C5-T1 inervan brazos y manos: clave en portés y gestos. Conocer este mapa ayuda al fisioterapeuta de danza a localizar el origen de una pérdida de sensibilidad o de un dolor irradiado.","d11.act.titulo":"Actividad sugerida","d11.act.texto":"Si un bailarín nota adormecimiento en la planta del pie, ¿qué zona del mapa consultaríais primero? ¿Por qué creéis que es importante hacerlo?",
+    "d12.etq":"Idea-fuerza","d12.titulo":"La vía eferente: respuesta motora","d12.cuerpo":"La vía eferente <b>envía las órdenes motoras</b> desde el SNC hasta los músculos esqueléticos a través de los nervios motores. Es la vía que convierte la decisión en movimiento.",
+    "d13.titulo":"De la decisión al músculo","d13.l1":"La <b>corteza motora</b> decide el movimiento.","d13.l2":"La orden baja por las <b>vías descendentes</b> hasta la médula.","d13.l3":"La <b>motoneurona</b> sale por el nervio periférico.","d13.l4":"El <b>músculo</b> se contrae y ejecuta el movimiento.",
+    "d14.titulo":"La orden viaja en milisegundos","d14.cuina":"Cuando decides mover un brazo, la orden ya ha llegado al músculo antes de que te des cuenta. Todo el circuito (corteza → médula → nervio periférico → músculo) tarda milisegundos. La mielina y el entrenamiento hacen que sea todavía más rápido y preciso.","d14.act.titulo":"Actividad sugerida","d14.act.texto":"En parejas: uno dice 'ahora' y el otro debe mover un dedo lo más rápido posible. Medid el tiempo aproximado entre el estímulo y la respuesta.",
+    "d15.etq":"Idea-fuerza","d15.titulo":"El sistema autónomo","d15.cuerpo":"El sistema autónomo regula funciones <b>involuntarias</b>: el pulso, la respiración, la digestión, la temperatura, la sudoración. Tiene dos ramas: <b>simpático</b> y <b>parasimpático</b>.",
+    "d16.titulo":"Simpático vs. parasimpático","d16.th1":"","d16.th2":"Simpático","d16.th3":"Parasimpático",
+    "d16.r1a":"<b>Función</b>","d16.r1b":"Activación ('lucha o huida')","d16.r1c":"Reposo y recuperación",
+    "d16.r2a":"<b>Pulso</b>","d16.r2b":"Sube","d16.r2c":"Baja",
+    "d16.r3a":"<b>Respiración</b>","d16.r3b":"Rápida, bronquios dilatados","d16.r3c":"Lenta, bronquios contraídos",
+    "d16.r4a":"<b>Digestión</b>","d16.r4b":"Se inhibe","d16.r4c":"Se estimula",
+    "d17.titulo":"La activación óptima","d17.p":"El simpático no es 'malo' ni el parasimpático 'bueno'. Ambos son necesarios, y el cuerpo busca un <b>equilibrio</b>.","d17.p2":"Antes de una actuación, un poco de simpático mejora el rendimiento. Si se desborda, bloquea. Aprender a regular ambos sistemas es parte del entrenamiento.",
+    "d18.titulo":"El pánico escénico","d18.cuina":"El 'pánico escénico' es una activación excesiva del simpático: taquicardia, sudoración, respiración rápida, temblor. Las técnicas de respiración diafragmática y de visualización activan el parasimpático y ayudan a regularlo. No se trata de eliminar los nervios, sino de encontrar la activación óptima para rendir bien.",
+    "d19.titulo":"Del nerviosismo a la calma","d19.cuina":"Antes de salir a escena, el simpático te activa. Al caer el telón, el parasimpático te relaja. Reconocer estos dos estados te permite anticiparte y usar herramientas concretas: respiración, calentamiento suave, rutinas previas.","d19.act.titulo":"Actividad sugerida","d19.act.texto":"Compartid experiencias de pánico escénico. ¿Qué síntomas habéis notado? ¿Qué estrategias os han funcionado?",
+    "d20.etq":"Idea-fuerza","d20.titulo":"Los receptores cutáneos","d20.cuerpo":"La piel no es un simple 'detector de tacto'. Tiene <b>varios tipos de receptores</b>, cada uno especializado en un tipo de información distinta.",
+    "d21.titulo":"Los receptores de la piel","d21.th1":"Receptor","d21.th2":"Qué detecta","d21.th3":"En danza",
+    "d21.r1a":"<b>Meissner</b>","d21.r1b":"Tacto fino y movimiento suave","d21.r1c":"Textura del suelo",
+    "d21.r2a":"<b>Merkel</b>","d21.r2b":"Presión sostenida","d21.r2c":"Presión del pie",
+    "d21.r3a":"<b>Ruffini</b>","d21.r3b":"Estiramiento de la piel","d21.r3c":"Tensión al estirar",
+    "d21.r4a":"<b>Pacini</b>","d21.r4b":"Vibración y presión rápida","d21.r4c":"Impactos al aterrizar",
+    "d21.r5a":"<b>Nociceptores</b>","d21.r5b":"Dolor","d21.r5c":"Avisar de lesión",
+    "d21.r6a":"<b>Termorreceptores</b>","d21.r6b":"Frío y calor","d21.r6c":"Temperatura del suelo",
+    "d22.titulo":"Por qué bailar descalzo mejora la sensibilidad","d22.cuina":"Cuando bailas descalzo, activas más receptores cutáneos en la planta del pie. Esa información adicional llega al SNC y mejora el control del equilibrio, la precisión del apoyo y la reacción ante cambios de superficie. Por eso muchos estilos trabajan descalzos.","d22.act.titulo":"Actividad sugerida","d22.act.texto":"Comparad la sensación de hacer un equilibrio a una pierna descalzo y con calzado. ¿Notáis diferencias en la información que llega?",
+    "d23.etq":"Idea-fuerza","d23.titulo":"Cómo funcionan las fibras autónomas","d23.cuerpo":"El sistema autónomo transmite sus mensajes mediante <b>dos sustancias químicas principales</b>: la <b>acetilcolina</b> (parasimpático) y la <b>noradrenalina</b> (simpático).",
+    "d24.titulo":"Acetilcolina y noradrenalina","d24.th1":"Sustancia","d24.th2":"Quién la libera","d24.th3":"Efecto principal",
+    "d24.r1a":"<b>Acetilcolina</b>","d24.r1b":"Parasimpático (y algunas simpáticas)","d24.r1c":"Baja el pulso, activa la digestión",
+    "d24.r2a":"<b>Noradrenalina</b>","d24.r2b":"Simpático","d24.r2c":"Sube el pulso, dilata los bronquios",
+    "d25.titulo":"En reposo y en movimiento","d25.p1":"En reposo, el parasimpático libera acetilcolina: baja el pulso, activa la digestión y conserva la energía.","d25.p2":"Cuando empiezas a bailar, el simpático libera noradrenalina: sube el pulso, acelera la respiración, moviliza la glucosa.","d25.p3":"Cuando terminas, el parasimpático vuelve a actuar y recupera el equilibrio interno.","d25.act.titulo":"Actividad sugerida","d25.act.texto":"¿Qué notáis en el cuerpo justo antes de empezar una clase intensa? ¿Y justo después de terminar?",
+    "d26.etq":"Idea-fuerza","d26.titulo":"El barorreflejo","d26.cuerpo":"El cuerpo <b>no espera</b> a que tú decidas subir o bajar el pulso. Existe un reflejo automático —el <b>barorreflejo</b>— que lo regula momento a momento.",
+    "d27.titulo":"Cómo funciona el barorreflejo","d27.cuerpo":"Unos receptores llamados <b>barorreceptores</b> detectan la presión en las arterias. Si sube, el tronco encefálico baja el pulso y dilata los vasos. Si baja, sube el pulso y contrae los vasos.","d27.cuina":"Cuando empiezas a bailar, el pulso sube por el simpático. El barorreflejo lo modula para que no suba demasiado deprisa. Por eso conviene hacer un calentamiento progresivo: permite que el barorreflejo se adapte sin forzar el sistema.","d27.act.titulo":"Actividad sugerida","d27.act.texto":"¿Por qué a veces te marea si te levantas bruscamente después de un ejercicio en el suelo? Relaciónalo con el barorreflejo.",
+    "d28.titulo":"El eje HPA y la ansiedad escénica","d28.cuina":"La ansiedad escénica no es solo simpático. También activa el eje HPA (hipotálamo-pituitaria-adrenales), que libera cortisol. El cortisol mantiene la alerta durante más tiempo, pero si se desborda produce bloqueo, temblor y olvido. Regularlo requiere sueño, respiración y visualización.",
+    "d29.titulo":"Aplicación dancística","d29.cuerpo":"Todo lo visto en el Bloque 3 se traduce en <b>5 principios prácticos</b>.",
+    "d29.c1":"Activa más receptores cutáneos y mejora la propiocepción.","d29.c2":"Facilita la adaptación del pulso y la respiración.","d29.c3":"Respiración diafragmática y visualización para controlar simpático y cortisol.","d29.c4":"El eje HPA se regula durante el sueño.","d29.c5":"Evita sobrecargas repetidas en la zona lumbar.",
+    "d29.act.titulo":"Actividad sugerida","d29.act.texto":"Elegid uno de los 5 principios y diseñad una rutina concreta de 2 minutos. Compartidla con el grupo.",
+    "d30.titulo":"Fin del Bloque 3","d30.sub":"Sistema Nervioso Periférico","d30.meta":"Continúa con el Bloque 4 · Unión Neuromuscular y Control Motor"
+  },
+  ca:{
+    headerTitulo:"Bloc 3 · Sistema Nerviós Perifèric",
+    headerSub:"Fisiologia · 1r Dansa · Curs 2026-2027 · Cèlia Painous",
+    btnVolver:"← Índex", navPrev:"← Anterior", navNext:"Següent →", btnModo:"☀️ Mode clar",
+    "c.danza":"Connexió dansa","c.nutricion":"Nutrició","c.calentamiento":"Calfament","c.descanso":"Descans","c.salud":"Salut mental",
+    "act.reflexiona":"Reflexiona","act.prueba":"Prova a classe","act.parejas":"En parelles","act.grupos":"En grups 2-3",
+    "p.titulo":"Bloc 3 · Sistema Nerviós Perifèric","p.sub":"Del cos al cervell i del cervell al cos","p.meta":"Curs 2026-2027 · Cèlia Painous · 30 diapositives",
+    "d2.etq":"Idea-força","d2.titulo":"El SNP connecta el SNC amb el cos","d2.cuerpo":"El <b>SNP</b> està format per nervis i ganglis.",
+    "d3.titulo":"Somàtic i autònom","d3.l1":"<b>Somàtic</b>: voluntari.","d3.l2":"<b>Autònom</b>: involuntari.",
+    "d4.titulo":"Les dues direccions","d4.l1":"<b>Aferent</b>: del cos al SNC.","d4.l2":"<b>Eferent</b>: del SNC al cos.",
+    "d5.titulo":"Quan balles, ambdues vies treballen","d5.cuina":"La via aferent informa del cos i l'entorn; l'eferent envia ordres als músculs.","d5.act.titulo":"Activitat suggerida","d5.act.texto":"Un fa un moviment lent i l'altre indica amb la mà.",
+    "d6.etq":"Idea-força","d6.titulo":"La via aferent","d6.cuerpo":"Recull informació de pell, músculs, tendons i articulacions.",
+    "d7.titulo":"D'on recull","d7.l1":"Pell.","d7.l2":"Músculs.","d7.l3":"Tendons.","d7.l4":"Articulacions.",
+    "d8.titulo":"Informació pels peus","d8.cuina":"Descalç sobre fusta, rep informació de textura, temperatura i pressió.","d8.act.titulo":"Activitat suggerida","d8.act.texto":"Amb els ulls tancats, noteu el terra.",
+    "d9.etq":"Idea-força","d9.titulo":"Els dermatomes","d9.cuerpo":"Cada arrel innerva una zona de pell.",
+    "d10.titulo":"Mapa simplificat","d10.th1":"Zona","d10.th2":"Arrels","d10.r1a":"Coll","d10.r2a":"Braços","d10.r3a":"Tòrax","d10.r4a":"Abdomen","d10.r5a":"Cames","d10.r6a":"Zona genital",
+    "d11.titulo":"Dermatomes i lesions","d11.cuina":"L4-S1 peus i turmells. C5-T1 braços i mans.","d11.act.titulo":"Activitat suggerida","d11.act.texto":"Si un ballarí nota adormiment?",
+    "d12.etq":"Idea-força","d12.titulo":"La via eferent","d12.cuerpo":"Envia ordres motores.",
+    "d13.titulo":"De la decisió al múscul","d13.l1":"Escorça decideix.","d13.l2":"Vies descendents.","d13.l3":"Motoneurona.","d13.l4":"Múscul.",
+    "d14.titulo":"Mil·lisegons","d14.cuina":"Tot passa en mil·lisegons.","d14.act.titulo":"Activitat suggerida","d14.act.texto":"Un diu 'ara' i l'altre mou un dit.",
+    "d15.etq":"Idea-força","d15.titulo":"El sistema autònom","d15.cuerpo":"Simpàtic i parasimpàtic.",
+    "d16.titulo":"Simpàtic vs. parasimpàtic","d16.th1":"","d16.th2":"Simpàtic","d16.th3":"Parasimpàtic","d16.r1a":"<b>Funció</b>","d16.r1b":"Activa","d16.r1c":"Relaxa","d16.r2a":"<b>Pols</b>","d16.r2b":"Puja","d16.r2c":"Baixa","d16.r3a":"<b>Respiració</b>","d16.r3b":"Ràpida","d16.r3c":"Lenta","d16.r4a":"<b>Digestió</b>","d16.r4b":"Inhibeix","d16.r4c":"Estimula",
+    "d17.titulo":"L'activació òptima","d17.p":"Els dos són necessaris.","d17.p2":"Una mica de simpàtic millora el rendiment.",
+    "d18.titulo":"El pànic escènic","d18.cuina":"És una activació excessiva del simpàtic. La respiració i la visualització ajuden.",
+    "d19.titulo":"Del nerviosisme a la calma","d19.cuina":"El simpàtic activa abans d'actuar; el parasimpàtic relaxa després.","d19.act.titulo":"Activitat suggerida","d19.act.texto":"Compartiu experiències.",
+    "d20.etq":"Idea-força","d20.titulo":"Receptors cutanis","d20.cuerpo":"Diversos tipus especialitzats.",
+    "d21.titulo":"Els receptors","d21.th1":"Receptor","d21.th2":"Detecta","d21.th3":"En dansa","d21.r1a":"<b>Meissner</b>","d21.r1b":"Tacte fi","d21.r1c":"Textura","d21.r2a":"<b>Merkel</b>","d21.r2b":"Pressió","d21.r2c":"Pressió del peu","d21.r3a":"<b>Ruffini</b>","d21.r3b":"Estirament","d21.r3c":"Tensió","d21.r4a":"<b>Pacini</b>","d21.r4b":"Vibració","d21.r4c":"Impactes","d21.r5a":"<b>Nociceptors</b>","d21.r5b":"Dolor","d21.r5c":"Avis","d21.r6a":"<b>Termoreceptors</b>","d21.r6b":"Temperatura","d21.r6c":"Terra",
+    "d22.titulo":"Ballar descalç","d22.cuina":"Activa més receptors a la planta del peu.","d22.act.titulo":"Activitat suggerida","d22.act.texto":"Compareu descalç i amb calçat.",
+    "d23.etq":"Idea-força","d23.titulo":"Fibres autònomes","d23.cuerpo":"Acetilcolina i noradrenalina.",
+    "d24.titulo":"Les dues substàncies","d24.th1":"Substància","d24.th2":"Qui","d24.th3":"Efecte","d24.r1a":"<b>Acetilcolina</b>","d24.r1b":"Parasimpàtic","d24.r1c":"Baixa el pols","d24.r2a":"<b>Noradrenalina</b>","d24.r2b":"Simpàtic","d24.r2c":"Puja el pols",
+    "d25.titulo":"Repòs i moviment","d25.p1":"En repòs, parasimpàtic.","d25.p2":"Ballant, simpàtic.","d25.p3":"Després, parasimpàtic.","d25.act.titulo":"Activitat suggerida","d25.act.texto":"Què noteu?",
+    "d26.etq":"Idea-força","d26.titulo":"Baroreflex","d26.cuerpo":"Reflex automàtic.",
+    "d27.titulo":"Com funciona","d27.cuerpo":"Baroreceptors detecten pressió.","d27.cuina":"El calfament progressiu ajuda.","d27.act.titulo":"Activitat suggerida","d27.act.texto":"Per què et mareja si t'aixeques bruscament?",
+    "d28.titulo":"Eix HPA","d28.cuina":"Allibera cortisol.",
+    "d29.titulo":"Aplicació","d29.cuerpo":"5 principis.","d29.c1":"Descalç.","d29.c2":"Calfament.","d29.c3":"Respiració.","d29.c4":"Son.","d29.c5":"Ciàtic.","d29.act.titulo":"Activitat suggerida","d29.act.texto":"Dissenyeu una rutina.",
+    "d30.titulo":"Fi del Bloc 3","d30.sub":"Sistema Nerviós Perifèric","d30.meta":"Continua amb el Bloc 4"
+  },
+  en:{
+    headerTitulo:"Block 3 · Peripheral Nervous System",
+    headerSub:"Physiology · 1st Dance · 2026-2027 · Cèlia Painous",
+    btnVolver:"← Index", navPrev:"← Previous", navNext:"Next →", btnModo:"☀️ Light mode",
+    "c.danza":"Dance connection","c.nutricion":"Nutrition","c.calentamiento":"Warm-up","c.descanso":"Rest","c.salud":"Mental health",
+    "act.reflexiona":"Reflect","act.prueba":"Try in class","act.parejas":"In pairs","act.grupos":"In groups 2-3",
+    "p.titulo":"Block 3 · Peripheral Nervous System","p.sub":"From body to brain and brain to body","p.meta":"2026-2027 · Cèlia Painous · 30 slides",
+    "d2.etq":"Key idea","d2.titulo":"The PNS connects the CNS with the body","d2.cuerpo":"The <b>PNS</b> is made up of nerves and ganglia.",
+    "d3.titulo":"Somatic and autonomic","d3.l1":"<b>Somatic</b>: voluntary.","d3.l2":"<b>Autonomic</b>: involuntary.",
+    "d4.titulo":"The two directions","d4.l1":"<b>Afferent</b>: body to CNS.","d4.l2":"<b>Efferent</b>: CNS to body.",
+    "d5.titulo":"When you dance, both work","d5.cuina":"Afferent informs; efferent commands.","d5.act.titulo":"Suggested activity","d5.act.texto":"One does a slow movement and the other signals.",
+    "d6.etq":"Key idea","d6.titulo":"Afferent pathway","d6.cuerpo":"Collects information from skin, muscles, tendons and joints.",
+    "d7.titulo":"Where it collects","d7.l1":"Skin.","d7.l2":"Muscles.","d7.l3":"Tendons.","d7.l4":"Joints.",
+    "d8.titulo":"Information through your feet","d8.cuina":"Barefoot on wood, information about texture, temperature and pressure.","d8.act.titulo":"Suggested activity","d8.act.texto":"With eyes closed, notice the floor.",
+    "d9.etq":"Key idea","d9.titulo":"Dermatomes","d9.cuerpo":"Each root innervates a skin area.",
+    "d10.titulo":"Simplified map","d10.th1":"Area","d10.th2":"Roots","d10.r1a":"Neck","d10.r2a":"Arms","d10.r3a":"Thorax","d10.r4a":"Abdomen","d10.r5a":"Legs","d10.r6a":"Genital area",
+    "d11.titulo":"Dermatomes and injuries","d11.cuina":"L4-S1 feet. C5-T1 arms.","d11.act.titulo":"Suggested activity","d11.act.texto":"If a dancer feels numbness?",
+    "d12.etq":"Key idea","d12.titulo":"Efferent pathway","d12.cuerpo":"Sends motor commands.",
+    "d13.titulo":"From decision to muscle","d13.l1":"Cortex decides.","d13.l2":"Descending pathways.","d13.l3":"Motor neuron.","d13.l4":"Muscle.",
+    "d14.titulo":"Milliseconds","d14.cuina":"All in milliseconds.","d14.act.titulo":"Suggested activity","d14.act.texto":"One says 'now'.",
+    "d15.etq":"Key idea","d15.titulo":"Autonomic system","d15.cuerpo":"Sympathetic and parasympathetic.",
+    "d16.titulo":"Sympathetic vs. parasympathetic","d16.th1":"","d16.th2":"Sympathetic","d16.th3":"Parasympathetic","d16.r1a":"<b>Function</b>","d16.r1b":"Activates","d16.r1c":"Relaxes","d16.r2a":"<b>HR</b>","d16.r2b":"Rises","d16.r2c":"Falls","d16.r3a":"<b>Breathing</b>","d16.r3b":"Fast","d16.r3c":"Slow","d16.r4a":"<b>Digestion</b>","d16.r4b":"Inhibits","d16.r4c":"Stimulates",
+    "d17.titulo":"Optimal activation","d17.p":"Both are needed.","d17.p2":"A little sympathetic improves performance.",
+    "d18.titulo":"Stage panic","d18.cuina":"Excessive sympathetic. Breathing and imagery help.",
+    "d19.titulo":"From nerves to calm","d19.cuina":"Sympathetic activates; parasympathetic relaxes.","d19.act.titulo":"Suggested activity","d19.act.texto":"Share experiences.",
+    "d20.etq":"Key idea","d20.titulo":"Cutaneous receptors","d20.cuerpo":"Several specialised types.",
+    "d21.titulo":"The receptors","d21.th1":"Receptor","d21.th2":"Detects","d21.th3":"In dance","d21.r1a":"<b>Meissner</b>","d21.r1b":"Fine touch","d21.r1c":"Texture","d21.r2a":"<b>Merkel</b>","d21.r2b":"Pressure","d21.r2c":"Foot pressure","d21.r3a":"<b>Ruffini</b>","d21.r3b":"Stretch","d21.r3c":"Tension","d21.r4a":"<b>Pacini</b>","d21.r4b":"Vibration","d21.r4c":"Impacts","d21.r5a":"<b>Nociceptors</b>","d21.r5b":"Pain","d21.r5c":"Warning","d21.r6a":"<b>Thermoreceptors</b>","d21.r6b":"Temperature","d21.r6c":"Floor",
+    "d22.titulo":"Dancing barefoot","d22.cuina":"Activates more receptors on the sole.","d22.act.titulo":"Suggested activity","d22.act.texto":"Compare barefoot vs. shoes.",
+    "d23.etq":"Key idea","d23.titulo":"Autonomic fibers","d23.cuerpo":"Acetylcholine and noradrenaline.",
+    "d24.titulo":"The two substances","d24.th1":"Substance","d24.th2":"Who","d24.th3":"Effect","d24.r1a":"<b>Acetylcholine</b>","d24.r1b":"Parasympathetic","d24.r1c":"Lowers HR","d24.r2a":"<b>Noradrenaline</b>","d24.r2b":"Sympathetic","d24.r2c":"Raises HR",
+    "d25.titulo":"Rest and motion","d25.p1":"At rest, parasympathetic.","d25.p2":"Dancing, sympathetic.","d25.p3":"After, parasympathetic.","d25.act.titulo":"Suggested activity","d25.act.texto":"What do you feel?",
+    "d26.etq":"Key idea","d26.titulo":"Baroreflex","d26.cuerpo":"Automatic reflex.",
+    "d27.titulo":"How it works","d27.cuerpo":"Baroreceptors detect pressure.","d27.cuina":"Progressive warm-up helps.","d27.act.titulo":"Suggested activity","d27.act.texto":"Why dizzy when standing up?",
+    "d28.titulo":"HPA axis","d28.cuina":"Releases cortisol.",
+    "d29.titulo":"Application","d29.cuerpo":"5 principles.","d29.c1":"Barefoot.","d29.c2":"Warm-up.","d29.c3":"Breathing.","d29.c4":"Sleep.","d29.c5":"Sciatic.","d29.act.titulo":"Suggested activity","d29.act.texto":"Design a routine.",
+    "d30.titulo":"End of Block 3","d30.sub":"Peripheral Nervous System","d30.meta":"Continue with Block 4"
+  }
+};
+
+let lang = 'es';
+function t(k){ return (I18N[lang] && I18N[lang][k]) || I18N.es[k] || k; }
+function aplicarIdioma(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k = el.dataset.i18n;
+    const v = t(k);
+    if(v !== undefined) el.innerHTML = v;
+  });
+  const ht = document.getElementById('headerTitulo'); if(ht) ht.textContent = t('headerTitulo');
+  const hs = document.getElementById('headerSub'); if(hs) hs.textContent = t('headerSub');
+  document.getElementById('btnVolver').textContent = t('btnVolver');
+  document.getElementById('navPrev').textContent = t('navPrev');
+  document.getElementById('navNext').textContent = t('navNext');
+  const bm = document.getElementById('btnModo');
+  bm.textContent = document.body.classList.contains('claro')
+    ? (lang==='en'?'🌙 Dark mode':lang==='ca'?'🌙 Mode fosc':'🌙 Modo oscuro')
+    : t('btnModo');
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.lang-switch button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+}
+document.querySelectorAll('.lang-switch button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{ lang = btn.dataset.lang; aplicarIdioma(); });
+});
+
+let idx = 0;
+const slides = document.querySelectorAll('.slide');
+function show(i){
+  slides.forEach(s=>s.classList.remove('active'));
+  slides[i].classList.add('active');
+  slides[i].scrollTop = 0;
+  document.getElementById('counter').textContent = `Diapositiva ${i+1} / ${slides.length}`;
+  document.getElementById('progress').style.width = ((i+1)/slides.length*100)+'%';
+}
+function next(){ if(idx < slides.length-1){ idx++; show(idx); } }
+function prev(){ if(idx > 0){ idx--; show(idx); } }
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight' || e.key===' ') { e.preventDefault(); next(); }
+  if(e.key==='ArrowLeft') { e.preventDefault(); prev(); }
+});
+function volverIndice(){ window.location.href = 'index.html'; }
+function toggleModo(){
+  document.body.classList.toggle('claro');
+  const bm = document.getElementById('btnModo');
+  bm.textContent = document.body.classList.contains('claro')
+    ? (lang==='en'?'🌙 Dark mode':lang==='ca'?'🌙 Mode fosc':'🌙 Modo oscuro')
+    : t('btnModo');
+}
+aplicarIdioma();
+show(0);
+</script>
+</body>
+</html>
