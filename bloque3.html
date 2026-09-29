@@ -674,9 +674,17 @@ const I18N = {
   }
 };
 
-let lang = 'es';
+// ===== IDIOMA PERSISTENT (model unificat) =====
+const CLAU_IDIOMA = 'fisiologia_idioma';
+const IDIOMES = ['es','ca','en'];
+function llegirIdioma(){ const g = localStorage.getItem(CLAU_IDIOMA); return IDIOMES.includes(g) ? g : 'es'; }
+function guardarIdioma(n){ if(IDIOMES.includes(n)) localStorage.setItem(CLAU_IDIOMA, n); }
+
+let lang = llegirIdioma();
 function t(k){ return (I18N[lang] && I18N[lang][k]) || I18N.es[k] || k; }
-function aplicarIdioma(){
+
+function aplicarIdioma(nou){
+  if (nou) lang = nou;
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const k = el.dataset.i18n;
     const v = t(k);
@@ -684,20 +692,26 @@ function aplicarIdioma(){
   });
   const ht = document.getElementById('headerTitulo'); if(ht) ht.textContent = t('headerTitulo');
   const hs = document.getElementById('headerSub'); if(hs) hs.textContent = t('headerSub');
-  document.getElementById('btnVolver').textContent = t('btnVolver');
-  document.getElementById('navPrev').textContent = t('navPrev');
-  document.getElementById('navNext').textContent = t('navNext');
+  const bv = document.getElementById('btnVolver'); if(bv) bv.textContent = t('btnVolver');
+  const np = document.getElementById('navPrev'); if(np) np.textContent = t('navPrev');
+  const nn = document.getElementById('navNext'); if(nn) nn.textContent = t('navNext');
   const bm = document.getElementById('btnModo');
-  bm.textContent = document.body.classList.contains('claro')
-    ? (lang==='en'?'🌙 Dark mode':lang==='ca'?'🌙 Mode fosc':'🌙 Modo oscuro')
-    : t('btnModo');
+  if(bm){
+    bm.textContent = document.body.classList.contains('claro')
+      ? (lang==='en'?'🌙 Dark mode':lang==='ca'?'🌙 Mode fosc':'🌙 Modo oscuro')
+      : t('btnModo');
+  }
   document.documentElement.lang = lang;
   document.querySelectorAll('.lang-switch button').forEach(b=>{
     b.classList.toggle('active', b.dataset.lang === lang);
   });
 }
+
 document.querySelectorAll('.lang-switch button').forEach(btn=>{
-  btn.addEventListener('click', ()=>{ lang = btn.dataset.lang; aplicarIdioma(); });
+  btn.addEventListener('click', ()=>{
+    guardarIdioma(btn.dataset.lang);
+    aplicarIdioma(btn.dataset.lang);
+  });
 });
 
 let idx = 0;
@@ -719,10 +733,14 @@ function volverIndice(){ window.location.href = 'index.html'; }
 function toggleModo(){
   document.body.classList.toggle('claro');
   const bm = document.getElementById('btnModo');
-  bm.textContent = document.body.classList.contains('claro')
-    ? (lang==='en'?'🌙 Dark mode':lang==='ca'?'🌙 Mode fosc':'🌙 Modo oscuro')
-    : t('btnModo');
+  if(bm){
+    bm.textContent = document.body.classList.contains('claro')
+      ? (lang==='en'?'🌙 Dark mode':lang==='ca'?'🌙 Mode fosc':'🌙 Modo oscuro')
+      : t('btnModo');
+  }
 }
+
+// ===== INICI =====
 aplicarIdioma();
 show(0);
 </script>

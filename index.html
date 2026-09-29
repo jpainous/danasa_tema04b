@@ -608,10 +608,17 @@ const I18N = {
   }
 };
 
-let lang = 'es';
+// ===== IDIOMA PERSISTENT (model unificat) =====
+const CLAU_IDIOMA = 'fisiologia_idioma';
+const IDIOMES = ['es','ca','en'];
+function llegirIdioma(){ const g = localStorage.getItem(CLAU_IDIOMA); return IDIOMES.includes(g) ? g : 'es'; }
+function guardarIdioma(n){ if(IDIOMES.includes(n)) localStorage.setItem(CLAU_IDIOMA, n); }
+
+let lang = llegirIdioma();
 function t(k){ return (I18N[lang] && I18N[lang][k]) || I18N.es[k] || k; }
 
-function aplicarIdioma(){
+function aplicarIdioma(nou){
+  if (nou) lang = nou;
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const k = el.dataset.i18n;
     const v = t(k);
@@ -622,11 +629,18 @@ function aplicarIdioma(){
     b.classList.toggle('active', b.dataset.lang === lang);
   });
   const bm = document.getElementById('btnModo');
-  bm.textContent = document.body.classList.contains('claro') ? t('btnModo.oscuro') : t('btnModo');
+  if(bm){
+    bm.textContent = document.body.classList.contains('claro')
+      ? (lang==='en'?'🌙 Dark mode':lang==='ca'?'🌙 Mode fosc':'🌙 Modo oscuro')
+      : t('btnModo');
+  }
 }
 
 document.querySelectorAll('.lang-switch button').forEach(btn=>{
-  btn.addEventListener('click', ()=>{ lang = btn.dataset.lang; aplicarIdioma(); });
+  btn.addEventListener('click', ()=>{
+    guardarIdioma(btn.dataset.lang);
+    aplicarIdioma(btn.dataset.lang);
+  });
 });
 
 function toggleModo(){
@@ -634,7 +648,10 @@ function toggleModo(){
   aplicarIdioma();
 }
 
+// ===== INICI =====
 aplicarIdioma();
+actualizarProgreso();
+renderTablaProfesor();
 </script>
 </body>
 </html>
